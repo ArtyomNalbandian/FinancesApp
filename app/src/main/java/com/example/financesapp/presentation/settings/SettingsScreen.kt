@@ -12,55 +12,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
-import com.example.financesapp.presentation.common.ItemCard
-import com.example.financesapp.presentation.common.TestListItem
-import com.example.financesapp.presentation.settings.components.SettingsItemCard
-import com.example.financesapp.presentation.settings.components.SettingsSwitchThemeCard
+import com.example.financesapp.presentation.common.ListItem
 
 @Composable
 fun SettingsScreen() {
     Column {
         var isChecked by remember { mutableStateOf(false) }
-//        ItemCard(
-//            name = "Светлая/темная тема",
-//            trailingComposable = {
-//                Switch(
-//                    checked = isChecked,
-//                    onCheckedChange = { isChecked = it },
-//                    modifier = Modifier.clickable { isChecked = !isChecked }
-//                )
-//            }
-//        )
-//        SettingsSwitchThemeCard()
-//        SettingsItemCard(
-//            name = "Основной цвет",
-//            trailingIcon = R.drawable.test_icon
-//        )
-//        SettingsItemCard(
-//            name = "Звуки",
-//            trailingIcon = R.drawable.test_icon
-//        )
-//        SettingsItemCard(
-//            name = "Хаптики",
-//            trailingIcon = R.drawable.test_icon
-//        )
-//        SettingsItemCard(
-//            name = "Код пароль",
-//            trailingIcon = R.drawable.test_icon
-//        )
-//        SettingsItemCard(
-//            name = "Синхронизация",
-//            trailingIcon = R.drawable.test_icon
-//        )
-//        SettingsItemCard(
-//            name = "Язык",
-//            trailingIcon = R.drawable.test_icon
-//        )
-//        SettingsItemCard(
-//            name = "О программе",
-//            trailingIcon = R.drawable.test_icon
-//        )
-        TestListItem(
+        ListItem(
             title = "Светлая/темная тема",
             trailingComposable = {
                 Switch(
@@ -71,43 +29,43 @@ fun SettingsScreen() {
             },
             contentPadding =  PaddingValues(vertical = 2.dp)
         )
-        TestListItem(
+        ListItem(
             title = "Основной цвет",
             trailingIcon = R.drawable.test_icon,
             contentPadding =  PaddingValues(vertical = 16.dp),
             onClick = {  } //TODO
         )
-        TestListItem(
+        ListItem(
             title = "Звуки",
             trailingIcon = R.drawable.test_icon,
             contentPadding =  PaddingValues(vertical = 16.dp),
             onClick = {  } //TODO
         )
-        TestListItem(
+        ListItem(
             title = "Хаптики",
             trailingIcon = R.drawable.test_icon,
             contentPadding =  PaddingValues(vertical = 16.dp),
             onClick = {  } //TODO
         )
-        TestListItem(
+        ListItem(
             title = "Код пароль",
             trailingIcon = R.drawable.test_icon,
             contentPadding =  PaddingValues(vertical = 16.dp),
             onClick = {  } //TODO
         )
-        TestListItem(
+        ListItem(
             title = "Синхронизация",
             trailingIcon = R.drawable.test_icon,
             contentPadding =  PaddingValues(vertical = 16.dp),
             onClick = {  } //TODO
         )
-        TestListItem(
+        ListItem(
             title = "Язык",
             trailingIcon = R.drawable.test_icon,
             contentPadding =  PaddingValues(vertical = 16.dp),
             onClick = {  } //TODO
         )
-        TestListItem(
+        ListItem(
             title = "О программе",
             trailingIcon = R.drawable.test_icon,
             contentPadding =  PaddingValues(vertical = 16.dp),

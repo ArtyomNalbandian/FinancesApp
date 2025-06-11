@@ -46,7 +46,6 @@ class MainActivity : ComponentActivity() {
 //                ) {
 //                    composable("splash") {
 //                        SplashScreen {
-//                            // При переходе очищаем back stack, чтобы нельзя было вернуться
 //                            navController.navigate("main") {
 //                                popUpTo("splash") { inclusive = true }
 //                            }
@@ -67,7 +66,7 @@ fun SplashScreen(onLoadingComplete: () -> Unit) {
 
     val progress by animateLottieCompositionAsState(
         composition = composition,
-        iterations = 1 // Только одно воспроизведение
+        iterations = 1
     )
 
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -76,7 +75,6 @@ fun SplashScreen(onLoadingComplete: () -> Unit) {
 
     LaunchedEffect(progress) {
         if (progress >= 0.93f) {
-//            delay(10)
             onLoadingComplete()
         }
     }
