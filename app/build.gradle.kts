@@ -60,4 +60,5 @@ dependencies {
 
     //SplashScreen
     implementation(libs.lottie)
+
 }

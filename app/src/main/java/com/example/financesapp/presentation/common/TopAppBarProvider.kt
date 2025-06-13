@@ -1,4 +1,4 @@
-package com.example.financesapp.presentation.navigation
+package com.example.financesapp.presentation.common
 
 import androidx.compose.runtime.Composable
 
