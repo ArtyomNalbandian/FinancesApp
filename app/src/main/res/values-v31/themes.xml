@@ -4,6 +4,7 @@
     <style name="Theme.FinancesApp" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowBackground">@color/white</item>
-    </style>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_transparent</item>
 
+    </style>
 </resources>

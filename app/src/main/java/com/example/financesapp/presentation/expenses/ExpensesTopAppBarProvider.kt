@@ -9,7 +9,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import com.example.financesapp.R
-import com.example.financesapp.presentation.navigation.TopAppBarProvider
+import com.example.financesapp.presentation.common.TopAppBarProvider
 import com.example.financesapp.ui.theme.Green
 
 object ExpensesTopAppBarProvider : TopAppBarProvider {

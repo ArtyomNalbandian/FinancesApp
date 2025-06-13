@@ -1,6 +1,7 @@
 package com.example.financesapp.presentation.common
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -17,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
 import com.example.financesapp.ui.theme.SearchBarColor
 
 @Composable
@@ -31,7 +33,8 @@ fun SearchBar(
         value = query,
         onValueChange = { query = it },
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .height(56.dp),
         placeholder = {
             Text(text = "Найти статью")
         },

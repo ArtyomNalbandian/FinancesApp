@@ -1,7 +1,5 @@
 package com.example.financesapp.presentation.account
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -9,7 +7,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import com.example.financesapp.presentation.navigation.TopAppBarProvider
+import androidx.compose.ui.res.painterResource
+import com.example.financesapp.R
+import com.example.financesapp.presentation.common.TopAppBarProvider
 import com.example.financesapp.ui.theme.Green
 
 object AccountTopAppBarProvider : TopAppBarProvider {
@@ -20,7 +20,7 @@ object AccountTopAppBarProvider : TopAppBarProvider {
             title = { Text("Мой счет") },
             actions = {
                 IconButton(onClick = { }) {
-                    Icon(Icons.Outlined.Edit, contentDescription = "Редактировать счет")
+                    Icon(painter = painterResource(R.drawable.edit), contentDescription = "Редактировать счет")
                 }
             },
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(

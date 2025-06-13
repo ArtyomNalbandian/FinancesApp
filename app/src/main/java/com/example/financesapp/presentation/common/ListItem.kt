@@ -5,14 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,22 +27,22 @@ import com.example.financesapp.ui.theme.SupportingTextColor
 @Composable
 fun ListItem(
     title: String,
+    modifier: Modifier = Modifier,
     supportingText: String? = null,
     amount: String? = null,
     leadingIcon: Int? = null,
     trailingIcon: Int? = null,
-    contentPadding: PaddingValues = PaddingValues(vertical = 24.dp),
     backgroundColor: Color = CardItemBackground,
     trailingComposable: @Composable (() -> Unit)? = null,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(backgroundColor)
             .then(onClick?.let { Modifier.clickable { it() } } ?: Modifier)
-            .padding(contentPadding)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp)
+            .height(72.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -93,5 +92,4 @@ fun ListItem(
             }
         }
     }
-    HorizontalDivider()
 }

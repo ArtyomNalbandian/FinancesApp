@@ -6,5 +6,5 @@ data class Expense(
     val subtitle: String? = null,
     val leadingIcon: String,
     val amount: String,
-    val currency: String
+    val currency: String,
 )
