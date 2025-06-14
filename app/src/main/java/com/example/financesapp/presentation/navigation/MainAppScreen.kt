@@ -48,24 +48,24 @@ fun MainAppScreen() {
         bottomBar = {
             BottomNavBar(rootNavController, items)
         },
-        floatingActionButton = {
-            if (currentRoute == "Расходы" || currentRoute == "Доходы" || currentRoute == "Счет") {
-                FloatingActionButton(
-                    onClick = {
-                        when(currentRoute) {
-                            "Расходы" -> {}
-                            "Доходы" -> {}
-                            "Счет" -> {}
-                        }
-                    },
-                    containerColor = Green,
-                    contentColor = Color.White,
-                    shape = CircleShape
-                ) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = null)
-                }
-            }
-        }
+//        floatingActionButton = {
+//            if (currentRoute == "Расходы" || currentRoute == "Доходы" || currentRoute == "Счет") {
+//                FloatingActionButton(
+//                    onClick = {
+//                        when(currentRoute) {
+//                            "Расходы" -> {}
+//                            "Доходы" -> {}
+//                            "Счет" -> {}
+//                        }
+//                    },
+//                    containerColor = Green,
+//                    contentColor = Color.White,
+//                    shape = CircleShape
+//                ) {
+//                    Icon(imageVector = Icons.Default.Add, contentDescription = null)
+//                }
+//            }
+//        }
     ) { padding ->
         RootNavHost(expensesNavController, rootNavController, modifier = Modifier.background(CardItemBackground).padding(padding))
     }
