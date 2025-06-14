@@ -1,10 +1,11 @@
 package com.example.financesapp.presentation.settings
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,72 +15,51 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.ListItem
+import com.example.financesapp.ui.theme.Green
+import com.example.financesapp.ui.theme.LightGreen
+
 
 @Composable
 fun SettingsScreen() {
-    Column {
-        var isChecked by remember { mutableStateOf(false) }
-        ListItem(
-            title = "Темная тема",
-            trailingComposable = {
-                Switch(
-                    checked = isChecked,
-                    onCheckedChange = { isChecked = it },
-                    modifier = Modifier.clickable { isChecked = !isChecked }
-                )
-            },
-            modifier = Modifier.height(56.dp)
-        )
-        HorizontalDivider()
-        ListItem(
-            title = "Основной цвет",
-            trailingIcon = R.drawable.test_icon,
-            onClick = {  }, //TODO,
-            modifier = Modifier.height(56.dp)
-        )
-        HorizontalDivider()
-        ListItem(
-            title = "Звуки",
-            trailingIcon = R.drawable.test_icon,
-            onClick = {  }, //TODO
-            modifier = Modifier.height(56.dp)
-        )
-        HorizontalDivider()
-        ListItem(
-            title = "Хаптики",
-            trailingIcon = R.drawable.test_icon,
-            onClick = {  }, //TODO
-            modifier = Modifier.height(56.dp)
-        )
-        HorizontalDivider()
-        ListItem(
-            title = "Код пароль",
-            trailingIcon = R.drawable.test_icon,
-            onClick = {  }, //TODO
-            modifier = Modifier.height(56.dp)
-        )
-        HorizontalDivider()
-        ListItem(
-            title = "Синхронизация",
-            trailingIcon = R.drawable.test_icon,
-            onClick = {  }, //TODO
-            modifier = Modifier.height(56.dp)
-        )
-        HorizontalDivider()
-        ListItem(
-            title = "Язык",
-            trailingIcon = R.drawable.test_icon,
-            onClick = {  }, //TODO
-            modifier = Modifier.height(56.dp)
+    val items = listOf(
+        "Темная тема" to null,
+        "Основной цвет" to R.drawable.test_icon,
+        "Звуки" to R.drawable.test_icon,
+        "Хаптики" to R.drawable.test_icon,
+        "Код пароль" to R.drawable.test_icon,
+        "Синхронизация" to R.drawable.test_icon,
+        "Язык" to R.drawable.test_icon,
+        "О программе" to R.drawable.test_icon
+    )
 
-        )
-        HorizontalDivider()
-        ListItem(
-            title = "О программе",
-            trailingIcon = R.drawable.test_icon,
-            onClick = {  }, //TODO
-            modifier = Modifier.height(56.dp)
-        )
-        HorizontalDivider()
+    var isDarkTheme by remember { mutableStateOf(false) }
+
+    LazyColumn {
+        item {
+            ListItem(
+                title = "Темная тема",
+                trailingComposable = {
+                    Switch(
+                        checked = isDarkTheme,
+                        onCheckedChange = { isDarkTheme = it },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = LightGreen,
+                            checkedTrackColor = Green,
+                        )
+                    )
+                },
+                modifier = Modifier.height(56.dp)
+            )
+            HorizontalDivider()
+        }
+        itemsIndexed(items) { _, icon ->
+            ListItem(
+                title = icon.first,
+                trailingIcon = icon.second,
+                onClick = { /* TODO */ },
+                modifier = Modifier.height(56.dp)
+            )
+            HorizontalDivider()
+        }
     }
 }
