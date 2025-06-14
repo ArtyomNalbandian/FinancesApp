@@ -5,13 +5,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import com.example.financesapp.presentation.common.TopAppBarProvider
 import com.example.financesapp.ui.theme.Green
 
 object SettingsTopAppBarProvider : TopAppBarProvider {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    override fun ProvideTopAppBar() {
+    override fun ProvideTopAppBar(navController: NavHostController) {
         CenterAlignedTopAppBar(
             title = { Text("Настройки") },
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(

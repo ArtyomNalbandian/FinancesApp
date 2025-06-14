@@ -2,17 +2,21 @@ package com.example.financesapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.financesapp.presentation.navigation.navhosts.AccountNavHost
 import com.example.financesapp.presentation.navigation.navhosts.ArticlesNavHost
 import com.example.financesapp.presentation.navigation.navhosts.ExpensesNavHost
 import com.example.financesapp.presentation.navigation.navhosts.IncomeNavHost
 import com.example.financesapp.presentation.navigation.navhosts.SettingsNavHost
+import kotlin.math.exp
 
 @Composable
 fun RootNavHost(
+    expensesNavController: NavHostController,
     rootNavController: NavHostController,
     modifier: Modifier = Modifier
 ) {
@@ -22,7 +26,7 @@ fun RootNavHost(
         modifier = modifier
     ) {
         composable("Расходы") {
-            ExpensesNavHost()
+            ExpensesNavHost(expensesNavController)
         }
         composable("Доходы") {
             IncomeNavHost()

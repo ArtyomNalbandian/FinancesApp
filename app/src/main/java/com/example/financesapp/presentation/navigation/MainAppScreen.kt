@@ -38,9 +38,11 @@ fun MainAppScreen() {
         else -> NoTopAppBarProvider
     }
 
+    val expensesNavController = rememberNavController()
+
     Scaffold(
         topBar = {
-            topAppBarProviders.ProvideTopAppBar()
+            topAppBarProviders.ProvideTopAppBar(navController = expensesNavController)
         },
 
         bottomBar = {
@@ -65,6 +67,6 @@ fun MainAppScreen() {
             }
         }
     ) { padding ->
-        RootNavHost(rootNavController, modifier = Modifier.background(CardItemBackground).padding(padding))
+        RootNavHost(expensesNavController, rootNavController, modifier = Modifier.background(CardItemBackground).padding(padding))
     }
 }

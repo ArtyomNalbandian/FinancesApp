@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavHostController
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.TopAppBarProvider
 import com.example.financesapp.ui.theme.Green
@@ -15,12 +16,17 @@ import com.example.financesapp.ui.theme.Green
 object ExpensesTopAppBarProvider : TopAppBarProvider {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    override fun ProvideTopAppBar() {
+    override fun ProvideTopAppBar(navController: NavHostController) {
         CenterAlignedTopAppBar(
             title = { Text("Расходы сегодня") },
             actions = {
-                IconButton(onClick = { }) {
-                    Icon(painter = painterResource(R.drawable.history), contentDescription = "История расходов")
+                IconButton(onClick = {
+                    navController.navigate("expenses_history")
+                }) {
+                    Icon(
+                        painter = painterResource(R.drawable.history),
+                        contentDescription = "История расходов"
+                    )
                 }
             },
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
