@@ -42,10 +42,5 @@ fun ExpensesScreen() {
                 }
             }
         }
-        AddButton(
-            onClick = {},
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-        )
     }
 }

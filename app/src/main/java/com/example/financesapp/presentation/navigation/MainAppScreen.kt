@@ -28,47 +28,9 @@ import com.example.financesapp.presentation.settings.SettingsScreenComponents
 import com.example.financesapp.ui.theme.Green
 import com.example.financesapp.ui.theme.LightGreen
 
-sealed class AppRoute(val route: String) {
-    object Expenses : AppRoute("Расходы")
-    object ExpensesHistory : AppRoute("Расходы/История")
-    object ExpensesAnalysis : AppRoute("Расходы/Анализ")
-    object Income : AppRoute("Доходы")
-    object Account : AppRoute("Счет")
-    object Articles : AppRoute("Статьи")
-    object Settings : AppRoute("Настройки")
-
-    companion object {
-        fun fromString(route: String?): AppRoute? {
-            return when (route) {
-                Expenses.route -> Expenses
-                ExpensesHistory.route -> ExpensesHistory
-                ExpensesAnalysis.route -> ExpensesAnalysis
-                Income.route -> Income
-                Account.route -> Account
-                Articles.route -> Articles
-                Settings.route -> Settings
-                else -> null
-            }
-        }
-    }
-}
 
 @Composable
 fun MainAppScreen() {
-    val rootNavController = rememberNavController()
-    val navBackStackEntry by rootNavController.currentBackStackEntryAsState()
-    val currentRoute = AppRoute.fromString(navBackStackEntry?.destination?.route)
-//    val currentRoute = navBackStackEntry?.destination?.route
-
-//    val topAppBarProviders = when (currentRoute) {
-//        "Расходы" -> ExpensesTopAppBarProvider
-//        "Доходы" -> IncomeTopAppBarProvider
-//        "Счет" -> AccountTopAppBarProvider
-//        "Статьи" -> ArticlesTopAppBarProvider
-//        "Настройки" -> SettingsTopAppBarProvider
-//        else -> NoTopAppBarProvider
-//    }
-
     val navController = rememberNavController()
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination
@@ -125,29 +87,12 @@ fun MainAppScreen() {
                     )
                 }
             }
-//            BottomNavBar(navController, items)
         },
         floatingActionButton = {
-            screenComponents?.floatingActionButtonProvider?.ProvideFloatingActionButton(navController)
+            screenComponents?.floatingActionButtonProvider?.ProvideFloatingActionButton(
+                navController
+            )
         }
-//        floatingActionButton = {
-//            if (currentRoute == "Расходы" || currentRoute == "Доходы" || currentRoute == "Счет") {
-//                FloatingActionButton(
-//                    onClick = {
-//                        when(currentRoute) {
-//                            "Расходы" -> {}
-//                            "Доходы" -> {}
-//                            "Счет" -> {}
-//                        }
-//                    },
-//                    containerColor = Green,
-//                    contentColor = Color.White,
-//                    shape = CircleShape
-//                ) {
-//                    Icon(imageVector = Icons.Default.Add, contentDescription = null)
-//                }
-//            }
-//        }
     ) { padding ->
         RootNavGraph(
             navController = navController,
