@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.TopAppBarProvider
@@ -21,7 +22,13 @@ object ExpensesTopAppBarProvider : TopAppBarProvider {
             title = { Text("Расходы сегодня") },
             actions = {
                 IconButton(onClick = {
-                    navController.navigate("expenses_history")
+                    navController.navigate("expenses_history") {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }) {
                     Icon(
                         painter = painterResource(R.drawable.history),

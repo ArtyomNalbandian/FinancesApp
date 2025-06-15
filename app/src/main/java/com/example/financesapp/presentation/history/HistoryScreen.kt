@@ -59,12 +59,14 @@ fun HistoryScreen() {
             backgroundColor = LightGreen,
             modifier = Modifier.height(56.dp)
         )
+        HorizontalDivider()
         ListItem(
             title = "Конец",
             amount = expensesTotal.amount,
             backgroundColor = LightGreen,
             modifier = Modifier.height(56.dp)
         )
+        HorizontalDivider()
         ListItem(
             title = "Сумма",
             amount = expensesTotal.amount,
