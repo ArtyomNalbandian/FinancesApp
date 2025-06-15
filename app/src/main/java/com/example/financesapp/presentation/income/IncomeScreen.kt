@@ -8,12 +8,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.financesapp.data.mock.income
 import com.example.financesapp.data.mock.incomeTotal
-import com.example.financesapp.presentation.common.AddButton
 import com.example.financesapp.presentation.common.ListItem
 import com.example.financesapp.ui.theme.LightGreen
 
@@ -40,10 +38,5 @@ fun IncomeScreen() {
                 }
             }
         }
-        AddButton(
-            onClick = {},
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-        )
     }
 }

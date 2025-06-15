@@ -10,42 +10,9 @@ import com.example.financesapp.presentation.account.AccountScreen
 import com.example.financesapp.presentation.articles.ArticlesScreen
 import com.example.financesapp.presentation.expenses.ExpensesScreen
 import com.example.financesapp.presentation.income.IncomeScreen
-import com.example.financesapp.presentation.navigation.navhosts.AccountNavHost
-import com.example.financesapp.presentation.navigation.navhosts.ArticlesNavHost
-import com.example.financesapp.presentation.navigation.navhosts.ExpensesNavHost
-import com.example.financesapp.presentation.navigation.navhosts.IncomeNavHost
-import com.example.financesapp.presentation.navigation.navhosts.SettingsNavHost
 import com.example.financesapp.presentation.navigation.routes.Screen
 import com.example.financesapp.presentation.settings.SettingsScreen
 
-@Composable
-fun RootNavHost(
-    expensesNavController: NavHostController,
-    rootNavController: NavHostController,
-    modifier: Modifier = Modifier
-) {
-    NavHost(
-        navController = rootNavController,
-        startDestination = "Расходы",
-        modifier = modifier
-    ) {
-        composable("Расходы") {
-            ExpensesNavHost(expensesNavController)
-        }
-        composable("Доходы") {
-            IncomeNavHost()
-        }
-        composable("Счет") {
-            AccountNavHost()
-        }
-        composable("Статьи") {
-            ArticlesNavHost()
-        }
-        composable("Настройки") {
-            SettingsNavHost()
-        }
-    }
-}
 
 @Composable
 fun RootNavGraph(
@@ -64,6 +31,9 @@ fun RootNavGraph(
             composable(Screen.Expenses.route) {
                 ExpensesScreen()
             }
+            composable(Screen.ExpensesHistory.route) {
+                ExpensesScreen()
+            }
         }
 
         navigation(
@@ -71,6 +41,9 @@ fun RootNavGraph(
             route = Screen.IncomeGraph.route
         ) {
             composable(Screen.Income.route) {
+                IncomeScreen()
+            }
+            composable(Screen.IncomeHistory.route) {
                 IncomeScreen()
             }
         }

@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
-import com.example.financesapp.presentation.common.AddButton
 import com.example.financesapp.presentation.common.ListItem
 import com.example.financesapp.ui.theme.LightGreen
 
@@ -39,10 +37,5 @@ fun AccountScreen() {
                 modifier = Modifier.height(56.dp)
             )
         }
-        AddButton(
-            onClick = {},
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-        )
     }
 }

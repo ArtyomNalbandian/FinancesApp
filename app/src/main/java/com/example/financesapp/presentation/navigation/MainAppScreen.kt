@@ -1,14 +1,7 @@
 package com.example.financesapp.presentation.navigation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -17,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -25,16 +19,12 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.financesapp.R
-import com.example.financesapp.presentation.account.AccountTopAppBarProvider
-import com.example.financesapp.presentation.articles.ArticlesTopAppBarProvider
-import com.example.financesapp.presentation.common.NoTopAppBarProvider
-import com.example.financesapp.presentation.expenses.ExpensesTopAppBarProvider
-import com.example.financesapp.presentation.history.AnalysisTopAppBarProvider
-import com.example.financesapp.presentation.history.HistoryTopAppBarProvider
-import com.example.financesapp.presentation.income.IncomeTopAppBarProvider
+import com.example.financesapp.presentation.account.AccountScreenComponents
+import com.example.financesapp.presentation.articles.ArticlesScreenComponents
+import com.example.financesapp.presentation.expenses.ExpensesScreenComponents
+import com.example.financesapp.presentation.income.IncomeScreenComponents
 import com.example.financesapp.presentation.navigation.routes.Screen
-import com.example.financesapp.presentation.settings.SettingsTopAppBarProvider
-import com.example.financesapp.ui.theme.CardItemBackground
+import com.example.financesapp.presentation.settings.SettingsScreenComponents
 import com.example.financesapp.ui.theme.Green
 import com.example.financesapp.ui.theme.LightGreen
 
@@ -83,33 +73,21 @@ fun MainAppScreen() {
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination
 
-    val topAppBarProvider = when (currentRoute) {
-        AppRoute.Expenses -> ExpensesTopAppBarProvider
-        AppRoute.ExpensesHistory -> HistoryTopAppBarProvider
-        AppRoute.ExpensesAnalysis -> AnalysisTopAppBarProvider
-        AppRoute.Income -> IncomeTopAppBarProvider
-        AppRoute.Account -> AccountTopAppBarProvider
-        AppRoute.Articles -> ArticlesTopAppBarProvider
-        AppRoute.Settings -> SettingsTopAppBarProvider
-        else -> NoTopAppBarProvider
+    val screenComponents = remember(currentDestination?.route) {
+        when (currentDestination?.route) {
+            Screen.Expenses.route -> ExpensesScreenComponents()
+            Screen.Income.route -> IncomeScreenComponents()
+            Screen.Account.route -> AccountScreenComponents()
+            Screen.Articles.route -> ArticlesScreenComponents()
+            Screen.Settings.route -> SettingsScreenComponents()
+            else -> null
+        }
     }
-
-    val expensesNavController = rememberNavController()
 
     Scaffold(
         topBar = {
-            topAppBarProvider.ProvideTopAppBar(
-                navController = when (currentRoute) {
-                    AppRoute.Expenses,
-                    AppRoute.ExpensesHistory,
-                    AppRoute.ExpensesAnalysis -> expensesNavController
-
-                    else -> rootNavController
-                }
-            )
-//            topAppBarProviders.ProvideTopAppBar(navController = expensesNavController)
+            screenComponents?.topAppBarProvider?.ProvideTopAppBar(navController)
         },
-
         bottomBar = {
             NavigationBar {
                 val items = listOf(
@@ -149,6 +127,9 @@ fun MainAppScreen() {
             }
 //            BottomNavBar(navController, items)
         },
+        floatingActionButton = {
+            screenComponents?.floatingActionButtonProvider?.ProvideFloatingActionButton(navController)
+        }
 //        floatingActionButton = {
 //            if (currentRoute == "Расходы" || currentRoute == "Доходы" || currentRoute == "Счет") {
 //                FloatingActionButton(
@@ -168,13 +149,6 @@ fun MainAppScreen() {
 //            }
 //        }
     ) { padding ->
-//        RootNavHost(
-//            expensesNavController,
-//            rootNavController,
-//            modifier = Modifier
-//                .background(CardItemBackground)
-//                .padding(padding)
-//        )
         RootNavGraph(
             navController = navController,
             modifier = Modifier.padding(padding)
