@@ -1,4 +1,4 @@
-package com.example.financesapp.presentation.navigation.routes
+package com.example.financesapp.presentation.navigation
 
 sealed class Screen(val route: String) {
 

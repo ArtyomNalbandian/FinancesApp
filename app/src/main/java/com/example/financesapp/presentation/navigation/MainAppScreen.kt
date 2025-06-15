@@ -3,6 +3,7 @@ package com.example.financesapp.presentation.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -23,10 +24,7 @@ import com.example.financesapp.presentation.account.AccountScreenComponents
 import com.example.financesapp.presentation.articles.ArticlesScreenComponents
 import com.example.financesapp.presentation.expenses.ExpensesScreenComponents
 import com.example.financesapp.presentation.income.IncomeScreenComponents
-import com.example.financesapp.presentation.navigation.routes.Screen
 import com.example.financesapp.presentation.settings.SettingsScreenComponents
-import com.example.financesapp.ui.theme.Green
-import com.example.financesapp.ui.theme.LightGreen
 
 
 @Composable
@@ -81,8 +79,8 @@ fun MainAppScreen() {
                             }
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = Green,
-                            indicatorColor = LightGreen
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.secondary
                         )
                     )
                 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -21,7 +22,7 @@ fun AccountScreen() {
             ListItem(
                 title = "Баланс",
                 amount = "-670 000 ₽",
-                backgroundColor = LightGreen,
+                backgroundColor = MaterialTheme.colorScheme.secondary,
                 leadingIcon = R.drawable.money,
                 trailingIcon = R.drawable.more_vert,
                 onClick = {}, //TODO()
@@ -31,7 +32,7 @@ fun AccountScreen() {
             ListItem(
                 title = "Валюта",
                 amount = "₽",
-                backgroundColor = LightGreen,
+                backgroundColor = MaterialTheme.colorScheme.secondary,
                 trailingIcon = R.drawable.more_vert,
                 onClick = { }, //TODO()
                 modifier = Modifier.height(56.dp)

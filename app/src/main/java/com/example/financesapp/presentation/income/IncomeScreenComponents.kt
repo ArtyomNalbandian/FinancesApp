@@ -3,12 +3,12 @@ package com.example.financesapp.presentation.income
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -19,8 +19,7 @@ import com.example.financesapp.R
 import com.example.financesapp.presentation.common.FloatingActionButtonProvider
 import com.example.financesapp.presentation.common.ScreenComponents
 import com.example.financesapp.presentation.common.TopAppBarProvider
-import com.example.financesapp.presentation.navigation.routes.Screen
-import com.example.financesapp.ui.theme.Green
+import com.example.financesapp.presentation.navigation.Screen
 
 class IncomeScreenComponents : ScreenComponents {
     override val topAppBarProvider: TopAppBarProvider = IncomeTopAppBarProvider
@@ -44,7 +43,7 @@ object IncomeTopAppBarProvider : TopAppBarProvider {
                 }
             },
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                containerColor = Green
+                containerColor = MaterialTheme.colorScheme.primary
             )
         )
     }
@@ -57,7 +56,7 @@ object IncomeFloatingActionButtonProvider : FloatingActionButtonProvider {
             onClick = {
                 navController.navigate(Screen.AddIncome.route)
             },
-            containerColor = Green,
+            containerColor = MaterialTheme.colorScheme.primary,
             contentColor = Color.White,
             shape = CircleShape,
         ) {

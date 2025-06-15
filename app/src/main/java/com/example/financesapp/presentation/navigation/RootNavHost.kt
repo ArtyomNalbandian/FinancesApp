@@ -10,7 +10,6 @@ import com.example.financesapp.presentation.account.AccountScreen
 import com.example.financesapp.presentation.articles.ArticlesScreen
 import com.example.financesapp.presentation.expenses.ExpensesScreen
 import com.example.financesapp.presentation.income.IncomeScreen
-import com.example.financesapp.presentation.navigation.routes.Screen
 import com.example.financesapp.presentation.settings.SettingsScreen
 
 

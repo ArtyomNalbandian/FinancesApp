@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
@@ -15,8 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.ListItem
-import com.example.financesapp.ui.theme.Green
-import com.example.financesapp.ui.theme.LightGreen
 
 
 @Composable
@@ -43,8 +42,8 @@ fun SettingsScreen() {
                         checked = isDarkTheme,
                         onCheckedChange = { isDarkTheme = it },
                         colors = SwitchDefaults.colors(
-                            checkedThumbColor = LightGreen,
-                            checkedTrackColor = Green,
+                            checkedThumbColor = MaterialTheme.colorScheme.secondary,
+                            checkedTrackColor = MaterialTheme.colorScheme.primary,
                         )
                     )
                 },
