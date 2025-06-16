@@ -94,11 +94,11 @@ fun MainAppScreen() {
                 }
             }
         },
-        floatingActionButton = {
-            screenComponents?.floatingActionButtonProvider?.ProvideFloatingActionButton(
-                navController
-            )
-        }
+//        floatingActionButton = {
+//            screenComponents?.floatingActionButtonProvider?.ProvideFloatingActionButton(
+//                navController
+//            )
+//        }
     ) { padding ->
         RootNavGraph(
             navController = navController,

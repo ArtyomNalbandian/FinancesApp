@@ -7,16 +7,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.example.financesapp.R
+import com.example.financesapp.presentation.common.AddButton
 import com.example.financesapp.presentation.common.ListItem
 import com.example.financesapp.presentation.common.TopAppBarState
 import com.example.financesapp.presentation.common.TopAppBarStateProvider
 
 @Composable
-fun AccountTestScreen(onTrailingIconClick: () -> Unit) {
+fun AccountTestScreen(
+    onTrailingIconClick: () -> Unit,
+    onAddAccount: () -> Unit,
+) {
     TopAppBarStateProvider.update(
         TopAppBarState(
             title = "Мой счет",
@@ -47,5 +51,9 @@ fun AccountTestScreen(onTrailingIconClick: () -> Unit) {
                 modifier = Modifier.height(56.dp)
             )
         }
+        AddButton(
+            onClick = onAddAccount,
+            modifier = Modifier.align(Alignment.BottomEnd)
+        )
     }
 }

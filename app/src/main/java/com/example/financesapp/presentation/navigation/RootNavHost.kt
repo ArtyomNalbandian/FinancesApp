@@ -69,10 +69,16 @@ fun RootNavGraph(
         ) {
             composable(Screen.Account.route) {
 //                AccountScreen()
-                AccountTestScreen { navController.navigate(Screen.AddAccount.route) }
+                AccountTestScreen(
+                    onTrailingIconClick = { navController.navigate(Screen.AddAccount.route) },
+                    onAddAccount = { navController.navigate(Screen.AddAccount.route) }
+                )
             }
             composable(Screen.AddAccount.route) {
-                AddAccountScreen()
+                AddAccountScreen(
+                    onLeadingIconClick = { navController.popBackStack() },
+                    onTrailingIconClick = { navController.popBackStack() }
+                )
             }
         }
 
