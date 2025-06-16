@@ -9,6 +9,7 @@ import androidx.navigation.navigation
 import com.example.financesapp.presentation.account.AccountScreen
 import com.example.financesapp.presentation.articles.ArticlesScreen
 import com.example.financesapp.presentation.expenses.ExpensesScreen
+import com.example.financesapp.presentation.history.HistoryScreen
 import com.example.financesapp.presentation.income.IncomeScreen
 import com.example.financesapp.presentation.settings.SettingsScreen
 
@@ -30,8 +31,9 @@ fun RootNavGraph(
             composable(Screen.Expenses.route) {
                 ExpensesScreen()
             }
-            composable(Screen.ExpensesHistory.route) {
-                ExpensesScreen()
+//            composable(Screen.ExpensesHistory.route) {
+            composable(Screen.History("expenses").route) {
+                HistoryScreen("expenses")
             }
         }
 
@@ -42,8 +44,9 @@ fun RootNavGraph(
             composable(Screen.Income.route) {
                 IncomeScreen()
             }
-            composable(Screen.IncomeHistory.route) {
-                IncomeScreen()
+            composable(Screen.History("income").route) {
+//            composable(Screen.IncomeHistory.route) {
+                HistoryScreen("income")
             }
         }
 

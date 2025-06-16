@@ -51,10 +51,10 @@ val history = listOf(
 )
 
 @Composable
-fun HistoryScreen() {
+fun HistoryScreen(historyType: String) {
     Column {
         ListItem(
-            title = "Начало",
+            title = historyType,
             amount = expensesTotal.amount,
             backgroundColor = LightGreen,
             modifier = Modifier.height(56.dp)

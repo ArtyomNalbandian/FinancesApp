@@ -11,12 +11,15 @@ sealed class Screen(val route: String) {
 
     // ExpensesGraph routes
     object Expenses : Screen("expenses")
-    object ExpensesHistory : Screen("expenses_history")
+//    object ExpensesHistory : Screen("expenses_history")
     object AddExpense : Screen("add_expense")
+
+    class History(historyType: String) : Screen(historyType + "_history")
+    class Analysis(analysisType: String) : Screen(analysisType + "_analysis")
 
     // IncomeGraph routes
     object Income : Screen("income")
-    object IncomeHistory : Screen("income_history")
+//    object IncomeHistory : Screen("income_history")
     object AddIncome : Screen("add_income")
 
     // AccountGraph routes

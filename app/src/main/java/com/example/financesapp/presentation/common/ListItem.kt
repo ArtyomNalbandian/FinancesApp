@@ -32,7 +32,7 @@ fun ListItem(
     amount: String? = null,
     leadingIcon: Int? = null,
     trailingIcon: Int? = null,
-    backgroundColor: Color = CardItemBackground,
+    backgroundColor: Color = MaterialTheme.colorScheme.tertiary,
     trailingComposable: @Composable (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
 ) {

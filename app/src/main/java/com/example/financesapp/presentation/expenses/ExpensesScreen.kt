@@ -18,7 +18,7 @@ import com.example.financesapp.presentation.common.ListItem
 
 @Composable
 fun ExpensesScreen() {
-    Box(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.surface)) {
+    Box(modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.tertiary)) {
         Column(modifier = Modifier.fillMaxSize()) {
             ListItem(
                 title = expensesTotal.title,

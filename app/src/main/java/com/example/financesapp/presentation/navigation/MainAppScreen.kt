@@ -1,5 +1,6 @@
 package com.example.financesapp.presentation.navigation
 
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -23,6 +24,7 @@ import com.example.financesapp.R
 import com.example.financesapp.presentation.account.AccountScreenComponents
 import com.example.financesapp.presentation.articles.ArticlesScreenComponents
 import com.example.financesapp.presentation.expenses.ExpensesScreenComponents
+import com.example.financesapp.presentation.history.HistoryScreenComponents
 import com.example.financesapp.presentation.income.IncomeScreenComponents
 import com.example.financesapp.presentation.settings.SettingsScreenComponents
 
@@ -32,9 +34,14 @@ fun MainAppScreen() {
     val navController = rememberNavController()
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination
+    val route = currentDestination?.route
 
     val screenComponents = remember(currentDestination?.route) {
-        when (currentDestination?.route) {
+        when (route) {
+            Screen.History(
+                route?.substringBefore("_") ?: ""
+            ).route -> HistoryScreenComponents(route.substringBefore("_"))
+
             Screen.Expenses.route -> ExpensesScreenComponents()
             Screen.Income.route -> IncomeScreenComponents()
             Screen.Account.route -> AccountScreenComponents()
