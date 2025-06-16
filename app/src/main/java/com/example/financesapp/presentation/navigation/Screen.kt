@@ -24,6 +24,7 @@ sealed class Screen(val route: String) {
 
     // AccountGraph routes
     object Account : Screen("account")
+    object AddAccount : Screen("add_account")
 
     // ArticlesGraph routes
     object Articles : Screen("articles")

@@ -34,7 +34,6 @@ object IncomeTopAppBarProvider : TopAppBarProvider {
             title = { Text("Доходы сегодня") },
             actions = {
                 IconButton(onClick = {
-//                    navController.navigate(Screen.IncomeHistory.route)
                     navController.navigate(Screen.History("income").route)
                 }) {
                     Icon(

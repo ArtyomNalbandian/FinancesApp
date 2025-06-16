@@ -1,4 +1,4 @@
-package com.example.financesapp.presentation.history
+package com.example.financesapp.presentation.add_account
 
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,19 +14,22 @@ import com.example.financesapp.R
 import com.example.financesapp.presentation.common.FloatingActionButtonProvider
 import com.example.financesapp.presentation.common.ScreenComponents
 import com.example.financesapp.presentation.common.TopAppBarProvider
-import com.example.financesapp.presentation.navigation.Screen
 
-class HistoryScreenComponents(historyType: String) : ScreenComponents {
-    override val topAppBarProvider: TopAppBarProvider = HistoryTopAppBarProvider(historyType = historyType)
+class AddAccountScreenComponents(
+    private val onSaveClick: () -> Unit
+) : ScreenComponents {
+    override val topAppBarProvider: TopAppBarProvider = AddAccountTopAppBarProvider(onSaveClick)
     override val floatingActionButtonProvider: FloatingActionButtonProvider? = null
 }
 
-class HistoryTopAppBarProvider(private val historyType: String) : TopAppBarProvider {
+class AddAccountTopAppBarProvider(
+    private val onSaveClick: () -> Unit
+) : TopAppBarProvider {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun ProvideTopAppBar(navController: NavHostController) {
         CenterAlignedTopAppBar(
-            title = { Text("Моя история") },
+            title = { Text("Новый счет") },
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primary
             ),
@@ -35,17 +38,18 @@ class HistoryTopAppBarProvider(private val historyType: String) : TopAppBarProvi
                     navController.popBackStack()
                 }) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_back),
+                        painter = painterResource(id = R.drawable.ic_cancel),
                         contentDescription = "Назад"
                     )
                 }
             },
             actions = {
                 IconButton(onClick = {
-                    navController.navigate(Screen.Analysis(historyType).route)
+                    onSaveClick
+//                    navController.popBackStack()
                 }) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_analysis),
+                        painter = painterResource(id = R.drawable.ic_apply),
                         contentDescription = "Анализ"
                     )
                 }

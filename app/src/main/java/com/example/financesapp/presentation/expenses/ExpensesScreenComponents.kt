@@ -33,7 +33,6 @@ object ExpensesTopAppBarProvider : TopAppBarProvider {
             title = { Text("Расходы сегодня") },
             actions = {
                 IconButton(onClick = {
-//                    navController.navigate(Screen.ExpensesHistory.route)
                     navController.navigate(Screen.History("expenses").route)
                 }) {
                     Icon(

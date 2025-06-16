@@ -7,11 +7,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.financesapp.presentation.account.AccountScreen
+import com.example.financesapp.presentation.account.AccountTestScreen
+import com.example.financesapp.presentation.add_account.AddAccountScreen
+import com.example.financesapp.presentation.analysis.AnalysisScreen
 import com.example.financesapp.presentation.articles.ArticlesScreen
+import com.example.financesapp.presentation.articles.ArticlesTestScreen
 import com.example.financesapp.presentation.expenses.ExpensesScreen
+import com.example.financesapp.presentation.expenses.ExpensesTestScreen
 import com.example.financesapp.presentation.history.HistoryScreen
 import com.example.financesapp.presentation.income.IncomeScreen
+import com.example.financesapp.presentation.income.IncomeTestScreen
 import com.example.financesapp.presentation.settings.SettingsScreen
+import com.example.financesapp.presentation.settings.SettingsTestScreen
 
 
 @Composable
@@ -29,11 +36,14 @@ fun RootNavGraph(
             route = Screen.ExpensesGraph.route
         ) {
             composable(Screen.Expenses.route) {
-                ExpensesScreen()
+//                ExpensesScreen()
+                ExpensesTestScreen { navController.navigate(Screen.History("expenses").route) }
             }
-//            composable(Screen.ExpensesHistory.route) {
             composable(Screen.History("expenses").route) {
                 HistoryScreen("expenses")
+            }
+            composable(Screen.Analysis("expenses").route) {
+                AnalysisScreen("expenses")
             }
         }
 
@@ -42,11 +52,14 @@ fun RootNavGraph(
             route = Screen.IncomeGraph.route
         ) {
             composable(Screen.Income.route) {
-                IncomeScreen()
+//                IncomeScreen()
+                IncomeTestScreen { navController.navigate(Screen.History("income").route) }
             }
             composable(Screen.History("income").route) {
-//            composable(Screen.IncomeHistory.route) {
                 HistoryScreen("income")
+            }
+            composable(Screen.Analysis("income").route) {
+                AnalysisScreen("income")
             }
         }
 
@@ -55,7 +68,11 @@ fun RootNavGraph(
             route = Screen.AccountGraph.route
         ) {
             composable(Screen.Account.route) {
-                AccountScreen()
+//                AccountScreen()
+                AccountTestScreen { navController.navigate(Screen.AddAccount.route) }
+            }
+            composable(Screen.AddAccount.route) {
+                AddAccountScreen()
             }
         }
 
@@ -64,7 +81,9 @@ fun RootNavGraph(
             route = Screen.ArticlesGraph.route
         ) {
             composable(Screen.Articles.route) {
-                ArticlesScreen()
+//                ArticlesScreen()
+                ArticlesTestScreen()
+
             }
         }
 
@@ -73,7 +92,8 @@ fun RootNavGraph(
             route = Screen.SettingsGraph.route
         ) {
             composable(Screen.Settings.route) {
-                SettingsScreen()
+//                SettingsScreen()
+                SettingsTestScreen()
             }
         }
     }

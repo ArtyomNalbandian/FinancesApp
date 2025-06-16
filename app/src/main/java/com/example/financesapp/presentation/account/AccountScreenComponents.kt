@@ -36,7 +36,7 @@ object AccountTopAppBarProvider : TopAppBarProvider {
                     //TODO()
                 }) {
                     Icon(
-                        painter = painterResource(R.drawable.edit),
+                        painter = painterResource(R.drawable.ic_edit),
                         contentDescription = "Редактировать счет"
                     )
                 }

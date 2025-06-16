@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -56,21 +57,21 @@ fun HistoryScreen(historyType: String) {
         ListItem(
             title = historyType,
             amount = expensesTotal.amount,
-            backgroundColor = LightGreen,
+            backgroundColor = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.height(56.dp)
         )
         HorizontalDivider()
         ListItem(
             title = "Конец",
             amount = expensesTotal.amount,
-            backgroundColor = LightGreen,
+            backgroundColor = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.height(56.dp)
         )
         HorizontalDivider()
         ListItem(
             title = "Сумма",
             amount = expensesTotal.amount,
-            backgroundColor = LightGreen,
+            backgroundColor = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.height(56.dp)
         )
         HorizontalDivider()

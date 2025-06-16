@@ -1,6 +1,5 @@
 package com.example.financesapp.presentation.navigation
 
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -22,7 +21,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.financesapp.R
 import com.example.financesapp.presentation.account.AccountScreenComponents
+import com.example.financesapp.presentation.add_account.AddAccountScreenComponents
 import com.example.financesapp.presentation.articles.ArticlesScreenComponents
+import com.example.financesapp.presentation.common.TopBar
 import com.example.financesapp.presentation.expenses.ExpensesScreenComponents
 import com.example.financesapp.presentation.history.HistoryScreenComponents
 import com.example.financesapp.presentation.income.IncomeScreenComponents
@@ -41,7 +42,6 @@ fun MainAppScreen() {
             Screen.History(
                 route?.substringBefore("_") ?: ""
             ).route -> HistoryScreenComponents(route.substringBefore("_"))
-
             Screen.Expenses.route -> ExpensesScreenComponents()
             Screen.Income.route -> IncomeScreenComponents()
             Screen.Account.route -> AccountScreenComponents()
@@ -53,7 +53,8 @@ fun MainAppScreen() {
 
     Scaffold(
         topBar = {
-            screenComponents?.topAppBarProvider?.ProvideTopAppBar(navController)
+            TopBar()
+//            screenComponents?.topAppBarProvider?.ProvideTopAppBar(navController)
         },
         bottomBar = {
             NavigationBar {
