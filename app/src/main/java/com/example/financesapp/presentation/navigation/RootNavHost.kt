@@ -6,18 +6,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.financesapp.presentation.account.AccountScreen
-import com.example.financesapp.presentation.account.AccountTestScreen
+import com.example.financesapp.presentation.accounts.AccountsScreen
 import com.example.financesapp.presentation.add_account.AddAccountScreen
 import com.example.financesapp.presentation.analysis.AnalysisScreen
-import com.example.financesapp.presentation.articles.ArticlesScreen
 import com.example.financesapp.presentation.articles.ArticlesTestScreen
-import com.example.financesapp.presentation.expenses.ExpensesScreen
 import com.example.financesapp.presentation.expenses.ExpensesTestScreen
 import com.example.financesapp.presentation.history.HistoryScreen
-import com.example.financesapp.presentation.income.IncomeScreen
 import com.example.financesapp.presentation.income.IncomeTestScreen
-import com.example.financesapp.presentation.settings.SettingsScreen
 import com.example.financesapp.presentation.settings.SettingsTestScreen
 
 
@@ -69,10 +64,19 @@ fun RootNavGraph(
         ) {
             composable(Screen.Account.route) {
 //                AccountScreen()
-                AccountTestScreen(
-                    onTrailingIconClick = { navController.navigate(Screen.AddAccount.route) },
-                    onAddAccount = { navController.navigate(Screen.AddAccount.route) }
+//                AccountTestScreen(
+//                    onTrailingIconClick = { navController.navigate(Screen.AddAccount.route) },
+//                    onAddAccount = { navController.navigate(Screen.AddAccount.route) }
+//                )
+//                AccountScreenSuperTest(
+//                    onEditClick = {},
+//                    onAddAccount = {},
+//                )
+                AccountsScreen(
+                    navigateToEditAccountScreen = {},
+                    navigateToCreateAccountScreen = {}
                 )
+//                AccountScreenTest()
             }
             composable(Screen.AddAccount.route) {
                 AddAccountScreen(

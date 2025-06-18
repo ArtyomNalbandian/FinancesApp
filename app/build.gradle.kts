@@ -61,4 +61,8 @@ dependencies {
     //SplashScreen
     implementation(libs.lottie)
 
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
 }

@@ -13,6 +13,7 @@ val SupportingTextColor = Color(0xFF49454F)
 val LightGreen = Color(0xFF2AE881)
 val LightGreenLight = Color(0xFFD4FAE6)
 val LightPurpleLight = Color(0xFFFEF7FF)
+val LightRed = Color(0xFFE46962)
 
 // Dark theme
 val DarkGreen = Color(0xFF1DBF6E)
