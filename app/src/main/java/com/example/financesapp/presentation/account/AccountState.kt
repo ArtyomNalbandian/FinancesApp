@@ -1,6 +1,6 @@
 package com.example.financesapp.presentation.account
 
-//import com.example.financesapp.data.remote.models.Account
+//import com.example.financesapp.data.remote.models.account.Account
 
 //data class AccountsState(
 //    val accounts: List<Account> = emptyList(),

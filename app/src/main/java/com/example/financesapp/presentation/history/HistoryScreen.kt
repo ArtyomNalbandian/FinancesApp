@@ -13,6 +13,9 @@ import com.example.financesapp.R
 import com.example.financesapp.data.mock.Expenses
 import com.example.financesapp.data.mock.expensesTotal
 import com.example.financesapp.presentation.common.ListItem
+import com.example.financesapp.presentation.common.TopAppBarProvider
+import com.example.financesapp.presentation.common.TopAppBarState
+import com.example.financesapp.presentation.common.TopAppBarStateProvider
 import com.example.financesapp.ui.theme.LightGreen
 
 
@@ -52,7 +55,20 @@ val history = listOf(
 )
 
 @Composable
-fun HistoryScreen(historyType: String) {
+fun HistoryScreen(
+    historyType: String,
+    onNavigateBack: () -> Unit,
+) {
+
+    TopAppBarStateProvider.update(
+        TopAppBarState(
+            title = "Моя история",
+            trailingIcon = R.drawable.ic_analysis,
+            leadingIcon = R.drawable.ic_back,
+            onLeadingIconClick = onNavigateBack
+        )
+    )
+
     Column {
         ListItem(
             title = historyType,

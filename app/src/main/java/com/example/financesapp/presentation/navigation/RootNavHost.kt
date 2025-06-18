@@ -10,7 +10,7 @@ import com.example.financesapp.presentation.accounts.AccountsScreen
 import com.example.financesapp.presentation.add_account.AddAccountScreen
 import com.example.financesapp.presentation.analysis.AnalysisScreen
 import com.example.financesapp.presentation.articles.ArticlesTestScreen
-import com.example.financesapp.presentation.expenses.ExpensesTestScreen
+import com.example.financesapp.presentation.expenses.ExpensesScreen
 import com.example.financesapp.presentation.history.HistoryScreen
 import com.example.financesapp.presentation.income.IncomeTestScreen
 import com.example.financesapp.presentation.settings.SettingsTestScreen
@@ -31,14 +31,23 @@ fun RootNavGraph(
             route = Screen.ExpensesGraph.route
         ) {
             composable(Screen.Expenses.route) {
-//                ExpensesScreen()
-                ExpensesTestScreen { navController.navigate(Screen.History("expenses").route) }
+                ExpensesScreen(
+                    onNavigateToHistory = { navController.navigate(Screen.History("expenses").route) },
+                    onExpenseClick = { navController.navigate(Screen.History("expenses").route) },
+                    onCreateExpense = { navController.navigate(Screen.AddExpense.route) }
+                )
             }
             composable(Screen.History("expenses").route) {
-                HistoryScreen("expenses")
+                HistoryScreen(
+                    historyType = "expenses",
+                    onNavigateBack = { navController.popBackStack()}
+                    )
             }
             composable(Screen.Analysis("expenses").route) {
                 AnalysisScreen("expenses")
+            }
+            composable(Screen.AddExpense.route) {
+                // TODO()
             }
         }
 
@@ -51,7 +60,10 @@ fun RootNavGraph(
                 IncomeTestScreen { navController.navigate(Screen.History("income").route) }
             }
             composable(Screen.History("income").route) {
-                HistoryScreen("income")
+                HistoryScreen(
+                    historyType = "income",
+                    onNavigateBack = { navController.popBackStack() }
+                )
             }
             composable(Screen.Analysis("income").route) {
                 AnalysisScreen("income")

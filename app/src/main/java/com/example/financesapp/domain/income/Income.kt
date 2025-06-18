@@ -6,4 +6,5 @@ data class Income(
     val subtitle: String? = null,
     val amount: String,
     val currency: String,
+    val transactionDate: String,
 )

@@ -11,7 +11,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -20,14 +19,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.financesapp.R
-import com.example.financesapp.presentation.account.AccountScreenComponents
-import com.example.financesapp.presentation.add_account.AddAccountScreenComponents
-import com.example.financesapp.presentation.articles.ArticlesScreenComponents
 import com.example.financesapp.presentation.common.TopBar
-import com.example.financesapp.presentation.expenses.ExpensesScreenComponents
-import com.example.financesapp.presentation.history.HistoryScreenComponents
-import com.example.financesapp.presentation.income.IncomeScreenComponents
-import com.example.financesapp.presentation.settings.SettingsScreenComponents
 
 
 @Composable
@@ -35,27 +27,9 @@ fun MainAppScreen() {
     val navController = rememberNavController()
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination
-    val route = currentDestination?.route
-
-    val screenComponents = remember(currentDestination?.route) {
-        when (route) {
-            Screen.History(
-                route?.substringBefore("_") ?: ""
-            ).route -> HistoryScreenComponents(route.substringBefore("_"))
-            Screen.Expenses.route -> ExpensesScreenComponents()
-            Screen.Income.route -> IncomeScreenComponents()
-            Screen.Account.route -> AccountScreenComponents()
-            Screen.Articles.route -> ArticlesScreenComponents()
-            Screen.Settings.route -> SettingsScreenComponents()
-            else -> null
-        }
-    }
 
     Scaffold(
-        topBar = {
-            TopBar()
-//            screenComponents?.topAppBarProvider?.ProvideTopAppBar(navController)
-        },
+        topBar = { TopBar() },
         bottomBar = {
             NavigationBar {
                 val items = listOf(
@@ -94,11 +68,6 @@ fun MainAppScreen() {
                 }
             }
         },
-//        floatingActionButton = {
-//            screenComponents?.floatingActionButtonProvider?.ProvideFloatingActionButton(
-//                navController
-//            )
-//        }
     ) { padding ->
         RootNavGraph(
             navController = navController,

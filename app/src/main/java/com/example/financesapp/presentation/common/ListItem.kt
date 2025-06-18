@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.financesapp.ui.theme.CardItemBackground
 import com.example.financesapp.ui.theme.SupportingTextColor
 
@@ -31,6 +32,7 @@ fun ListItem(
     supportingText: String? = null,
     amount: String? = null,
     leadingIcon: Int? = null,
+    leadingIconStr: String? = null,
     trailingIcon: Int? = null,
     backgroundColor: Color = MaterialTheme.colorScheme.tertiary,
     trailingComposable: @Composable (() -> Unit)? = null,
@@ -49,14 +51,22 @@ fun ListItem(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
+            if (leadingIconStr != null) {
+                Text(
+                    text = leadingIconStr,
+                    fontSize = 22.sp
+                )
+            }
             if (leadingIcon != null) {
+
                 Image(
                     painter = painterResource(leadingIcon),
                     contentDescription = "Leading Icon",
                     modifier = Modifier.size(24.dp)
                 )
-                Spacer(modifier = Modifier.width(16.dp))
+
             }
+            Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
                     text = title,

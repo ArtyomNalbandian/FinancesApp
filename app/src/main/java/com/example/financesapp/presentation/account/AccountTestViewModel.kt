@@ -3,8 +3,6 @@ package com.example.financesapp.presentation.account
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.financesapp.data.remote.repository.AccountRepository
-import com.example.financesapp.data.remote.repository.AccountRepositoryImpl
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,9 +13,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class AccountsViewModel(
-    private val accountRepository: AccountRepository = AccountRepositoryImpl()
-) : ViewModel() {
+class AccountsViewModel : ViewModel() {
 
     private val _state = MutableStateFlow<AccountState>(AccountState.Loading)
     val state: StateFlow<AccountState> = _state.asStateFlow()
