@@ -31,7 +31,7 @@ fun ExpensesScreen(
     val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
     val usecase = remember { GetExpensesUseCaseImpl(repository) }
     val viewModel: ExpensesViewModel = viewModel(
-        factory = SpendingViewModelFactory(usecase)
+        factory = ExpensesViewModelFactory(usecase)
     )
 
     TopAppBarStateProvider.update(
@@ -80,7 +80,12 @@ fun ExpensesScreen(
                     amount = currentState.total,
                     currency = currentState.currency,
                     onExpenseClick = { expenseId ->
-                        viewModel.handleIntent(ExpensesIntent.EditExpense(accountId = 1, expenseId = expenseId))
+                        viewModel.handleIntent(
+                            ExpensesIntent.EditExpense(
+                                accountId = 1,
+                                expenseId = expenseId
+                            )
+                        )
                     }
                 )
                 AddButton(

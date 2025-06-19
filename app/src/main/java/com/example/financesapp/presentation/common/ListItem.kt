@@ -56,17 +56,16 @@ fun ListItem(
                     text = leadingIconStr,
                     fontSize = 22.sp
                 )
+                Spacer(modifier = Modifier.width(16.dp))
             }
             if (leadingIcon != null) {
-
                 Image(
                     painter = painterResource(leadingIcon),
                     contentDescription = "Leading Icon",
                     modifier = Modifier.size(24.dp)
                 )
-
+                Spacer(modifier = Modifier.width(16.dp))
             }
-            Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
                     text = title,

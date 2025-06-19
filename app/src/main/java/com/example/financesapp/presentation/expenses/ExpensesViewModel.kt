@@ -6,16 +6,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecase.GetExpensesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class SpendingViewModelFactory(
+class ExpensesViewModelFactory(
     private val repository: GetExpensesUseCase
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -46,6 +44,7 @@ class ExpensesViewModel(
                     )
                 }
             }
+
             is ExpensesIntent.EditExpense -> {
                 viewModelScope.launch {
                     _events.send(
@@ -53,6 +52,7 @@ class ExpensesViewModel(
                     )
                 }
             }
+
             is ExpensesIntent.OpenHistoryOfExpenses -> {
                 viewModelScope.launch {
                     _events.send(

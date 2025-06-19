@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.financesapp.presentation.account.AccountScreen
 import com.example.financesapp.presentation.accounts.AccountsScreen
 import com.example.financesapp.presentation.add_account.AddAccountScreen
 import com.example.financesapp.presentation.analysis.AnalysisScreen
@@ -84,10 +85,14 @@ fun RootNavGraph(
 //                    onEditClick = {},
 //                    onAddAccount = {},
 //                )
-                AccountsScreen(
-                    navigateToEditAccountScreen = {},
-                    navigateToCreateAccountScreen = {}
+                AccountScreen(
+                    onCreateAccount = {},
+                    onEditAccount = {}
                 )
+//                AccountsScreen(
+//                    navigateToEditAccountScreen = {},
+//                    navigateToCreateAccountScreen = {}
+//                )
 //                AccountScreenTest()
             }
             composable(Screen.AddAccount.route) {

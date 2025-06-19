@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
 import com.example.financesapp.domain.expenses.Expense
 import com.example.financesapp.presentation.common.ListItem
-import com.example.financesapp.utils.formatAmount
 import com.example.financesapp.utils.toCurrencySymbol
 
 @Composable
@@ -26,7 +25,7 @@ fun ExpensesScreenContent(
     Column(modifier = Modifier.fillMaxSize()) {
         ListItem(
             title = "Всего",
-            amount = "${amount.formatAmount()} ${currency.toCurrencySymbol()}",
+            amount = "$amount ${currency.toCurrencySymbol()}",
             backgroundColor = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.height(56.dp)
         )
@@ -38,7 +37,7 @@ fun ExpensesScreenContent(
                     supportingText = expense.subtitle,
                     leadingIconStr = expense.leadingIcon,
                     trailingIcon = R.drawable.more_vert,
-                    amount = expense.amount.formatAmount(),
+                    amount = expense.amount,
                     onClick = { onExpenseClick(expense.id) }
                 )
                 HorizontalDivider()
