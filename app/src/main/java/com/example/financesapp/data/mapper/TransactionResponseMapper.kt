@@ -19,6 +19,7 @@ fun TransactionResponseDto.toIncome() = Income(
     title = category.name,
     subtitle = comment,
     amount = amount,
+    leadingIcon = category.emoji,
     currency = account.currency,
     transactionDate = transactionDate
 )

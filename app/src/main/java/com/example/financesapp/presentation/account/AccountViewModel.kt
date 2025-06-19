@@ -40,6 +40,10 @@ class AccountViewModel(
     val currencySelectorState: StateFlow<CurrencySelectorState> =
         _currencySelectorState.asStateFlow()
 
+    private val _selectedAccountId = MutableStateFlow<Int?>(null)
+    val selectedAccountId: StateFlow<Int?> = _selectedAccountId.asStateFlow()
+
+
     fun handleIntent(intent: AccountIntent) {
         when (intent) {
             is AccountIntent.EditAccount -> editAccount(intent.accountId)
@@ -73,6 +77,8 @@ class AccountViewModel(
             try {
                 val accounts = getAccountsUseCase.invoke()
                 _accountState.value = AccountState.Success(accounts)
+
+                _selectedAccountId.value = accounts.firstOrNull()?.id ?: 1
             } catch (e: Exception) {
                 _accountState.value = AccountState.Error(
                     message = e.message ?: "Не удалось загрузить аккаунт"

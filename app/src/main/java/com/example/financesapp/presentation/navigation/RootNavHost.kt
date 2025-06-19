@@ -13,6 +13,7 @@ import com.example.financesapp.presentation.analysis.AnalysisScreen
 import com.example.financesapp.presentation.articles.ArticlesTestScreen
 import com.example.financesapp.presentation.expenses.ExpensesScreen
 import com.example.financesapp.presentation.history.HistoryScreen
+import com.example.financesapp.presentation.income.IncomeScreen
 import com.example.financesapp.presentation.income.IncomeTestScreen
 import com.example.financesapp.presentation.settings.SettingsTestScreen
 
@@ -20,6 +21,7 @@ import com.example.financesapp.presentation.settings.SettingsTestScreen
 @Composable
 fun RootNavGraph(
     navController: NavHostController,
+    accountId: Int?,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -35,7 +37,8 @@ fun RootNavGraph(
                 ExpensesScreen(
                     onNavigateToHistory = { navController.navigate(Screen.History("expenses").route) },
                     onExpenseClick = { navController.navigate(Screen.History("expenses").route) },
-                    onCreateExpense = { navController.navigate(Screen.AddExpense.route) }
+                    onCreateExpense = { navController.navigate(Screen.AddExpense.route) },
+                    accountId = accountId
                 )
             }
             composable(Screen.History("expenses").route) {
@@ -57,8 +60,14 @@ fun RootNavGraph(
             route = Screen.IncomeGraph.route
         ) {
             composable(Screen.Income.route) {
+                IncomeScreen(
+                    onNavigateToHistory = { navController.navigate(Screen.History("income").route) },
+                    onIncomeClick = { navController.navigate(Screen.History("income").route) },
+                    onCreateIncome = { navController.navigate(Screen.AddExpense.route) },
+                    accountId = accountId
+                )
 //                IncomeScreen()
-                IncomeTestScreen { navController.navigate(Screen.History("income").route) }
+//                IncomeTestScreen { navController.navigate(Screen.History("income").route) }
             }
             composable(Screen.History("income").route) {
                 HistoryScreen(

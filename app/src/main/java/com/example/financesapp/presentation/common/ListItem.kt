@@ -71,7 +71,7 @@ fun ListItem(
                     text = title,
                     style = MaterialTheme.typography.bodyLarge
                 )
-                if (supportingText != null) {
+                if (supportingText != "" && supportingText != null) {
                     Text(
                         text = supportingText,
                         style = MaterialTheme.typography.bodySmall,

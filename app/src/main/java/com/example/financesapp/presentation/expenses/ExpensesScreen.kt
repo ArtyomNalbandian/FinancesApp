@@ -1,5 +1,6 @@
 package com.example.financesapp.presentation.expenses
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,19 +15,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.financesapp.R
 import com.example.financesapp.data.remote.RetrofitInstance
 import com.example.financesapp.data.remote.repository.RemoteDataSourceImpl
 import com.example.financesapp.domain.usecase.impl.GetExpensesUseCaseImpl
 import com.example.financesapp.presentation.common.AddButton
-import com.example.financesapp.presentation.common.TopAppBarState
-import com.example.financesapp.presentation.common.TopAppBarStateProvider
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ExpensesScreen(
     onNavigateToHistory: () -> Unit,
     onExpenseClick: () -> Unit,
-    onCreateExpense: () -> Unit
+    onCreateExpense: () -> Unit,
+    accountId: Int?
 ) {
     val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
     val usecase = remember { GetExpensesUseCaseImpl(repository) }
@@ -34,17 +35,21 @@ fun ExpensesScreen(
         factory = ExpensesViewModelFactory(usecase)
     )
 
-    TopAppBarStateProvider.update(
-        TopAppBarState(
-            title = "Расходы сегодня",
-            trailingIcon = R.drawable.ic_history,
-            onTrailingIconClick = { viewModel.handleIntent(ExpensesIntent.OpenHistoryOfExpenses(1)) }
-        )
-    )
-
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(accountId) {
+        Log.d("testLog", "lE --- $accountId")
+        if (accountId != null) {
+            val today = LocalDate.now()
+            val formattedDate = today.format(DateTimeFormatter.ISO_DATE)
+            viewModel.handleIntent(
+                ExpensesIntent.LoadExpenses(
+                    accountId,
+                    formattedDate,
+                    formattedDate
+                )
+            )
+        }
         viewModel.events.collect { event ->
             when (event) {
                 is ExpensesEvent.NavigateToEditExpenseScreen -> onExpenseClick()
@@ -62,11 +67,11 @@ fun ExpensesScreen(
     ) {
 
         when (val currentState = state) {
-            is ExpensesScreenState.Loading -> {
+            is ExpensesState.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
 
-            is ExpensesScreenState.Error -> {
+            is ExpensesState.Error -> {
                 Text(
                     text = currentState.message,
                     modifier = Modifier.align(Alignment.Center),
@@ -74,7 +79,7 @@ fun ExpensesScreen(
                 )
             }
 
-            is ExpensesScreenState.Content -> {
+            is ExpensesState.Content -> {
                 ExpensesScreenContent(
                     expenses = currentState.expenses,
                     amount = currentState.total,

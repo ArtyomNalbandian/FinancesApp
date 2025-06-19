@@ -13,12 +13,14 @@ import androidx.compose.ui.res.vectorResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
+fun TopBar(
+    state: TopAppBarState = TopAppBarState()
+) {
     CenterAlignedTopAppBar(
         navigationIcon = {
-            TopAppBarStateProvider.topAppBarState.leadingIcon?.let { leadIcon ->
+            state.leadingIcon?.let { leadIcon ->
                 IconButton(
-                    onClick = { TopAppBarStateProvider.topAppBarState.onLeadingIconClick?.invoke() }
+                    onClick = { state.onLeadingIconClick?.invoke() }
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(leadIcon),
@@ -28,14 +30,14 @@ fun TopBar() {
             }
         },
         title = {
-            TopAppBarStateProvider.topAppBarState.title?.let { title ->
+            state.title?.let { title ->
                 Text(text = title)
             }
         },
         actions = {
-            TopAppBarStateProvider.topAppBarState.trailingIcon?.let { trailIcon ->
+            state.trailingIcon?.let { trailIcon ->
                 IconButton(
-                    onClick = { TopAppBarStateProvider.topAppBarState.onTrailingIconClick?.invoke() }
+                    onClick = { state.onTrailingIconClick?.invoke() }
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(trailIcon),

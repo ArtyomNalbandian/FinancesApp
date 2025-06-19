@@ -10,8 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class ExpensesViewModelFactory(
     private val repository: GetExpensesUseCase
@@ -29,8 +27,8 @@ class ExpensesViewModel(
     private val getExpensesUseCase: GetExpensesUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<ExpensesScreenState>(ExpensesScreenState.Loading)
-    val state: StateFlow<ExpensesScreenState> = _state
+    private val _state = MutableStateFlow<ExpensesState>(ExpensesState.Loading)
+    val state: StateFlow<ExpensesState> = _state
 
     private val _events = Channel<ExpensesEvent>()
     val events = _events.receiveAsFlow()
@@ -60,18 +58,16 @@ class ExpensesViewModel(
                     )
                 }
             }
-        }
-    }
 
-    init {
-        val today = LocalDate.now()
-        val formattedDate = today.format(DateTimeFormatter.ISO_DATE)
-        loadExpenses(accountId = 1, startDate = formattedDate, endDate = formattedDate)
+            is ExpensesIntent.LoadExpenses -> {
+                loadExpenses(intent.accountId, intent.startDate, endDate = intent.endDate)
+            }
+        }
     }
 
     private fun loadExpenses(accountId: Int, startDate: String, endDate: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _state.value = ExpensesScreenState.Loading
+            _state.value = ExpensesState.Loading
             try {
                 val expenses = getExpensesUseCase(
                     accountId = accountId,
@@ -80,13 +76,13 @@ class ExpensesViewModel(
                 )
                 val total = expenses.sumOf { it.amount.toDouble() }.toString()
                 val currency = expenses.firstOrNull()?.currency ?: "RUB"
-                _state.value = ExpensesScreenState.Content(
+                _state.value = ExpensesState.Content(
                     expenses = expenses,
                     total = total,
                     currency = currency
                 )
             } catch (e: Exception) {
-                _state.value = ExpensesScreenState.Error(
+                _state.value = ExpensesState.Error(
                     message = e.message ?: "Не удалось загрузить расходы"
                 )
                 _events.send(ExpensesEvent.ShowError("Ошибка загрузки данных"))
