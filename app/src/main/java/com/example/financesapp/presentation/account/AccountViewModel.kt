@@ -3,7 +3,6 @@ package com.example.financesapp.presentation.account
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.financesapp.domain.account.Account
 import com.example.financesapp.domain.usecase.GetAccountsUseCase
 import com.example.financesapp.presentation.accounts.CurrencySelectorState
 import kotlinx.coroutines.Dispatchers
@@ -40,8 +39,8 @@ class AccountViewModel(
     val currencySelectorState: StateFlow<CurrencySelectorState> =
         _currencySelectorState.asStateFlow()
 
-    private val _selectedAccountId = MutableStateFlow<Int?>(null)
-    val selectedAccountId: StateFlow<Int?> = _selectedAccountId.asStateFlow()
+//    private val _selectedAccountId = MutableStateFlow<Int?>(null)
+//    val selectedAccountId: StateFlow<Int?> = _selectedAccountId.asStateFlow()
 
 
     fun handleIntent(intent: AccountIntent) {
@@ -50,35 +49,31 @@ class AccountViewModel(
             is AccountIntent.CreateAccount -> createAccount()
             is AccountIntent.CloseCurrencySelector -> closeCurrencySelector()
             is AccountIntent.OpenCurrencySelector -> openCurrencySelector(intent.accountId)
-            is AccountIntent.ChangeCurrency -> changeCurrency(intent.accountId, intent.currency)
+            is AccountIntent.ChangeCurrency -> changeCurrency(intent.currency)
         }
     }
 
     init {
-        loadAccounts()
+        loadAccount()
     }
 
-    private fun changeCurrency(accountId: Int, newCurrency: String) {
+    private fun changeCurrency(/*accountId: Int, */newCurrency: String) {
         val currentState = _accountState.value
         if (currentState is AccountState.Success) {
-            val updatedAccounts = currentState.accounts.map { account ->
-                if (account.id == accountId) {
-                    account.copy(currency = newCurrency)
-                } else account
-            }
-            _accountState.value = currentState.copy(accounts = updatedAccounts)
+            val updatedAccount = currentState.account.copy(currency = newCurrency)
+            _accountState.value = currentState.copy(account = updatedAccount)
             closeCurrencySelector()
         }
     }
 
-    private fun loadAccounts() {
+    private fun loadAccount() {
         viewModelScope.launch(Dispatchers.IO) {
             _accountState.value = AccountState.Loading
             try {
-                val accounts = getAccountsUseCase.invoke()
-                _accountState.value = AccountState.Success(accounts)
+                val account = getAccountsUseCase.invoke()
+                _accountState.value = AccountState.Success(account)
 
-                _selectedAccountId.value = accounts.firstOrNull()?.id ?: 1
+//                _selectedAccountId.value = account.id
             } catch (e: Exception) {
                 _accountState.value = AccountState.Error(
                     message = e.message ?: "Не удалось загрузить аккаунт"

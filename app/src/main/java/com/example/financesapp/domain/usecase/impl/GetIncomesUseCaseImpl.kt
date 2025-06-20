@@ -10,12 +10,10 @@ class GetIncomesUseCaseImpl(
 ) : GetIncomesUseCase {
 
     override suspend operator fun invoke(
-        accountId: Int,
         startDate: String?,
         endDate: String?
     ): List<Income> {
         val transactions = remoteDataSourceRepository.getTransactionsByPeriod(
-            accountId = accountId,
             startDate = startDate,
             endDate = endDate
         )

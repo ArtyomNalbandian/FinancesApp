@@ -14,14 +14,13 @@ import com.example.financesapp.presentation.articles.ArticlesTestScreen
 import com.example.financesapp.presentation.expenses.ExpensesScreen
 import com.example.financesapp.presentation.history.HistoryScreen
 import com.example.financesapp.presentation.income.IncomeScreen
-import com.example.financesapp.presentation.income.IncomeTestScreen
 import com.example.financesapp.presentation.settings.SettingsTestScreen
 
 
 @Composable
 fun RootNavGraph(
     navController: NavHostController,
-    accountId: Int?,
+//    accountId: Int?,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -38,7 +37,7 @@ fun RootNavGraph(
                     onNavigateToHistory = { navController.navigate(Screen.History("expenses").route) },
                     onExpenseClick = { navController.navigate(Screen.History("expenses").route) },
                     onCreateExpense = { navController.navigate(Screen.AddExpense.route) },
-                    accountId = accountId
+//                    accountId = accountId
                 )
             }
             composable(Screen.History("expenses").route) {
@@ -64,7 +63,7 @@ fun RootNavGraph(
                     onNavigateToHistory = { navController.navigate(Screen.History("income").route) },
                     onIncomeClick = { navController.navigate(Screen.History("income").route) },
                     onCreateIncome = { navController.navigate(Screen.AddExpense.route) },
-                    accountId = accountId
+//                    accountId = accountId
                 )
 //                IncomeScreen()
 //                IncomeTestScreen { navController.navigate(Screen.History("income").route) }

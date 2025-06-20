@@ -4,6 +4,6 @@ import com.example.financesapp.domain.account.Account
 
 interface GetAccountsUseCase {
 
-    suspend operator fun invoke(): List<Account>
+    suspend operator fun invoke(): Account
 
 }

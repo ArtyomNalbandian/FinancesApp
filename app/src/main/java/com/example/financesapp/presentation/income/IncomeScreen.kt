@@ -43,7 +43,7 @@ fun IncomeScreen(
     onNavigateToHistory: () -> Unit,
     onIncomeClick: () -> Unit,
     onCreateIncome: () -> Unit,
-    accountId: Int?
+//    accountId: Int?
 ) {
     val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
     val usecase = remember { GetIncomesUseCaseImpl(repository) }
@@ -53,19 +53,19 @@ fun IncomeScreen(
 
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(accountId) {
-        Log.d("testLog", "LE --- $accountId")
-        if (accountId != null) {
+    LaunchedEffect(Unit) {
+//        Log.d("testLog", "LE --- $accountId")
+//        if (accountId != null) {
             val today = LocalDate.now()
             val formattedDate = today.format(DateTimeFormatter.ISO_DATE)
             viewModel.handleIntent(
                 IncomeIntent.LoadIncome(
-                    accountId,
+//                    accountId,
                     formattedDate,
                     formattedDate
                 )
             )
-        }
+//        }
         viewModel.events.collect { event ->
             when (event) {
                 is IncomeEvent.NavigateToEditIncomeScreen -> onIncomeClick()
@@ -103,7 +103,7 @@ fun IncomeScreen(
                     onExpenseClick = { incomeId ->
                         viewModel.handleIntent(
                             IncomeIntent.EditIncome(
-                                accountId = 1,
+//                                accountId = 1,
                                 incomeId = incomeId
                             )
                         )

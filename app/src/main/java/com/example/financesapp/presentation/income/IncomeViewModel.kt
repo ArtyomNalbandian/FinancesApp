@@ -61,17 +61,16 @@ class IncomeViewModel(
             }
 
             is IncomeIntent.LoadIncome -> {
-                loadIncome(intent.accountId, intent.startDate, endDate = intent.endDate)
+                loadIncome(intent.startDate, endDate = intent.endDate)
             }
         }
     }
 
-    private fun loadIncome(accountId: Int, startDate: String, endDate: String) {
+    private fun loadIncome(startDate: String, endDate: String) {
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = IncomeState.Loading
             try {
                 val income = getIncomesUseCase(
-                    accountId = accountId,
                     startDate = startDate,
                     endDate = endDate
                 )

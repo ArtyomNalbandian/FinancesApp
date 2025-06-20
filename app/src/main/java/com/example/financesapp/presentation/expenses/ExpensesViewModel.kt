@@ -60,17 +60,17 @@ class ExpensesViewModel(
             }
 
             is ExpensesIntent.LoadExpenses -> {
-                loadExpenses(intent.accountId, intent.startDate, endDate = intent.endDate)
+                loadExpenses(/*intent.accountId, */intent.startDate, endDate = intent.endDate)
             }
         }
     }
 
-    private fun loadExpenses(accountId: Int, startDate: String, endDate: String) {
+    private fun loadExpenses(/*accountId: Int, */startDate: String, endDate: String) {
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = ExpensesState.Loading
             try {
                 val expenses = getExpensesUseCase(
-                    accountId = accountId,
+//                    accountId = accountId,
                     startDate = startDate,
                     endDate = endDate
                 )

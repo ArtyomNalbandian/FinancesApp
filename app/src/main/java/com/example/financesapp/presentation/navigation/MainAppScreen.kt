@@ -40,10 +40,10 @@ fun MainAppScreen() {
         provideTopAppBarState(currentBackStack, navController)
     }
 
-    val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
-    val usecase = remember { GetAccountsUseCaseImpl(repository) }
-    val accountViewModel: AccountViewModel = viewModel(factory = AccountViewModelFactory(usecase))
-    val accountId by accountViewModel.selectedAccountId.collectAsState()
+//    val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
+//    val usecase = remember { GetAccountsUseCaseImpl(repository) }
+//    val accountViewModel: AccountViewModel = viewModel(factory = AccountViewModelFactory(usecase))
+//    val accountId by accountViewModel.selectedAccountId.collectAsState()
 
     Scaffold(
         topBar = { TopBar(state = topAppBarState) },
@@ -89,7 +89,7 @@ fun MainAppScreen() {
         RootNavGraph(
             navController = navController,
             modifier = Modifier.padding(padding),
-            accountId = accountId
+//            accountId = accountId
         )
     }
 }

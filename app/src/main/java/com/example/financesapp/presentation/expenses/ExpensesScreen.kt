@@ -27,7 +27,7 @@ fun ExpensesScreen(
     onNavigateToHistory: () -> Unit,
     onExpenseClick: () -> Unit,
     onCreateExpense: () -> Unit,
-    accountId: Int?
+//    accountId: Int?
 ) {
     val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
     val usecase = remember { GetExpensesUseCaseImpl(repository) }
@@ -37,19 +37,19 @@ fun ExpensesScreen(
 
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(accountId) {
-        Log.d("testLog", "lE --- $accountId")
-        if (accountId != null) {
+    LaunchedEffect(Unit) {
+//        Log.d("testLog", "lE --- $accountId")
+//        if (accountId != null) {
             val today = LocalDate.now()
             val formattedDate = today.format(DateTimeFormatter.ISO_DATE)
             viewModel.handleIntent(
                 ExpensesIntent.LoadExpenses(
-                    accountId,
+//                    accountId,
                     formattedDate,
                     formattedDate
                 )
             )
-        }
+//        }
         viewModel.events.collect { event ->
             when (event) {
                 is ExpensesEvent.NavigateToEditExpenseScreen -> onExpenseClick()
@@ -87,7 +87,7 @@ fun ExpensesScreen(
                     onExpenseClick = { expenseId ->
                         viewModel.handleIntent(
                             ExpensesIntent.EditExpense(
-                                accountId = 1,
+//                                accountId = 1,
                                 expenseId = expenseId
                             )
                         )

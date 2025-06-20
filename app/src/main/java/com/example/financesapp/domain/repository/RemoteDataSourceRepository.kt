@@ -11,7 +11,7 @@ import com.example.financesapp.data.remote.models.transaction.TransactionRespons
 
 interface RemoteDataSourceRepository {
 
-    suspend fun getAccounts(): List<AccountDto>
+    suspend fun getAccount(): AccountDto
     suspend fun getAccountById(id: Int): AccountResponse
     suspend fun createAccount(request: AccountRequest): AccountDto
     suspend fun updateAccount(id: Int, request: AccountRequest): AccountDto
@@ -25,6 +25,6 @@ interface RemoteDataSourceRepository {
     suspend fun getTransactionById(id: Int): TransactionResponseDto
     suspend fun updateTransaction(id: Int, request: TransactionRequest): TransactionResponseDto
     suspend fun deleteTransaction(id: Int)
-    suspend fun getTransactionsByPeriod(accountId: Int, startDate: String?, endDate: String?): List<TransactionResponseDto>
+    suspend fun getTransactionsByPeriod(startDate: String?, endDate: String?): List<TransactionResponseDto>
 
 }

@@ -1,5 +1,6 @@
 package com.example.financesapp.presentation.account
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,24 +53,18 @@ fun AccountScreen(
 
     val currencySelectorState by viewModel.currencySelectorState.collectAsState()
 
-    TopAppBarStateProvider.update(
-        TopAppBarState(
-            title = "Мои счета",
-            trailingIcon = R.drawable.ic_edit,
-            onTrailingIconClick = { viewModel.handleIntent(AccountIntent.EditAccount(42)) }
-        )
-    )
+//    TopAppBarStateProvider.update(
+//        TopAppBarState(
+//            title = "Мои счета",
+//            trailingIcon = R.drawable.ic_edit,
+//            onTrailingIconClick = { viewModel.handleIntent(AccountIntent.EditAccount(42)) }
+//        )
+//    )
 
     val state by viewModel.accountsState.collectAsState()
     val sheetState = rememberModalBottomSheetState()
-    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        if (currencySelectorState is CurrencySelectorState.Visible) {
-            coroutineScope.launch { sheetState.show() }
-        } else {
-            coroutineScope.launch { sheetState.hide() }
-        }
         viewModel.accountsEvent.collect { event ->
             when(event) {
                 is AccountEvent.NavigateToCreateAccountScreen -> onCreateAccount()
@@ -95,33 +90,31 @@ fun AccountScreen(
             }
             is AccountState.Success -> {
                 Column {
-                    val account = currentState.accounts.firstOrNull()
-                    if (account != null) {
-                        ListItem(
-                            title = "Баланс",
-                            amount = currentState.accounts.firstOrNull()?.balance + " ${account.currency.toCurrencySymbol()}",
-                            backgroundColor = MaterialTheme.colorScheme.secondary,
-                            leadingIcon = R.drawable.money,
-                            trailingIcon = R.drawable.more_vert,
-                            onClick = { viewModel.handleIntent(AccountIntent.EditAccount(account.id)) },
-                            modifier = Modifier.height(56.dp)
-                        )
-                        HorizontalDivider()
-                        ListItem(
-                            title = "Валюта",
-                            amount = account.currency.toCurrencySymbol(),
-                            backgroundColor = MaterialTheme.colorScheme.secondary,
-                            trailingIcon = R.drawable.more_vert,
-                            onClick = {
-                                viewModel.handleIntent(
-                                    AccountIntent.OpenCurrencySelector(
-                                        account.id
-                                    )
+                    val account = currentState.account
+                    ListItem(
+                        title = "Баланс",
+                        amount = currentState.account.balance + " ${account.currency.toCurrencySymbol()}",
+                        backgroundColor = MaterialTheme.colorScheme.secondary,
+                        leadingIcon = R.drawable.money,
+                        trailingIcon = R.drawable.more_vert,
+                        onClick = { viewModel.handleIntent(AccountIntent.EditAccount(account.id)) },
+                        modifier = Modifier.height(56.dp)
+                    )
+                    HorizontalDivider()
+                    ListItem(
+                        title = "Валюта",
+                        amount = account.currency.toCurrencySymbol(),
+                        backgroundColor = MaterialTheme.colorScheme.secondary,
+                        trailingIcon = R.drawable.more_vert,
+                        onClick = {
+                            viewModel.handleIntent(
+                                AccountIntent.OpenCurrencySelector(
+                                    account.id
                                 )
-                            },
-                            modifier = Modifier.height(56.dp)
-                        )
-                    }
+                            )
+                        },
+                        modifier = Modifier.height(56.dp)
+                    )
                 }
             }
 

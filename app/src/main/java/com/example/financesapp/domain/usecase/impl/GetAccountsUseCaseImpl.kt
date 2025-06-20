@@ -10,11 +10,10 @@ class GetAccountsUseCaseImpl(
     private val remoteDataSourceRepository: RemoteDataSourceRepository
 ) : GetAccountsUseCase {
 
-    override suspend fun invoke(): List<Account> {
-        return remoteDataSourceRepository.getAccounts().map {
-            it.toAccount()
-        }
+    override suspend fun invoke(): Account {
+        return remoteDataSourceRepository.getAccount().toAccount()
     }
 
-
 }
+
+

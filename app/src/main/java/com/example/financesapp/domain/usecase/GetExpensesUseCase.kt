@@ -5,7 +5,6 @@ import com.example.financesapp.domain.expenses.Expense
 interface GetExpensesUseCase {
 
     suspend operator fun invoke(
-        accountId: Int,
         startDate: String? = null,
         endDate: String? = null
     ): List<Expense>

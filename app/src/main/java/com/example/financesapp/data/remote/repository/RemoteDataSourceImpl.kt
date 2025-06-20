@@ -15,8 +15,8 @@ class RemoteDataSourceImpl(
     private val api: ApiService
 ) : RemoteDataSourceRepository {
 
-    override suspend fun getAccounts(): List<AccountDto> {
-        return api.getAccounts()
+    override suspend fun getAccount(): AccountDto {
+        return api.getAccounts().first()
     }
 
     override suspend fun getAccountById(id: Int): AccountResponse {
@@ -67,11 +67,13 @@ class RemoteDataSourceImpl(
     }
 
     override suspend fun getTransactionsByPeriod(
-        accountId: Int,
         startDate: String?,
         endDate: String?
     ): List<TransactionResponseDto> {
-        return api.getTransactionsByPeriod(accountId, startDate, endDate)
+        return api.getTransactionsByPeriod(
+            accountId = getAccount().id,
+            startDate = startDate,
+            endDate = endDate
+        )
     }
-
 }
