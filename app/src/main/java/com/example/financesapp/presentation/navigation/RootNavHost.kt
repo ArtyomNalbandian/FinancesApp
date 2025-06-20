@@ -12,7 +12,8 @@ import com.example.financesapp.presentation.add_account.AddAccountScreen
 import com.example.financesapp.presentation.analysis.AnalysisScreen
 import com.example.financesapp.presentation.articles.ArticlesTestScreen
 import com.example.financesapp.presentation.expenses.ExpensesScreen
-import com.example.financesapp.presentation.history.HistoryScreen
+import com.example.financesapp.presentation.history.ExpensesHistoryScreen
+import com.example.financesapp.presentation.history.IncomeHistoryScreen
 import com.example.financesapp.presentation.income.IncomeScreen
 import com.example.financesapp.presentation.settings.SettingsTestScreen
 
@@ -41,10 +42,11 @@ fun RootNavGraph(
                 )
             }
             composable(Screen.History("expenses").route) {
-                HistoryScreen(
-                    historyType = "expenses",
-                    onNavigateBack = { navController.popBackStack()}
-                    )
+                ExpensesHistoryScreen(
+                    navController = navController
+//                    historyType = "expenses",
+//                    onNavigateBack = { navController.popBackStack()}
+                )
             }
             composable(Screen.Analysis("expenses").route) {
                 AnalysisScreen("expenses")
@@ -69,10 +71,11 @@ fun RootNavGraph(
 //                IncomeTestScreen { navController.navigate(Screen.History("income").route) }
             }
             composable(Screen.History("income").route) {
-                HistoryScreen(
-                    historyType = "income",
-                    onNavigateBack = { navController.popBackStack() }
-                )
+//                HistoryScreen(
+//                    historyType = "income",
+//                    onNavigateBack = { navController.popBackStack() }
+//                )
+                IncomeHistoryScreen(navController = navController)
             }
             composable(Screen.Analysis("income").route) {
                 AnalysisScreen("income")

@@ -34,6 +34,7 @@ fun ListItem(
     leadingIcon: Int? = null,
     leadingIconStr: String? = null,
     trailingIcon: Int? = null,
+    currency: String? = null,
     backgroundColor: Color = MaterialTheme.colorScheme.tertiary,
     trailingComposable: @Composable (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
@@ -85,7 +86,7 @@ fun ListItem(
         ) {
             if (amount != null) {
                 Text(
-                    text = amount,
+                    text = if (currency != null) "$amount $currency" else amount,
                     style = MaterialTheme.typography.bodyLarge,
                 )
             }
