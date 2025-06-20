@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecase.GetExpensesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -69,6 +70,7 @@ class ExpensesViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = ExpensesState.Loading
             try {
+                delay(2000)
                 val expenses = getExpensesUseCase(
 //                    accountId = accountId,
                     startDate = startDate,

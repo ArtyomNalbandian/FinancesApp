@@ -110,7 +110,6 @@ fun ExpensesHistoryScreen(
                 }
             }
             is ExpensesHistoryState.Success -> {
-
                 ListItem(
                     title = "Сумма",
                     amount = state.total,

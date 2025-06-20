@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.financesapp.presentation.account.AccountScreen
-import com.example.financesapp.presentation.accounts.AccountsScreen
 import com.example.financesapp.presentation.add_account.AddAccountScreen
 import com.example.financesapp.presentation.analysis.AnalysisScreen
 import com.example.financesapp.presentation.articles.ArticlesTestScreen
@@ -21,7 +20,6 @@ import com.example.financesapp.presentation.settings.SettingsTestScreen
 @Composable
 fun RootNavGraph(
     navController: NavHostController,
-//    accountId: Int?,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -38,15 +36,10 @@ fun RootNavGraph(
                     onNavigateToHistory = { navController.navigate(Screen.History("expenses").route) },
                     onExpenseClick = { navController.navigate(Screen.History("expenses").route) },
                     onCreateExpense = { navController.navigate(Screen.AddExpense.route) },
-//                    accountId = accountId
                 )
             }
             composable(Screen.History("expenses").route) {
-                ExpensesHistoryScreen(
-                    navController = navController
-//                    historyType = "expenses",
-//                    onNavigateBack = { navController.popBackStack()}
-                )
+                ExpensesHistoryScreen(navController = navController)
             }
             composable(Screen.Analysis("expenses").route) {
                 AnalysisScreen("expenses")
@@ -62,20 +55,13 @@ fun RootNavGraph(
         ) {
             composable(Screen.Income.route) {
                 IncomeScreen(
-                    onNavigateToHistory = { navController.navigate(Screen.History("income").route) },
-                    onIncomeClick = { navController.navigate(Screen.History("income").route) },
-                    onCreateIncome = { navController.navigate(Screen.AddExpense.route) },
-//                    accountId = accountId
+//                    onNavigateToHistory = { navController.navigate(Screen.History("income").route) },
+//                    onIncomeClick = { navController.navigate(Screen.History("income").route) },
+//                    onCreateIncome = { navController.navigate(Screen.AddExpense.route) },
                 )
-//                IncomeScreen()
-//                IncomeTestScreen { navController.navigate(Screen.History("income").route) }
             }
             composable(Screen.History("income").route) {
-//                HistoryScreen(
-//                    historyType = "income",
-//                    onNavigateBack = { navController.popBackStack() }
-//                )
-                IncomeHistoryScreen(navController = navController)
+                IncomeHistoryScreen()
             }
             composable(Screen.Analysis("income").route) {
                 AnalysisScreen("income")
@@ -87,24 +73,10 @@ fun RootNavGraph(
             route = Screen.AccountGraph.route
         ) {
             composable(Screen.Account.route) {
-//                AccountScreen()
-//                AccountTestScreen(
-//                    onTrailingIconClick = { navController.navigate(Screen.AddAccount.route) },
-//                    onAddAccount = { navController.navigate(Screen.AddAccount.route) }
-//                )
-//                AccountScreenSuperTest(
-//                    onEditClick = {},
-//                    onAddAccount = {},
-//                )
                 AccountScreen(
                     onCreateAccount = {},
                     onEditAccount = {}
                 )
-//                AccountsScreen(
-//                    navigateToEditAccountScreen = {},
-//                    navigateToCreateAccountScreen = {}
-//                )
-//                AccountScreenTest()
             }
             composable(Screen.AddAccount.route) {
                 AddAccountScreen(
@@ -119,7 +91,6 @@ fun RootNavGraph(
             route = Screen.ArticlesGraph.route
         ) {
             composable(Screen.Articles.route) {
-//                ArticlesScreen()
                 ArticlesTestScreen()
 
             }
@@ -130,7 +101,6 @@ fun RootNavGraph(
             route = Screen.SettingsGraph.route
         ) {
             composable(Screen.Settings.route) {
-//                SettingsScreen()
                 SettingsTestScreen()
             }
         }

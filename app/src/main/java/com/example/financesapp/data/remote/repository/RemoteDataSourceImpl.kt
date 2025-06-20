@@ -1,5 +1,6 @@
 package com.example.financesapp.data.remote.repository
 
+import android.util.Log
 import com.example.financesapp.data.remote.api.ApiService
 import com.example.financesapp.data.remote.models.account.AccountDto
 import com.example.financesapp.data.remote.models.account.AccountHistoryResponse
@@ -10,6 +11,7 @@ import com.example.financesapp.data.remote.models.transaction.Transaction
 import com.example.financesapp.data.remote.models.transaction.TransactionRequest
 import com.example.financesapp.data.remote.models.transaction.TransactionResponseDto
 import com.example.financesapp.domain.repository.RemoteDataSourceRepository
+import kotlinx.coroutines.delay
 
 class RemoteDataSourceImpl(
     private val api: ApiService
@@ -70,10 +72,52 @@ class RemoteDataSourceImpl(
         startDate: String?,
         endDate: String?
     ): List<TransactionResponseDto> {
-        return api.getTransactionsByPeriod(
-            accountId = getAccount().id,
-            startDate = startDate,
-            endDate = endDate
-        )
+        val maxRetries = 3
+        val retryDelay = 2000L
+        var currentRetry = 0
+        var lastException: Exception? = null
+
+        while (currentRetry < maxRetries) {
+            Log.d("testLog", "Domain retry --- $currentRetry")
+            try {
+                return api.getTransactionsByPeriod(
+                    accountId = getAccount().id,
+                    startDate = startDate,
+                    endDate = endDate
+                )
+            } catch (e: Exception) {
+                lastException = e
+                currentRetry++
+//                if (e !is IOException && e !is HttpException) {
+//                    break
+//                }
+//
+//                if (e is HttpException && e.code() != 500) {
+//                    break
+//                }
+
+//                if (currentRetry < maxRetries) {
+                delay(retryDelay)
+//                }
+            }
+        }
+
+        // Если дошли сюда, значит все попытки исчерпаны
+        throw lastException ?: Exception("Unknown error occurred")
+//        return api.getTransactionsByPeriod(
+//            accountId = getAccount().id,
+//            startDate = startDate,
+//            endDate = endDate
+//        )
     }
 }
+//
+//// Проверка доступности сети
+//private fun isNetworkAvailable(): Boolean {
+//    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+//    val networkInfo = connectivityManager.activeNetworkInfo
+//    return networkInfo != null && networkInfo.isConnected
+//}
+//
+//// Кастомное исключение для отсутствия интернета
+//class NoInternetException(message: String) : Exception(message)

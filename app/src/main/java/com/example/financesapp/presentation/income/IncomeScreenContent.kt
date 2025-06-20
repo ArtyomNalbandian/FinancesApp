@@ -20,7 +20,7 @@ fun IncomeScreenContent(
     income: List<Income>,
     amount: String,
     currency: String,
-    onExpenseClick: (Int) -> Unit
+    onIncomeClick: (Int) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         ListItem(
@@ -38,7 +38,7 @@ fun IncomeScreenContent(
                     leadingIconStr = income.leadingIcon,
                     trailingIcon = R.drawable.more_vert,
                     amount = income.amount,
-                    onClick = { onExpenseClick(income.id) }
+                    onClick = { onIncomeClick(income.id) }
                 )
                 HorizontalDivider()
             }

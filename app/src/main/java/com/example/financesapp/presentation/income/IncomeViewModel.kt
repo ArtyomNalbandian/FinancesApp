@@ -3,14 +3,16 @@ package com.example.financesapp.presentation.income
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.financesapp.domain.usecase.GetExpensesUseCase
 import com.example.financesapp.domain.usecase.GetIncomesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class IncomeViewModelFactory(
     private val repository: GetIncomesUseCase
@@ -23,7 +25,6 @@ class IncomeViewModelFactory(
     }
 }
 
-
 class IncomeViewModel(
     private val getIncomesUseCase: GetIncomesUseCase
 ) : ViewModel() {
@@ -31,63 +32,28 @@ class IncomeViewModel(
     private val _state = MutableStateFlow<IncomeState>(IncomeState.Loading)
     val state: StateFlow<IncomeState> = _state
 
-    private val _events = Channel<IncomeEvent>()
-    val events = _events.receiveAsFlow()
+    private val _event = Channel<IncomeEvent>()
+    val event = _event.receiveAsFlow()
 
-    fun handleIntent(intent: IncomeIntent) {
-        when (intent) {
-            is IncomeIntent.CreateIncome -> {
-                viewModelScope.launch {
-                    _events.send(
-                        IncomeEvent.NavigateToCreateIncomeScreen
-                    )
-                }
-            }
-
-            is IncomeIntent.EditIncome -> {
-                viewModelScope.launch {
-                    _events.send(
-                        IncomeEvent.NavigateToEditIncomeScreen(intent.incomeId.toString())
-                    )
-                }
-            }
-
-            is IncomeIntent.OpenHistoryOfIncome -> {
-                viewModelScope.launch {
-                    _events.send(
-                        IncomeEvent.NavigateToIncomeHistoryScreen
-                    )
-                }
-            }
-
-            is IncomeIntent.LoadIncome -> {
-                loadIncome(intent.startDate, endDate = intent.endDate)
-            }
-        }
+    init {
+        loadIncome()
     }
 
-    private fun loadIncome(startDate: String, endDate: String) {
+    private fun loadIncome() {
+        val today = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = IncomeState.Loading
             try {
-                val income = getIncomesUseCase(
-                    startDate = startDate,
-                    endDate = endDate
-                )
+                delay(1000)
+                val income = getIncomesUseCase(today, today)
                 val total = income.sumOf { it.amount.toDouble() }.toString()
                 val currency = income.firstOrNull()?.currency ?: "RUB"
-                _state.value = IncomeState.Content(
-                    income = income,
-                    total = total,
-                    currency = currency
-                )
+                _state.value = IncomeState.Content(income, total, currency)
             } catch (e: Exception) {
-                _state.value = IncomeState.Error(
-                    message = e.message ?: "Не удалось загрузить расходы"
-                )
-                _events.send(IncomeEvent.ShowError("Ошибка загрузки данных"))
+                val message = e.message ?: "Ошибка загрузки"
+                _state.value = IncomeState.Error(message)
+                _event.send(IncomeEvent.ShowError(message))
             }
         }
     }
-
 }

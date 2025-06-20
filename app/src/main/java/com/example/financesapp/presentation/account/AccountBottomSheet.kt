@@ -1,4 +1,4 @@
-package com.example.financesapp.presentation.accounts
+package com.example.financesapp.presentation.account
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +28,7 @@ import com.example.financesapp.domain.account.CurrencyItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AccountsBottomSheet(
+fun AccountBottomSheet(
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
     onCurrencySelected: (String) -> Unit,

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecase.GetAccountsUseCase
-import com.example.financesapp.presentation.accounts.CurrencySelectorState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,10 +38,6 @@ class AccountViewModel(
     val currencySelectorState: StateFlow<CurrencySelectorState> =
         _currencySelectorState.asStateFlow()
 
-//    private val _selectedAccountId = MutableStateFlow<Int?>(null)
-//    val selectedAccountId: StateFlow<Int?> = _selectedAccountId.asStateFlow()
-
-
     fun handleIntent(intent: AccountIntent) {
         when (intent) {
             is AccountIntent.EditAccount -> editAccount(intent.accountId)
@@ -57,7 +52,7 @@ class AccountViewModel(
         loadAccount()
     }
 
-    private fun changeCurrency(/*accountId: Int, */newCurrency: String) {
+    private fun changeCurrency(newCurrency: String) {
         val currentState = _accountState.value
         if (currentState is AccountState.Success) {
             val updatedAccount = currentState.account.copy(currency = newCurrency)
@@ -73,7 +68,6 @@ class AccountViewModel(
                 val account = getAccountsUseCase.invoke()
                 _accountState.value = AccountState.Success(account)
 
-//                _selectedAccountId.value = account.id
             } catch (e: Exception) {
                 _accountState.value = AccountState.Error(
                     message = e.message ?: "Не удалось загрузить аккаунт"

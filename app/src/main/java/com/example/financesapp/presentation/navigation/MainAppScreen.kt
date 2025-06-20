@@ -10,23 +10,16 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.financesapp.R
-import com.example.financesapp.data.remote.RetrofitInstance
-import com.example.financesapp.data.remote.repository.RemoteDataSourceImpl
-import com.example.financesapp.domain.usecase.impl.GetAccountsUseCaseImpl
-import com.example.financesapp.presentation.account.AccountViewModel
-import com.example.financesapp.presentation.account.AccountViewModelFactory
 import com.example.financesapp.presentation.common.TopBar
 
 
@@ -39,11 +32,6 @@ fun MainAppScreen() {
     val topAppBarState = remember(currentBackStack) {
         provideTopAppBarState(currentBackStack, navController)
     }
-
-//    val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
-//    val usecase = remember { GetAccountsUseCaseImpl(repository) }
-//    val accountViewModel: AccountViewModel = viewModel(factory = AccountViewModelFactory(usecase))
-//    val accountId by accountViewModel.selectedAccountId.collectAsState()
 
     Scaffold(
         topBar = { TopBar(state = topAppBarState) },
@@ -89,7 +77,6 @@ fun MainAppScreen() {
         RootNavGraph(
             navController = navController,
             modifier = Modifier.padding(padding),
-//            accountId = accountId
         )
     }
 }

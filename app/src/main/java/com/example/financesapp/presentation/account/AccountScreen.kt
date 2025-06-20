@@ -1,6 +1,5 @@
 package com.example.financesapp.presentation.account
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +15,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,18 +23,8 @@ import com.example.financesapp.R
 import com.example.financesapp.data.remote.RetrofitInstance
 import com.example.financesapp.data.remote.repository.RemoteDataSourceImpl
 import com.example.financesapp.domain.usecase.impl.GetAccountsUseCaseImpl
-import com.example.financesapp.presentation.accounts.AccountsBottomSheet
-import com.example.financesapp.presentation.accounts.AccountsIntent
-import com.example.financesapp.presentation.accounts.CurrencySelectorState
 import com.example.financesapp.presentation.common.ListItem
-import com.example.financesapp.presentation.common.TopAppBarState
-import com.example.financesapp.presentation.common.TopAppBarStateProvider
-import com.example.financesapp.presentation.expenses.ExpensesIntent
-import com.example.financesapp.ui.theme.LightGreen
-import com.example.financesapp.utils.formatAmount
 import com.example.financesapp.utils.toCurrencySymbol
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,7 +32,7 @@ fun AccountScreen(
     onCreateAccount: () -> Unit,
     onEditAccount: () -> Unit,
 
-) {
+    ) {
     val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
     val usecase = remember { GetAccountsUseCaseImpl(repository) }
     val viewModel: AccountViewModel = viewModel(
@@ -53,20 +41,12 @@ fun AccountScreen(
 
     val currencySelectorState by viewModel.currencySelectorState.collectAsState()
 
-//    TopAppBarStateProvider.update(
-//        TopAppBarState(
-//            title = "Мои счета",
-//            trailingIcon = R.drawable.ic_edit,
-//            onTrailingIconClick = { viewModel.handleIntent(AccountIntent.EditAccount(42)) }
-//        )
-//    )
-
     val state by viewModel.accountsState.collectAsState()
     val sheetState = rememberModalBottomSheetState()
 
     LaunchedEffect(Unit) {
         viewModel.accountsEvent.collect { event ->
-            when(event) {
+            when (event) {
                 is AccountEvent.NavigateToCreateAccountScreen -> onCreateAccount()
                 is AccountEvent.NavigateToEditAccountScreen -> onEditAccount()
                 is AccountEvent.ShowError -> {}
@@ -74,13 +54,12 @@ fun AccountScreen(
         }
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
         when (val currentState = state) {
             is AccountState.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
+
             is AccountState.Error -> {
                 Text(
                     text = currentState.message,
@@ -88,6 +67,7 @@ fun AccountScreen(
                     color = MaterialTheme.colorScheme.error
                 )
             }
+
             is AccountState.Success -> {
                 Column {
                     val account = currentState.account
@@ -122,7 +102,7 @@ fun AccountScreen(
         if (currencySelectorState is CurrencySelectorState.Visible) {
             val accountId =
                 (currencySelectorState as CurrencySelectorState.Visible).selectedAccountId
-            AccountsBottomSheet(
+            AccountBottomSheet(
                 sheetState = sheetState,
                 onDismissRequest = {
                     viewModel.handleIntent(AccountIntent.CloseCurrencySelector)

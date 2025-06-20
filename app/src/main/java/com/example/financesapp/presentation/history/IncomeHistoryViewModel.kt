@@ -11,19 +11,19 @@ import kotlinx.coroutines.launch
 
 class IncomeHistoryViewModel(
     private val getIncomesUseCase: GetIncomesUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<IncomeHistoryState>(IncomeHistoryState.Loading)
     val uiState: StateFlow<IncomeHistoryState> = _uiState.asStateFlow()
 
 
     fun handleIntent(intent: HistoryIntent) {
-        when(intent) {
+        when (intent) {
             is HistoryIntent.LoadHistory -> loadHistory(intent.startDate, intent.endDate)
         }
     }
 
-    fun loadHistory(startDate: String, endDate: String) {
+    private fun loadHistory(startDate: String, endDate: String) {
         viewModelScope.launch {
             _uiState.value = IncomeHistoryState.Loading
 
@@ -33,8 +33,7 @@ class IncomeHistoryViewModel(
                 )
                 val total = historyList.sumOf { it.amount.toDouble() }
                 _uiState.value = IncomeHistoryState.Success(historyList, "%,.2f ₽".format(total))
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 _uiState.value = IncomeHistoryState.Error(
                     "Ошибка: ${e.message}"
                 )
@@ -46,7 +45,7 @@ class IncomeHistoryViewModel(
 
 class IncomeHistoryViewModelFactory(
     private val usecase: GetIncomesUseCase
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(IncomeHistoryViewModel::class.java)) {
             return IncomeHistoryViewModel(usecase) as T
