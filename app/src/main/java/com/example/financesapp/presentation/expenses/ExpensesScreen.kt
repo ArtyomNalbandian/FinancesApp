@@ -48,22 +48,21 @@ fun ExpensesScreen() {
             .background(color = MaterialTheme.colorScheme.tertiary)
     ) {
 
-        when (state) {
+        when (val currentState = state) {
             is ExpensesState.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
 
             is ExpensesState.Error -> {
-                val error = (state as ExpensesState.Error).message
+                val error = currentState.message
                 Text("Ошибка: $error", modifier = Modifier.align(Alignment.Center))
             }
 
             is ExpensesState.Content -> {
-                val content = state as ExpensesState.Content
                 ExpensesScreenContent(
-                    expenses = content.expenses,
-                    amount = content.total,
-                    currency = content.currency,
+                    expenses = currentState.expenses,
+                    amount = currentState.total,
+                    currency = currentState.currency,
                     onExpenseClick = {}
                 )
                 AddButton(
@@ -73,5 +72,5 @@ fun ExpensesScreen() {
             }
         }
     }
-    
+
 }

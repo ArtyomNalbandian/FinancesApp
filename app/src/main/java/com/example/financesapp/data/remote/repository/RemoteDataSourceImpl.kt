@@ -18,7 +18,23 @@ class RemoteDataSourceImpl(
 ) : RemoteDataSourceRepository {
 
     override suspend fun getAccount(): AccountDto {
-        return api.getAccounts().first()
+        val maxRetries = 3
+        val retryDelay = 2000L
+        var currentRetry = 0
+        var lastException: Exception? = null
+        while (currentRetry < maxRetries) {
+            Log.d("testLog", "Domain retry --- $currentRetry")
+            try {
+                return api.getAccounts().first()
+            } catch (e: Exception) {
+                lastException = e
+                currentRetry++
+                delay(retryDelay)
+
+            }
+        }
+        throw lastException ?: Exception("Unknown error occurred")
+
     }
 
     override suspend fun getAccountById(id: Int): AccountResponse {

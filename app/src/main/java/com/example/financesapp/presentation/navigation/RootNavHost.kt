@@ -65,10 +65,7 @@ fun RootNavGraph(
             route = Screen.AccountGraph.route
         ) {
             composable(Screen.Account.route) {
-                AccountScreen(
-                    onCreateAccount = {},
-                    onEditAccount = {}
-                )
+                AccountScreen()
             }
             composable(Screen.AddAccount.route) {
                 AddAccountScreen(

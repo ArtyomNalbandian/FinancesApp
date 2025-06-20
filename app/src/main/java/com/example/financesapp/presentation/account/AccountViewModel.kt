@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecase.GetAccountsUseCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class AccountViewModelFactory(
@@ -27,73 +27,60 @@ class AccountViewModel(
     private val getAccountsUseCase: GetAccountsUseCase
 ) : ViewModel() {
 
-    private val _accountState = MutableStateFlow<AccountState>(AccountState.Loading)
-    val accountsState: StateFlow<AccountState> = _accountState.asStateFlow()
+    private val _state = MutableStateFlow<AccountState>(AccountState.Loading)
+    val state: StateFlow<AccountState> = _state.asStateFlow()
 
-    private val _accountEvents = Channel<AccountEvent>()
-    val accountsEvent = _accountEvents.receiveAsFlow()
-
-    private val _currencySelectorState =
-        MutableStateFlow<CurrencySelectorState>(CurrencySelectorState.Hidden)
-    val currencySelectorState: StateFlow<CurrencySelectorState> =
-        _currencySelectorState.asStateFlow()
-
-    fun handleIntent(intent: AccountIntent) {
-        when (intent) {
-            is AccountIntent.EditAccount -> editAccount(intent.accountId)
-            is AccountIntent.CreateAccount -> createAccount()
-            is AccountIntent.CloseCurrencySelector -> closeCurrencySelector()
-            is AccountIntent.OpenCurrencySelector -> openCurrencySelector(intent.accountId)
-            is AccountIntent.ChangeCurrency -> changeCurrency(intent.currency)
-        }
-    }
+    private val _event = MutableSharedFlow<AccountEvent>()
+    val event: SharedFlow<AccountEvent> = _event.asSharedFlow()
 
     init {
         loadAccount()
     }
 
-    private fun changeCurrency(newCurrency: String) {
-        val currentState = _accountState.value
-        if (currentState is AccountState.Success) {
-            val updatedAccount = currentState.account.copy(currency = newCurrency)
-            _accountState.value = currentState.copy(account = updatedAccount)
-            closeCurrencySelector()
+    fun handleIntent(intent: AccountIntent) {
+        when (intent) {
+            is AccountIntent.ChangeCurrency -> changeCurrency(intent.currency)
+            is AccountIntent.LoadAccount -> loadAccount()
+            is AccountIntent.HideCurrencySelector -> updateCurrencySelector(false)
+            is AccountIntent.ShowCurrencySelector -> updateCurrencySelector(true)
         }
     }
 
     private fun loadAccount() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _accountState.value = AccountState.Loading
+        viewModelScope.launch {
+            _state.value = AccountState.Loading
             try {
                 val account = getAccountsUseCase.invoke()
-                _accountState.value = AccountState.Success(account)
-
+                _state.value = AccountState.Content(account, isCurrencySelectorVisible = false)
             } catch (e: Exception) {
-                _accountState.value = AccountState.Error(
-                    message = e.message ?: "Не удалось загрузить аккаунт"
-                )
+                _state.value = AccountState.Error(e.message.orEmpty())
+                _event.emit(AccountEvent.ShowError("Ошибка загрузки"))
             }
         }
     }
 
-    private fun editAccount(accountId: Int) {
-        viewModelScope.launch {
-            _accountEvents.send(AccountEvent.NavigateToEditAccountScreen(accountId.toString()))
+    private fun updateCurrencySelector(visible: Boolean) {
+        val current = _state.value
+        if (current is AccountState.Content) {
+            _state.value = current.copy(isCurrencySelectorVisible = visible)
         }
     }
 
-    private fun createAccount() {
+    private fun changeCurrency(newCurrency: String) {
         viewModelScope.launch {
-            _accountEvents.send(AccountEvent.NavigateToCreateAccountScreen)
+            val current = _state.value
+            if (current is AccountState.Content) {
+                try {
+                    val newAccount = current.account.copy(currency = newCurrency)
+                    _state.value = current.copy(
+                        account = newAccount,
+                        isCurrencySelectorVisible = false
+                    )
+                    _event.emit(AccountEvent.ShowError("Валюта изменена на $newCurrency"))
+                } catch (e: Exception) {
+                    _event.emit(AccountEvent.ShowError("Не удалось изменить валюту"))
+                }
+            }
         }
     }
-
-    private fun openCurrencySelector(accountId: Int) {
-        _currencySelectorState.value = CurrencySelectorState.Visible(accountId)
-    }
-
-    private fun closeCurrencySelector() {
-        _currencySelectorState.value = CurrencySelectorState.Hidden
-    }
-
 }

@@ -1,13 +1,10 @@
 package com.example.financesapp.presentation.account
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -17,39 +14,33 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.financesapp.R
 import com.example.financesapp.data.remote.RetrofitInstance
 import com.example.financesapp.data.remote.repository.RemoteDataSourceImpl
 import com.example.financesapp.domain.usecase.impl.GetAccountsUseCaseImpl
-import com.example.financesapp.presentation.common.ListItem
-import com.example.financesapp.utils.toCurrencySymbol
+import com.example.financesapp.presentation.common.AddButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AccountScreen(
-    onCreateAccount: () -> Unit,
-    onEditAccount: () -> Unit,
-
-    ) {
+fun AccountScreen() {
     val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
     val usecase = remember { GetAccountsUseCaseImpl(repository) }
     val viewModel: AccountViewModel = viewModel(
         factory = AccountViewModelFactory(usecase)
     )
 
-    val currencySelectorState by viewModel.currencySelectorState.collectAsState()
-
-    val state by viewModel.accountsState.collectAsState()
     val sheetState = rememberModalBottomSheetState()
 
+    val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
-        viewModel.accountsEvent.collect { event ->
+        viewModel.event.collect { event ->
             when (event) {
-                is AccountEvent.NavigateToCreateAccountScreen -> onCreateAccount()
-                is AccountEvent.NavigateToEditAccountScreen -> onEditAccount()
-                is AccountEvent.ShowError -> {}
+                is AccountEvent.ShowError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -61,62 +52,42 @@ fun AccountScreen(
             }
 
             is AccountState.Error -> {
-                Text(
-                    text = currentState.message,
-                    modifier = Modifier.align(Alignment.Center),
-                    color = MaterialTheme.colorScheme.error
-                )
+                val error = currentState.message
+                Text("Ошибка: $error", modifier = Modifier.align(Alignment.Center))
             }
 
-            is AccountState.Success -> {
-                Column {
-                    val account = currentState.account
-                    ListItem(
-                        title = "Баланс",
-                        amount = currentState.account.balance + " ${account.currency.toCurrencySymbol()}",
-                        backgroundColor = MaterialTheme.colorScheme.secondary,
-                        leadingIcon = R.drawable.money,
-                        trailingIcon = R.drawable.more_vert,
-                        onClick = { viewModel.handleIntent(AccountIntent.EditAccount(account.id)) },
-                        modifier = Modifier.height(56.dp)
-                    )
-                    HorizontalDivider()
-                    ListItem(
-                        title = "Валюта",
-                        amount = account.currency.toCurrencySymbol(),
-                        backgroundColor = MaterialTheme.colorScheme.secondary,
-                        trailingIcon = R.drawable.more_vert,
-                        onClick = {
+            is AccountState.Content -> {
+                AccountScreenContent(
+                    account = currentState.account,
+                    onCurrencySelectorClick = {
+                        viewModel.handleIntent(
+                            AccountIntent.ShowCurrencySelector(
+                                currentState.account.id
+                            )
+                        )
+                    }
+                )
+                AddButton(
+                    onClick = {},
+                    modifier = Modifier.align(Alignment.BottomEnd)
+                )
+                if (currentState.isCurrencySelectorVisible) {
+                    AccountBottomSheet(
+                        sheetState = sheetState,
+                        onDismissRequest = {
+                            viewModel.handleIntent(AccountIntent.HideCurrencySelector)
+                        },
+                        onCurrencySelected = { selectedCurrency ->
                             viewModel.handleIntent(
-                                AccountIntent.OpenCurrencySelector(
-                                    account.id
+                                AccountIntent.ChangeCurrency(
+                                    accountId = currentState.account.id,
+                                    currency = selectedCurrency
                                 )
                             )
-                        },
-                        modifier = Modifier.height(56.dp)
+                        }
                     )
                 }
             }
-
         }
-        if (currencySelectorState is CurrencySelectorState.Visible) {
-            val accountId =
-                (currencySelectorState as CurrencySelectorState.Visible).selectedAccountId
-            AccountBottomSheet(
-                sheetState = sheetState,
-                onDismissRequest = {
-                    viewModel.handleIntent(AccountIntent.CloseCurrencySelector)
-                },
-                onCurrencySelected = { selectedCurrency ->
-                    viewModel.handleIntent(
-                        AccountIntent.ChangeCurrency(
-                            accountId,
-                            selectedCurrency
-                        )
-                    )
-                }
-            )
-        }
-
     }
 }

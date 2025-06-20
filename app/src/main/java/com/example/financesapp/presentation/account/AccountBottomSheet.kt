@@ -39,7 +39,7 @@ fun AccountBottomSheet(
         containerColor = MaterialTheme.colorScheme.tertiary
     ) {
         Column {
-            currencies.forEachIndexed { index, currency ->
+            currencies.forEachIndexed { _, currency ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
