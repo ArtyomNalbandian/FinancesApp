@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class ExpensesViewModelFactory(
     private val repository: GetExpensesUseCase
@@ -31,63 +33,27 @@ class ExpensesViewModel(
     private val _state = MutableStateFlow<ExpensesState>(ExpensesState.Loading)
     val state: StateFlow<ExpensesState> = _state
 
-    private val _events = Channel<ExpensesEvent>()
-    val events = _events.receiveAsFlow()
+    private val _event = Channel<ExpensesEvent>()
+    val event = _event.receiveAsFlow()
 
-    fun handleIntent(intent: ExpensesIntent) {
-        when (intent) {
-            is ExpensesIntent.CreateExpense -> {
-                viewModelScope.launch {
-                    _events.send(
-                        ExpensesEvent.NavigateToCreateExpenseScreen
-                    )
-                }
-            }
-
-            is ExpensesIntent.EditExpense -> {
-                viewModelScope.launch {
-                    _events.send(
-                        ExpensesEvent.NavigateToEditExpenseScreen(intent.expenseId.toString())
-                    )
-                }
-            }
-
-            is ExpensesIntent.OpenHistoryOfExpenses -> {
-                viewModelScope.launch {
-                    _events.send(
-                        ExpensesEvent.NavigateToExpensesHistoryScreen
-                    )
-                }
-            }
-
-            is ExpensesIntent.LoadExpenses -> {
-                loadExpenses(/*intent.accountId, */intent.startDate, endDate = intent.endDate)
-            }
-        }
+    init {
+        loadExpenses()
     }
 
-    private fun loadExpenses(/*accountId: Int, */startDate: String, endDate: String) {
+    private fun loadExpenses() {
+        val today = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = ExpensesState.Loading
             try {
-                delay(2000)
-                val expenses = getExpensesUseCase(
-//                    accountId = accountId,
-                    startDate = startDate,
-                    endDate = endDate
-                )
-                val total = expenses.sumOf { it.amount.toDouble() }.toString()
-                val currency = expenses.firstOrNull()?.currency ?: "RUB"
-                _state.value = ExpensesState.Content(
-                    expenses = expenses,
-                    total = total,
-                    currency = currency
-                )
+                delay(1000)
+                val income = getExpensesUseCase(today, today)
+                val total = income.sumOf { it.amount.toDouble() }.toString()
+                val currency = income.firstOrNull()?.currency ?: "RUB"
+                _state.value = ExpensesState.Content(income, total, currency)
             } catch (e: Exception) {
-                _state.value = ExpensesState.Error(
-                    message = e.message ?: "Не удалось загрузить расходы"
-                )
-                _events.send(ExpensesEvent.ShowError("Ошибка загрузки данных"))
+                val message = e.message ?: "Ошибка загрузки"
+                _state.value = ExpensesState.Error(message)
+                _event.send(ExpensesEvent.ShowError(message))
             }
         }
     }

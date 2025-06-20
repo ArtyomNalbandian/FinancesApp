@@ -32,11 +32,7 @@ fun RootNavGraph(
             route = Screen.ExpensesGraph.route
         ) {
             composable(Screen.Expenses.route) {
-                ExpensesScreen(
-                    onNavigateToHistory = { navController.navigate(Screen.History("expenses").route) },
-                    onExpenseClick = { navController.navigate(Screen.History("expenses").route) },
-                    onCreateExpense = { navController.navigate(Screen.AddExpense.route) },
-                )
+                ExpensesScreen()
             }
             composable(Screen.History("expenses").route) {
                 ExpensesHistoryScreen(navController = navController)
@@ -54,11 +50,7 @@ fun RootNavGraph(
             route = Screen.IncomeGraph.route
         ) {
             composable(Screen.Income.route) {
-                IncomeScreen(
-//                    onNavigateToHistory = { navController.navigate(Screen.History("income").route) },
-//                    onIncomeClick = { navController.navigate(Screen.History("income").route) },
-//                    onCreateIncome = { navController.navigate(Screen.AddExpense.route) },
-                )
+                IncomeScreen()
             }
             composable(Screen.History("income").route) {
                 IncomeHistoryScreen()

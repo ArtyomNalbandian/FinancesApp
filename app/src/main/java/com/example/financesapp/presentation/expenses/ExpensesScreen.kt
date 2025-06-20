@@ -1,6 +1,6 @@
 package com.example.financesapp.presentation.expenses
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,21 +14,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.data.remote.RetrofitInstance
 import com.example.financesapp.data.remote.repository.RemoteDataSourceImpl
 import com.example.financesapp.domain.usecase.impl.GetExpensesUseCaseImpl
 import com.example.financesapp.presentation.common.AddButton
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Composable
-fun ExpensesScreen(
-    onNavigateToHistory: () -> Unit,
-    onExpenseClick: () -> Unit,
-    onCreateExpense: () -> Unit,
-//    accountId: Int?
-) {
+fun ExpensesScreen() {
     val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
     val usecase = remember { GetExpensesUseCaseImpl(repository) }
     val viewModel: ExpensesViewModel = viewModel(
@@ -36,26 +30,14 @@ fun ExpensesScreen(
     )
 
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-//        Log.d("testLog", "lE --- $accountId")
-//        if (accountId != null) {
-            val today = LocalDate.now()
-            val formattedDate = today.format(DateTimeFormatter.ISO_DATE)
-            viewModel.handleIntent(
-                ExpensesIntent.LoadExpenses(
-//                    accountId,
-                    formattedDate,
-                    formattedDate
-                )
-            )
-//        }
-        viewModel.events.collect { event ->
+        viewModel.event.collect { event ->
             when (event) {
-                is ExpensesEvent.NavigateToEditExpenseScreen -> onExpenseClick()
-                is ExpensesEvent.NavigateToExpensesHistoryScreen -> onNavigateToHistory()
-                is ExpensesEvent.NavigateToCreateExpenseScreen -> onCreateExpense()
-                is ExpensesEvent.ShowError -> {}
+                is ExpensesEvent.ShowError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -66,38 +48,30 @@ fun ExpensesScreen(
             .background(color = MaterialTheme.colorScheme.tertiary)
     ) {
 
-        when (val currentState = state) {
+        when (state) {
             is ExpensesState.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
 
             is ExpensesState.Error -> {
-                Text(
-                    text = currentState.message,
-                    modifier = Modifier.align(Alignment.Center),
-                    color = MaterialTheme.colorScheme.error
-                )
+                val error = (state as ExpensesState.Error).message
+                Text("Ошибка: $error", modifier = Modifier.align(Alignment.Center))
             }
 
             is ExpensesState.Content -> {
+                val content = state as ExpensesState.Content
                 ExpensesScreenContent(
-                    expenses = currentState.expenses,
-                    amount = currentState.total,
-                    currency = currentState.currency,
-                    onExpenseClick = { expenseId ->
-                        viewModel.handleIntent(
-                            ExpensesIntent.EditExpense(
-//                                accountId = 1,
-                                expenseId = expenseId
-                            )
-                        )
-                    }
+                    expenses = content.expenses,
+                    amount = content.total,
+                    currency = content.currency,
+                    onExpenseClick = {}
                 )
                 AddButton(
-                    onClick = { viewModel.handleIntent(ExpensesIntent.CreateExpense) },
+                    onClick = {},
                     modifier = Modifier.align(Alignment.BottomEnd)
                 )
             }
         }
     }
+    
 }
