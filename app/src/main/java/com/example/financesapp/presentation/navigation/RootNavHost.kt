@@ -11,8 +11,8 @@ import com.example.financesapp.presentation.add_account.AddAccountScreen
 import com.example.financesapp.presentation.analysis.AnalysisScreen
 import com.example.financesapp.presentation.articles.ArticlesTestScreen
 import com.example.financesapp.presentation.expenses.ExpensesScreen
-import com.example.financesapp.presentation.history.ExpensesHistoryScreen
-import com.example.financesapp.presentation.history.IncomeHistoryScreen
+import com.example.financesapp.presentation.history.history_expenses.ExpensesHistoryScreen
+import com.example.financesapp.presentation.history.history_income.IncomeHistoryScreen
 import com.example.financesapp.presentation.income.IncomeScreen
 import com.example.financesapp.presentation.settings.SettingsTestScreen
 
@@ -35,7 +35,7 @@ fun RootNavGraph(
                 ExpensesScreen()
             }
             composable(Screen.History("expenses").route) {
-                ExpensesHistoryScreen(navController = navController)
+                ExpensesHistoryScreen()
             }
             composable(Screen.Analysis("expenses").route) {
                 AnalysisScreen("expenses")

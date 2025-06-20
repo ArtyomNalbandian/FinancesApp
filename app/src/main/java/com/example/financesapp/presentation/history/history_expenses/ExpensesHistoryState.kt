@@ -1,10 +1,10 @@
-package com.example.financesapp.presentation.history
+package com.example.financesapp.presentation.history.history_expenses
 
 import com.example.financesapp.domain.expenses.Expense
 
 sealed class ExpensesHistoryState {
     object Loading: ExpensesHistoryState()
-    data class Success(
+    data class Content(
         val items: List<Expense>,
         val total: String
     ): ExpensesHistoryState()

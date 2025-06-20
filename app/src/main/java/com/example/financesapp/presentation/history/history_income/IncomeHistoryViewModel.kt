@@ -1,21 +1,30 @@
-package com.example.financesapp.presentation.history
+package com.example.financesapp.presentation.history.history_income
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecase.GetIncomesUseCase
+import com.example.financesapp.presentation.history.HistoryIntent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class IncomeHistoryViewModel(
     private val getIncomesUseCase: GetIncomesUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<IncomeHistoryState>(IncomeHistoryState.Loading)
-    val uiState: StateFlow<IncomeHistoryState> = _uiState.asStateFlow()
+    private val _state = MutableStateFlow<IncomeHistoryState>(IncomeHistoryState.Loading)
+    val state: StateFlow<IncomeHistoryState> = _state.asStateFlow()
 
+    init {
+        loadHistory(
+            LocalDate.now().withDayOfMonth(1).format(DateTimeFormatter.ISO_DATE),
+            LocalDate.now().format(DateTimeFormatter.ISO_DATE)
+        )
+    }
 
     fun handleIntent(intent: HistoryIntent) {
         when (intent) {
@@ -25,16 +34,16 @@ class IncomeHistoryViewModel(
 
     private fun loadHistory(startDate: String, endDate: String) {
         viewModelScope.launch {
-            _uiState.value = IncomeHistoryState.Loading
+            _state.value = IncomeHistoryState.Loading
 
             try {
                 val historyList = getIncomesUseCase.invoke(
                     startDate, endDate
                 )
                 val total = historyList.sumOf { it.amount.toDouble() }
-                _uiState.value = IncomeHistoryState.Success(historyList, "%,.2f ₽".format(total))
+                _state.value = IncomeHistoryState.Content(historyList, "%,.2f ₽".format(total))
             } catch (e: Exception) {
-                _uiState.value = IncomeHistoryState.Error(
+                _state.value = IncomeHistoryState.Error(
                     "Ошибка: ${e.message}"
                 )
             }
