@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.financesapp.ui.theme.CardItemBackground
 import com.example.financesapp.ui.theme.SupportingTextColor
 
@@ -31,8 +32,10 @@ fun ListItem(
     supportingText: String? = null,
     amount: String? = null,
     leadingIcon: Int? = null,
+    leadingIconStr: String? = null,
     trailingIcon: Int? = null,
-    backgroundColor: Color = CardItemBackground,
+    currency: String? = null,
+    backgroundColor: Color = MaterialTheme.colorScheme.tertiary,
     trailingComposable: @Composable (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
 ) {
@@ -49,6 +52,13 @@ fun ListItem(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
+            if (leadingIconStr != null) {
+                Text(
+                    text = leadingIconStr,
+                    fontSize = 22.sp
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+            }
             if (leadingIcon != null) {
                 Image(
                     painter = painterResource(leadingIcon),
@@ -62,10 +72,10 @@ fun ListItem(
                     text = title,
                     style = MaterialTheme.typography.bodyLarge
                 )
-                if (supportingText != null) {
+                if (supportingText != "" && supportingText != null) {
                     Text(
                         text = supportingText,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodySmall,
                         color = SupportingTextColor
                     )
                 }
@@ -76,7 +86,7 @@ fun ListItem(
         ) {
             if (amount != null) {
                 Text(
-                    text = amount,
+                    text = if (currency != null) "$amount $currency" else amount,
                     style = MaterialTheme.typography.bodyLarge,
                 )
             }

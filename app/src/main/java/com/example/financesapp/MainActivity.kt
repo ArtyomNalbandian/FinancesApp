@@ -31,15 +31,15 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FinancesAppTheme {
-                var isSplashVisible by remember { mutableStateOf(true) }
-
-                if (isSplashVisible) {
-                    SplashScreen(
-                        onLoadingComplete = { isSplashVisible = false }
-                    )
-                } else {
+//                var isSplashVisible by remember { mutableStateOf(true) }
+//
+//                if (isSplashVisible) {
+//                    SplashScreen(
+//                        onLoadingComplete = { isSplashVisible = false }
+//                    )
+//                } else {
                     MainAppScreen()
-                }
+//                }
             }
         }
     }

@@ -7,4 +7,5 @@ data class Expense(
     val leadingIcon: String,
     val amount: String,
     val currency: String,
+    val transactionDate: String,
 )
