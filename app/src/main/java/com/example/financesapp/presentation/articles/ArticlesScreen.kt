@@ -13,6 +13,7 @@ import com.example.financesapp.presentation.common.SearchBar
 fun ArticlesScreen() {
     Column {
         SearchBar()
+        HorizontalDivider()
         LazyColumn {
             items(articles) { article ->
                 ListItem(
