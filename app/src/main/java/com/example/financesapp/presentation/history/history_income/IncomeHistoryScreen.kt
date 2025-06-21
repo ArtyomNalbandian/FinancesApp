@@ -166,7 +166,7 @@ fun IncomeHistoryScreen() {
                                 color = Color.Gray
                             )
                         } else {
-                            currentState.items.forEach { income ->
+                            currentState.items.sortedBy { Instant.parse(it.transactionDate) }.forEach { income ->
                                 ListItem(
                                     title = income.title,
                                     leadingIconStr = income.leadingIcon,

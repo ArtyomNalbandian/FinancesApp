@@ -170,7 +170,7 @@ fun ExpensesHistoryScreen() {
                                 color = Color.Gray
                             )
                         } else {
-                            currentState.items.forEach { expense ->
+                            currentState.items.sortedBy { Instant.parse(it.transactionDate) }.forEach { expense ->
                                 ListItem(
                                     title = expense.title,
                                     leadingIconStr = expense.leadingIcon,
