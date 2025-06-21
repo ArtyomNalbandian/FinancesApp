@@ -1,6 +1,5 @@
 package com.example.financesapp.data.remote.repository
 
-import android.util.Log
 import com.example.financesapp.data.remote.api.ApiService
 import com.example.financesapp.data.remote.models.account.AccountDto
 import com.example.financesapp.data.remote.models.account.AccountHistoryResponse
@@ -11,30 +10,28 @@ import com.example.financesapp.data.remote.models.transaction.Transaction
 import com.example.financesapp.data.remote.models.transaction.TransactionRequest
 import com.example.financesapp.data.remote.models.transaction.TransactionResponseDto
 import com.example.financesapp.domain.repository.RemoteDataSourceRepository
-import kotlinx.coroutines.delay
+import com.example.financesapp.utils.retryRequest
+import retrofit2.HttpException
+import java.io.IOException
+import java.net.UnknownHostException
 
 class RemoteDataSourceImpl(
     private val api: ApiService
 ) : RemoteDataSourceRepository {
 
     override suspend fun getAccount(): AccountDto {
-        val maxRetries = 3
-        val retryDelay = 2000L
-        var currentRetry = 0
-        var lastException: Exception? = null
-        while (currentRetry < maxRetries) {
-            Log.d("testLog", "Domain retry --- $currentRetry")
-            try {
-                return api.getAccounts().first()
-            } catch (e: Exception) {
-                lastException = e
-                currentRetry++
-                delay(retryDelay)
-
+        return retryRequest(
+            shouldRetry = { throwable ->
+                when (throwable) {
+                    is UnknownHostException -> false
+                    is IOException -> true
+                    is HttpException -> throwable.code() in 500..599
+                    else -> false
+                }
             }
+        ) {
+            api.getAccounts().first()
         }
-        throw lastException ?: Exception("Unknown error occurred")
-
     }
 
     override suspend fun getAccountById(id: Int): AccountResponse {
@@ -88,52 +85,20 @@ class RemoteDataSourceImpl(
         startDate: String?,
         endDate: String?
     ): List<TransactionResponseDto> {
-        val maxRetries = 3
-        val retryDelay = 2000L
-        var currentRetry = 0
-        var lastException: Exception? = null
-
-        while (currentRetry < maxRetries) {
-            Log.d("testLog", "Domain retry --- $currentRetry")
-            try {
-                return api.getTransactionsByPeriod(
-                    accountId = getAccount().id,
-                    startDate = startDate,
-                    endDate = endDate
-                )
-            } catch (e: Exception) {
-                lastException = e
-                currentRetry++
-//                if (e !is IOException && e !is HttpException) {
-//                    break
-//                }
-//
-//                if (e is HttpException && e.code() != 500) {
-//                    break
-//                }
-
-//                if (currentRetry < maxRetries) {
-                delay(retryDelay)
-//                }
+        return retryRequest(
+            shouldRetry = { throwable ->
+                when (throwable) {
+                    is IOException -> true
+                    is HttpException -> throwable.code() in 500..599
+                    else -> false
+                }
             }
+        ) {
+            api.getTransactionsByPeriod(
+                accountId = getAccount().id,
+                startDate = startDate,
+                endDate = endDate
+            )
         }
-
-        // Если дошли сюда, значит все попытки исчерпаны
-        throw lastException ?: Exception("Unknown error occurred")
-//        return api.getTransactionsByPeriod(
-//            accountId = getAccount().id,
-//            startDate = startDate,
-//            endDate = endDate
-//        )
     }
 }
-//
-//// Проверка доступности сети
-//private fun isNetworkAvailable(): Boolean {
-//    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-//    val networkInfo = connectivityManager.activeNetworkInfo
-//    return networkInfo != null && networkInfo.isConnected
-//}
-//
-//// Кастомное исключение для отсутствия интернета
-//class NoInternetException(message: String) : Exception(message)

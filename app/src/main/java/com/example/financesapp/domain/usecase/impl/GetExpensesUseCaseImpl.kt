@@ -17,10 +17,8 @@ class GetExpensesUseCaseImpl(
             startDate = startDate,
             endDate = endDate
         )
-
         return transactions
             .filter { !it.category.isIncome }
             .map { it.toExpense() }
     }
-
 }

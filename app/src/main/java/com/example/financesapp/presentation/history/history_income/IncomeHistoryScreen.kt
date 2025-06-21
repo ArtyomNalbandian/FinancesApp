@@ -1,17 +1,26 @@
 package com.example.financesapp.presentation.history.history_income
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -23,8 +32,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
@@ -33,6 +44,8 @@ import com.example.financesapp.data.remote.repository.RemoteDataSourceImpl
 import com.example.financesapp.domain.usecase.impl.GetIncomesUseCaseImpl
 import com.example.financesapp.presentation.common.ListItem
 import com.example.financesapp.presentation.history.HistoryIntent
+import com.example.financesapp.presentation.history.history_expenses.ExpensesHistoryState
+import com.example.financesapp.utils.NetworkMonitor
 import com.example.financesapp.utils.toCurrencySymbol
 import java.time.Instant
 import java.time.LocalDate
@@ -45,10 +58,13 @@ import java.util.Locale
 @Composable
 fun IncomeHistoryScreen() {
 
+    val context = LocalContext.current
+    val networkMonitor = remember { NetworkMonitor(context.applicationContext) }
+
     val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
     val usecase = remember { GetIncomesUseCaseImpl(repository) }
     val viewModel: IncomeHistoryViewModel =
-        viewModel(factory = IncomeHistoryViewModelFactory(usecase))
+        viewModel(factory = IncomeHistoryViewModelFactory(usecase, networkMonitor))
 
     var startDate by rememberSaveable { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
     var endDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
@@ -58,6 +74,9 @@ fun IncomeHistoryScreen() {
     val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy 'г.'", Locale("ru"))
 
     val state by viewModel.state.collectAsState()
+    val isConnected by networkMonitor.isConnected.collectAsState()
+
+    val showOfflineBanner = !isConnected && state !is IncomeHistoryState.Content
 
     Column(
         Modifier
@@ -92,6 +111,33 @@ fun IncomeHistoryScreen() {
                 .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.tertiary)
         ) {
+            if (showOfflineBanner) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.Red)
+                        .height(56.dp)
+                        .padding(horizontal = 16.dp)
+                        .align(Alignment.TopCenter),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Нет подключения к интернету",
+                        color = Color.White,
+                        modifier = Modifier.weight(1f)
+                    )
+                    TextButton(onClick = { viewModel.retryLoad() }) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = "Обновить",
+                            tint = Color.White
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Обновить", color = Color.White)
+                    }
+                }
+            }
             when (val currentState = state) {
                 is IncomeHistoryState.Loading -> {
                     CircularProgressIndicator()
@@ -100,7 +146,7 @@ fun IncomeHistoryScreen() {
                 is IncomeHistoryState.Error -> {
                     Text(
                         currentState.message,
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(16.dp, top = 64.dp)
                     )
                 }
 

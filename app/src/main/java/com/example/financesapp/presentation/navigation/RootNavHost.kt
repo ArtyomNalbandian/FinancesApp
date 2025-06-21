@@ -15,6 +15,7 @@ import com.example.financesapp.presentation.history.history_expenses.ExpensesHis
 import com.example.financesapp.presentation.history.history_income.IncomeHistoryScreen
 import com.example.financesapp.presentation.income.IncomeScreen
 import com.example.financesapp.presentation.settings.SettingsTestScreen
+import com.example.financesapp.utils.NetworkMonitor
 
 
 @Composable
@@ -73,6 +74,7 @@ fun RootNavGraph(
                     onTrailingIconClick = { navController.popBackStack() }
                 )
             }
+            composable(Screen.EditAccount.route) {}
         }
 
         navigation(
