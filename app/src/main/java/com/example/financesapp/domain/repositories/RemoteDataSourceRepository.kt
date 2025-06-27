@@ -1,9 +1,9 @@
-package com.example.financesapp.domain.repository
+package com.example.financesapp.domain.repositories
 
 import com.example.financesapp.data.remote.models.account.AccountDto
-import com.example.financesapp.data.remote.models.account.AccountHistoryResponse
-import com.example.financesapp.data.remote.models.account.AccountRequest
-import com.example.financesapp.data.remote.models.account.AccountResponse
+import com.example.financesapp.data.remote.models.account.AccountHistoryResponseDto
+import com.example.financesapp.data.remote.models.account.AccountRequestDto
+import com.example.financesapp.data.remote.models.account.AccountResponseDto
 import com.example.financesapp.data.remote.models.category.Category
 import com.example.financesapp.data.remote.models.transaction.Transaction
 import com.example.financesapp.data.remote.models.transaction.TransactionRequest
@@ -12,11 +12,11 @@ import com.example.financesapp.data.remote.models.transaction.TransactionRespons
 interface RemoteDataSourceRepository {
 
     suspend fun getAccount(): AccountDto
-    suspend fun getAccountById(id: Int): AccountResponse
-    suspend fun createAccount(request: AccountRequest): AccountDto
-    suspend fun updateAccount(id: Int, request: AccountRequest): AccountDto
+    suspend fun getAccountById(id: Int): AccountResponseDto
+    suspend fun createAccount(request: AccountRequestDto): AccountDto
+    suspend fun updateAccount(id: Int, request: AccountRequestDto): AccountDto
     suspend fun deleteAccount(id: Int)
-    suspend fun getAccountHistory(id: Int): AccountHistoryResponse
+    suspend fun getAccountHistory(id: Int): AccountHistoryResponseDto
 
     suspend fun getCategories(): List<Category>
     suspend fun getCategoriesByType(isIncome: Boolean): List<Category>

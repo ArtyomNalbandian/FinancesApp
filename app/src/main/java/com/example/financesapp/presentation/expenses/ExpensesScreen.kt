@@ -30,7 +30,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.data.remote.RetrofitInstance
+import com.example.financesapp.data.remote.repository.AccountRepositoryImpl
 import com.example.financesapp.data.remote.repository.RemoteDataSourceImpl
+import com.example.financesapp.data.remote.repository.TransactionRepositoryImpl
+import com.example.financesapp.domain.repositories.AccountRepository
+import com.example.financesapp.domain.usecase.GetAccountsUseCase
+import com.example.financesapp.domain.usecase.impl.GetAccountsUseCaseImpl
 import com.example.financesapp.domain.usecase.impl.GetExpensesUseCaseImpl
 import com.example.financesapp.presentation.common.AddButton
 import com.example.financesapp.utils.NetworkMonitor
@@ -42,7 +47,9 @@ fun ExpensesScreen() {
     val context = LocalContext.current
     val networkMonitor = remember { NetworkMonitor(context.applicationContext) }
 
-    val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
+    val accountRepository = remember { AccountRepositoryImpl(RetrofitInstance.api) }
+    val getAccountsUseCase = remember { GetAccountsUseCaseImpl(accountRepository) }
+    val repository = remember { TransactionRepositoryImpl(RetrofitInstance.api, getAccountsUseCase) }
     val usecase = remember { GetExpensesUseCaseImpl(repository) }
     val viewModel: ExpensesViewModel = viewModel(
         factory = ExpensesViewModelFactory(usecase, networkMonitor)

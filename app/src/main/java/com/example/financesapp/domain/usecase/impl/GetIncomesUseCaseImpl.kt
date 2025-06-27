@@ -1,26 +1,20 @@
 package com.example.financesapp.domain.usecase.impl
 
-import com.example.financesapp.data.mapper.toIncome
-import com.example.financesapp.domain.income.Income
-import com.example.financesapp.domain.repository.RemoteDataSourceRepository
+import com.example.financesapp.domain.models.income.Income
+import com.example.financesapp.domain.repositories.TransactionRepository
 import com.example.financesapp.domain.usecase.GetIncomesUseCase
 
 class GetIncomesUseCaseImpl(
-    private val remoteDataSourceRepository: RemoteDataSourceRepository
+    private val transactionRepository: TransactionRepository,
 ) : GetIncomesUseCase {
 
     override suspend operator fun invoke(
         startDate: String?,
         endDate: String?
     ): List<Income> {
-        val transactions = remoteDataSourceRepository.getTransactionsByPeriod(
+        return transactionRepository.getIncomesByPeriod(
             startDate = startDate,
             endDate = endDate
         )
-
-        return transactions
-            .filter { it.category.isIncome }
-            .map { it.toIncome() }
     }
-
 }

@@ -2,14 +2,14 @@ package com.example.financesapp.data.remote.repository
 
 import com.example.financesapp.data.remote.api.ApiService
 import com.example.financesapp.data.remote.models.account.AccountDto
-import com.example.financesapp.data.remote.models.account.AccountHistoryResponse
-import com.example.financesapp.data.remote.models.account.AccountRequest
-import com.example.financesapp.data.remote.models.account.AccountResponse
+import com.example.financesapp.data.remote.models.account.AccountHistoryResponseDto
+import com.example.financesapp.data.remote.models.account.AccountRequestDto
+import com.example.financesapp.data.remote.models.account.AccountResponseDto
 import com.example.financesapp.data.remote.models.category.Category
 import com.example.financesapp.data.remote.models.transaction.Transaction
 import com.example.financesapp.data.remote.models.transaction.TransactionRequest
 import com.example.financesapp.data.remote.models.transaction.TransactionResponseDto
-import com.example.financesapp.domain.repository.RemoteDataSourceRepository
+import com.example.financesapp.domain.repositories.RemoteDataSourceRepository
 import com.example.financesapp.utils.retryRequest
 import retrofit2.HttpException
 import java.io.IOException
@@ -34,15 +34,15 @@ class RemoteDataSourceImpl(
         }
     }
 
-    override suspend fun getAccountById(id: Int): AccountResponse {
+    override suspend fun getAccountById(id: Int): AccountResponseDto {
         return api.getAccountById(id)
     }
 
-    override suspend fun createAccount(request: AccountRequest): AccountDto {
+    override suspend fun createAccount(request: AccountRequestDto): AccountDto {
         return api.createAccount(request)
     }
 
-    override suspend fun updateAccount(id: Int, request: AccountRequest): AccountDto {
+    override suspend fun updateAccount(id: Int, request: AccountRequestDto): AccountDto {
         return api.updateAccountById(id, request)
     }
 
@@ -50,7 +50,7 @@ class RemoteDataSourceImpl(
         return api.deleteAccountById(id)
     }
 
-    override suspend fun getAccountHistory(id: Int): AccountHistoryResponse {
+    override suspend fun getAccountHistory(id: Int): AccountHistoryResponseDto {
         return api.getAccountHistory(id)
     }
 

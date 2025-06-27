@@ -1,10 +1,10 @@
-package com.example.financesapp.domain.income
+package com.example.financesapp.domain.models.expenses
 
-data class Income(
+data class Expense(
     val id: Int,
     val title: String,
     val subtitle: String? = null,
-    val leadingIcon: String?,
+    val leadingIcon: String,
     val amount: String,
     val currency: String,
     val transactionDate: String,

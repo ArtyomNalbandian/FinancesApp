@@ -31,7 +31,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.data.remote.RetrofitInstance
+import com.example.financesapp.data.remote.repository.AccountRepositoryImpl
 import com.example.financesapp.data.remote.repository.RemoteDataSourceImpl
+import com.example.financesapp.domain.repositories.AccountRepository
 import com.example.financesapp.domain.usecase.impl.GetAccountsUseCaseImpl
 import com.example.financesapp.presentation.common.AddButton
 import com.example.financesapp.presentation.income.IncomeState
@@ -44,7 +46,7 @@ fun AccountScreen() {
     val context = LocalContext.current
     val networkMonitor = remember { NetworkMonitor(context.applicationContext) }
 
-    val repository = remember { RemoteDataSourceImpl(RetrofitInstance.api) }
+    val repository = remember { AccountRepositoryImpl(RetrofitInstance.api) }
     val usecase = remember { GetAccountsUseCaseImpl(repository) }
     val viewModel: AccountViewModel = viewModel(
         factory = AccountViewModelFactory(usecase, networkMonitor)

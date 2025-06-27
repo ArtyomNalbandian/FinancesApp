@@ -1,6 +1,6 @@
 package com.example.financesapp.presentation.history.history_expenses
 
-import com.example.financesapp.domain.expenses.Expense
+import com.example.financesapp.domain.models.expenses.Expense
 
 sealed class ExpensesHistoryState {
     object Loading: ExpensesHistoryState()

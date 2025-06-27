@@ -1,6 +1,6 @@
 package com.example.financesapp.presentation.expenses
 
-import com.example.financesapp.domain.expenses.Expense
+import com.example.financesapp.domain.models.expenses.Expense
 
 sealed interface ExpensesState {
     data object Loading : ExpensesState

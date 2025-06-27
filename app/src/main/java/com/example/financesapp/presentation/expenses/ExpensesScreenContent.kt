@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
-import com.example.financesapp.domain.expenses.Expense
+import com.example.financesapp.domain.models.expenses.Expense
 import com.example.financesapp.presentation.common.ListItem
 import com.example.financesapp.utils.toCurrencySymbol
 

@@ -1,9 +1,9 @@
 package com.example.financesapp.data.remote.api
 
-import com.example.financesapp.data.remote.models.account.AccountHistoryResponse
+import com.example.financesapp.data.remote.models.account.AccountHistoryResponseDto
 import com.example.financesapp.data.remote.models.account.AccountDto
-import com.example.financesapp.data.remote.models.account.AccountRequest
-import com.example.financesapp.data.remote.models.account.AccountResponse
+import com.example.financesapp.data.remote.models.account.AccountRequestDto
+import com.example.financesapp.data.remote.models.account.AccountResponseDto
 import com.example.financesapp.data.remote.models.category.Category
 import com.example.financesapp.data.remote.models.transaction.Transaction
 import com.example.financesapp.data.remote.models.transaction.TransactionRequest
@@ -22,22 +22,22 @@ interface ApiService {
     suspend fun getAccounts(): List<AccountDto>
 
     @POST("accounts")
-    suspend fun createAccount(@Body request: AccountRequest): AccountDto
+    suspend fun createAccount(@Body request: AccountRequestDto): AccountDto
 
     @GET("account/{id}")
-    suspend fun getAccountById(@Path("id") id: Int): AccountResponse
+    suspend fun getAccountById(@Path("id") id: Int): AccountResponseDto
 
     @PUT("accounts/{id}")
     suspend fun updateAccountById(
         @Path("id") id: Int,
-        @Body request: AccountRequest
+        @Body request: AccountRequestDto
     ): AccountDto
 
     @DELETE("accounts/{id}")
     suspend fun deleteAccountById(@Path("id") id: Int)
 
     @GET("accounts/{id}/history")
-    suspend fun getAccountHistory(@Path("id") id: Int): AccountHistoryResponse
+    suspend fun getAccountHistory(@Path("id") id: Int): AccountHistoryResponseDto
 
     @GET("categories")
     suspend fun getCategories(): List<Category>

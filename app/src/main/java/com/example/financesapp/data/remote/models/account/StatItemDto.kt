@@ -1,6 +1,6 @@
 package com.example.financesapp.data.remote.models.account
 
-data class StatItem(
+data class StatItemDto(
     val categoryId: Int,
     val categoryName: String,
     val emoji: String,

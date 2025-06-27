@@ -1,6 +1,6 @@
 package com.example.financesapp.presentation.income
 
-import com.example.financesapp.domain.income.Income
+import com.example.financesapp.domain.models.income.Income
 
 sealed interface IncomeState {
     data object Loading : IncomeState

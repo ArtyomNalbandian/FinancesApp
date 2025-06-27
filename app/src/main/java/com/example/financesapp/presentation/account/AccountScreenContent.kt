@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
-import com.example.financesapp.domain.account.Account
+import com.example.financesapp.domain.models.account.Account
 import com.example.financesapp.presentation.common.ListItem
 import com.example.financesapp.utils.toCurrencySymbol
 
