@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.arturbosch.detekt)
+    alias(libs.plugins.google.ksp)
 }
 
 android {
@@ -66,11 +68,15 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //SplashScreen
+    // Lottie
     implementation(libs.lottie)
 
-    //Retrofit
+    // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+
+    // Dagger2
+    implementation(libs.google.dagger.dagger)
+    ksp(libs.google.dagger.compiler)
 
 }

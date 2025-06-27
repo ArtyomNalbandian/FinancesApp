@@ -34,8 +34,6 @@ class AccountViewModel(
     private val _event = MutableSharedFlow<AccountEvent>()
     val event: SharedFlow<AccountEvent> = _event.asSharedFlow()
 
-    private var isFirstLoad = true
-
     init {
         loadAccount()
     }

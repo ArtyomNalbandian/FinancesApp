@@ -1,6 +1,6 @@
 [versions]
 agp = "8.10.1"
-converterGson = "2.9.0"
+converterGson = "2.11.0"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -11,7 +11,10 @@ activityCompose = "1.10.1"
 composeBom = "2024.09.00"
 lottie = "6.6.6"
 navigationComposeAndroid = "2.9.0"
-retrofit = "2.9.0"
+retrofit = "2.11.0"
+ksp = "2.0.21-1.0.27"
+dagger = "2.51.1"
+detekt = "1.23.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -29,12 +32,23 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+# Compose navigation
 androidx-navigation-compose-android = { group = "androidx.navigation", name = "navigation-compose-android", version.ref = "navigationComposeAndroid" }
+
+# Lottie
 lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
+
+# Retrofit
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+
+# Dagger2
+google-dagger-dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger"}
+google-dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt"}
