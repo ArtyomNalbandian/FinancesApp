@@ -13,5 +13,4 @@ interface TransactionApi {
         @Query("startDate") startDate: String?,
         @Query("endDate") endDate: String?
     ): List<TransactionResponseDto>
-
 }

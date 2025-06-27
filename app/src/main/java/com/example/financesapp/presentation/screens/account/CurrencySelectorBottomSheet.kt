@@ -26,9 +26,10 @@ import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
 import com.example.financesapp.domain.models.account.CurrencyItem
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AccountBottomSheet(
+fun CurrencySelectorBottomSheet(
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
     onCurrencySelected: (String) -> Unit,
@@ -40,55 +41,69 @@ fun AccountBottomSheet(
     ) {
         Column {
             currencies.forEachIndexed { _, currency ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            onCurrencySelected(currency.symbol)
-                        }
-                        .padding(horizontal = 16.dp)
-                        .height(72.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = currency.iconRes),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Text(
-                        text = currency.name,
-                        color = Color.Black,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
+                Currencies(
+                    currency = currency,
+                    onSelected = { onCurrencySelected(currency.symbol) }
+                )
                 HorizontalDivider()
             }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.Red)
-                    .clickable { onDismissRequest() }
-                    .padding(horizontal = 16.dp)
-                    .height(72.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_cancel_rounded),
-                    contentDescription = null,
-                    modifier = Modifier.size(28.dp),
-                    tint = Color.White
-                )
-                Spacer(Modifier.width(16.dp))
-                Text(
-                    text = "Отмена",
-                    color = Color.White,
-                )
-            }
+            CancelButton(onClick = onDismissRequest)
         }
     }
 }
 
-val currencies = listOf(
+@Composable
+private fun Currencies(
+    currency: CurrencyItem,
+    onSelected: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onSelected)
+            .padding(horizontal = 16.dp)
+            .height(72.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(id = currency.iconRes),
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
+        )
+        Text(
+            text = currency.name,
+            color = Color.Black,
+            style = MaterialTheme.typography.bodyLarge
+        )
+    }
+}
+
+@Composable
+private fun CancelButton(onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Red)
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp)
+            .height(72.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_cancel_rounded),
+            contentDescription = null,
+            modifier = Modifier.size(28.dp),
+            tint = Color.White
+        )
+        Spacer(Modifier.width(16.dp))
+        Text(
+            text = "Отмена",
+            color = Color.White,
+        )
+    }
+}
+
+private val currencies = listOf(
     CurrencyItem("Российский рубль", R.drawable.ic_ruble, "₽"),
     CurrencyItem("Американский доллар", R.drawable.ic_dollar, "$"),
     CurrencyItem("Евро", R.drawable.ic_euro, "€")

@@ -1,45 +1,41 @@
 package com.example.financesapp.data.mock
 
-import com.example.financesapp.R
-
-data class Articles(
+data class ArticlesMock(
     val title: String,
-    val leadingIcon: Int?,
-    val trailingIcon: Int? = null,
-    val amount: String? = null
+    val leadingIcon: String,
 )
 
 val articles = listOf(
-    Articles(
+    ArticlesMock(
         "Аренда квартиры",
-        R.drawable.house_test
+        "\uD83C\uDFE1",
     ),
-    Articles(
+    ArticlesMock(
         "Одежда",
-        R.drawable.dress
+        "\uD83D\uDC57"
     ),
-    Articles(
+    ArticlesMock(
         "На собачку",
-        R.drawable.dawg
+        "\uD83D\uDC36"
     ),
-    Articles(
+    ArticlesMock(
         "На собачку",
-        R.drawable.dawg
+        "\uD83D\uDC36"
     ),
-    Articles(
+    ArticlesMock(
         "Ремонт квартиры",
-        R.drawable.repair
+        "\uD83C\uDFE0"
     ),
-    Articles(
+    ArticlesMock(
         "Продукты",
-        R.drawable.lollipop
+        "\uD83C\uDF6D"
     ),
-    Articles(
+    ArticlesMock(
         "Спортзал",
-        R.drawable.gym
+        "\uD83C\uDFCB"
     ),
-    Articles(
+    ArticlesMock(
         "Медицина",
-        R.drawable.pill
+        "\uD83D\uDC8A"
     )
 )

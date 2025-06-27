@@ -11,20 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.financesapp.data.remote.RetrofitInstance
-import com.example.financesapp.data.remote.repository.AccountRepositoryImpl
-import com.example.financesapp.data.remote.repository.TransactionRepositoryImpl
-import com.example.financesapp.di.module.ViewModelFactory
-import com.example.financesapp.domain.usecases.impl.GetAccountsUseCaseImpl
-import com.example.financesapp.domain.usecases.impl.GetExpensesUseCaseImpl
 import com.example.financesapp.presentation.common.AddButton
 
 
@@ -35,16 +27,6 @@ fun ExpensesScreen(
 ) {
 
     val context = LocalContext.current
-
-//    val accountRepository = remember { AccountRepositoryImpl(RetrofitInstance.api) }
-//    val getAccountsUseCase = remember { GetAccountsUseCaseImpl(accountRepository) }
-//    val repository =
-//        remember { TransactionRepositoryImpl(RetrofitInstance.api, getAccountsUseCase) }
-//    val usecase = remember { GetExpensesUseCaseImpl(repository) }
-//    val viewModel: ExpensesViewModel = viewModel(
-//        factory = ExpensesViewModelFactory(usecase)
-//    )
-
     val state by expensesViewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -56,7 +38,6 @@ fun ExpensesScreen(
             }
         }
     }
-
 
     Box(
         modifier = Modifier

@@ -11,23 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.financesapp.data.mock.income
-import com.example.financesapp.data.remote.RetrofitInstance
-import com.example.financesapp.data.remote.repository.AccountRepositoryImpl
-import com.example.financesapp.data.remote.repository.TransactionRepositoryImpl
-import com.example.financesapp.di.module.ViewModelFactory
-import com.example.financesapp.domain.usecases.impl.GetAccountsUseCaseImpl
-import com.example.financesapp.domain.usecases.impl.GetIncomesUseCaseImpl
 import com.example.financesapp.presentation.common.AddButton
-import com.example.financesapp.presentation.screens.expenses.ExpensesViewModel
-
 
 @Composable
 fun IncomeScreen(
@@ -36,16 +26,6 @@ fun IncomeScreen(
 ) {
 
     val context = LocalContext.current
-
-//    val accountRepository = remember { AccountRepositoryImpl(RetrofitInstance.api) }
-//    val getAccountsUseCase = remember { GetAccountsUseCaseImpl(accountRepository) }
-//    val repository =
-//        remember { TransactionRepositoryImpl(RetrofitInstance.api, getAccountsUseCase) }
-//    val usecase = remember { GetIncomesUseCaseImpl(repository) }
-//    val viewModel: IncomeViewModel = viewModel(
-//        factory = IncomeViewModelFactory(usecase)
-//    )
-
     val state by incomeViewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -63,26 +43,25 @@ fun IncomeScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.tertiary)
     ) {
-        when (state) {
+        when (val currentState = state) {
             is IncomeState.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
 
             is IncomeState.Error -> {
-                val error = (state as IncomeState.Error).message
+                val error = currentState.message
                 Text("Ошибка: $error", color = Color.Red)
             }
 
             is IncomeState.Content -> {
-                val content = state as IncomeState.Content
                 IncomeScreenContent(
-                    income = content.income,
-                    amount = content.total,
-                    currency = content.currency,
-                    onIncomeClick = {}
+                    income = currentState.income,
+                    amount = currentState.total,
+                    currency = currentState.currency,
+                    onIncomeClick = { }
                 )
                 AddButton(
-                    onClick = {},
+                    onClick = { },
                     modifier = Modifier.align(Alignment.BottomEnd)
                 )
             }

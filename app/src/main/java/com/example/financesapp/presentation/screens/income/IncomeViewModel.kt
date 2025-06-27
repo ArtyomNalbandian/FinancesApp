@@ -24,8 +24,6 @@ class IncomeViewModel @Inject constructor(
     private val _event = MutableSharedFlow<IncomeEvent>()
     val event: SharedFlow<IncomeEvent> = _event.asSharedFlow()
 
-    private var isFirstLoad = true
-
     init {
         loadIncome()
     }
@@ -39,7 +37,6 @@ class IncomeViewModel @Inject constructor(
                 val total = income.sumOf { it.amount.toDouble() }.toString()
                 val currency = income.firstOrNull()?.currency ?: "RUB"
                 _state.value = IncomeState.Content(income, total, currency)
-                isFirstLoad = false
             } catch (e: Exception) {
                 val message = e.message ?: "Ошибка загрузки"
                 _state.value = IncomeState.Error(message)

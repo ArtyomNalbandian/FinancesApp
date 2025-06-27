@@ -1,7 +1,6 @@
 package com.example.financesapp.presentation.screens.account
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecases.interfaces.GetAccountsUseCase
 import kotlinx.coroutines.Dispatchers
@@ -13,17 +12,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-//class AccountViewModelFactory(
-//    private val usecase: GetAccountsUseCase,
-//) : ViewModelProvider.Factory {
-//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-//        if (modelClass.isAssignableFrom(AccountViewModel::class.java)) {
-//            return AccountViewModel(usecase) as T
-//        }
-//        throw IllegalArgumentException("Unknown ViewModel class")
-//    }
-//}
 
 class AccountViewModel @Inject constructor(
     private val getAccountsUseCase: GetAccountsUseCase,

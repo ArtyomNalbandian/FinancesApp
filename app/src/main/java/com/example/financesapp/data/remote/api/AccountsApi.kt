@@ -7,5 +7,4 @@ interface AccountsApi {
 
     @GET("accounts")
     suspend fun getAccounts(): List<AccountDto>
-
 }

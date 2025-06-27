@@ -15,30 +15,30 @@ import dagger.multibindings.IntoMap
 interface ViewModelModule {
 
     @Binds
-    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+    fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
     @Binds
     @IntoMap
     @ViewModelKey(AccountViewModel::class)
-    abstract fun bindAccountViewModel(accountViewModel: AccountViewModel): ViewModel
+    fun bindAccountViewModel(accountViewModel: AccountViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(ExpensesViewModel::class)
-    abstract fun bindExpensesViewModel(expensesViewModel: ExpensesViewModel): ViewModel
+    fun bindExpensesViewModel(expensesViewModel: ExpensesViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(IncomeViewModel::class)
-    abstract fun bindIncomeViewModel(incomeViewModel: IncomeViewModel): ViewModel
+    fun bindIncomeViewModel(incomeViewModel: IncomeViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(ExpensesHistoryViewModel::class)
-    abstract fun bindExpensesHistoryViewModel(expensesHistoryViewModel: ExpensesHistoryViewModel): ViewModel
+    fun bindExpensesHistoryViewModel(expensesHistoryViewModel: ExpensesHistoryViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(IncomeHistoryViewModel::class)
-    abstract fun bindIncomeHistoryViewModel(incomeHistoryViewModel: IncomeHistoryViewModel): ViewModel
+    fun bindIncomeHistoryViewModel(incomeHistoryViewModel: IncomeHistoryViewModel): ViewModel
 }

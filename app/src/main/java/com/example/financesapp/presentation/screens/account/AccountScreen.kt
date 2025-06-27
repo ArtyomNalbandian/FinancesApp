@@ -11,15 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.financesapp.data.remote.RetrofitInstance
-import com.example.financesapp.data.remote.repository.AccountRepositoryImpl
-import com.example.financesapp.domain.usecases.impl.GetAccountsUseCaseImpl
 import com.example.financesapp.presentation.common.AddButton
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,15 +26,7 @@ fun AccountScreen(
 ) {
 
     val context = LocalContext.current
-
-//    val repository = remember { AccountRepositoryImpl(RetrofitInstance.api) }
-//    val usecase = remember { GetAccountsUseCaseImpl(repository) }
-//    val viewModel: AccountViewModel = viewModel(
-//        factory = AccountViewModelFactory(usecase)
-//    )
-
     val sheetState = rememberModalBottomSheetState()
-
     val state by accountViewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -78,7 +66,7 @@ fun AccountScreen(
                     modifier = Modifier.align(Alignment.BottomEnd)
                 )
                 if (currentState.isCurrencySelectorVisible) {
-                    AccountBottomSheet(
+                    CurrencySelectorBottomSheet(
                         sheetState = sheetState,
                         onDismissRequest = {
                             accountViewModel.handleIntent(AccountIntent.HideCurrencySelector)

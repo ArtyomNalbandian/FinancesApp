@@ -31,14 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
-import com.example.financesapp.data.remote.RetrofitInstance
-import com.example.financesapp.data.remote.repository.AccountRepositoryImpl
-import com.example.financesapp.data.remote.repository.TransactionRepositoryImpl
-import com.example.financesapp.di.module.ViewModelFactory
-import com.example.financesapp.domain.usecases.impl.GetAccountsUseCaseImpl
-import com.example.financesapp.domain.usecases.impl.GetIncomesUseCaseImpl
 import com.example.financesapp.presentation.common.ListItem
-import com.example.financesapp.presentation.screens.expenses.ExpensesViewModel
 import com.example.financesapp.presentation.screens.history.HistoryIntent
 import com.example.financesapp.utils.toCurrencySymbol
 import java.time.Instant
@@ -139,7 +132,7 @@ fun IncomeHistoryScreen(
                                 .forEach { income ->
                                     ListItem(
                                         title = income.title,
-                                        leadingIconStr = income.leadingIcon,
+                                        leadingIcon = income.leadingIcon,
                                         trailingIcon = R.drawable.more_vert,
                                         amount = income.amount,
                                         currency = income.currency.toCurrencySymbol(),

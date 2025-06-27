@@ -1,6 +1,5 @@
 package com.example.financesapp.data.remote.models.account
 
-// To get account by id
 data class AccountResponseDto(
     val id: Int,
     val name: String,

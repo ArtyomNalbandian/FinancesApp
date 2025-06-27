@@ -35,7 +35,7 @@ fun ExpensesScreenContent(
                 ListItem(
                     title = expense.title,
                     supportingText = expense.subtitle,
-                    leadingIconStr = expense.leadingIcon,
+                    leadingIcon = expense.leadingIcon,
                     trailingIcon = R.drawable.more_vert,
                     amount = expense.amount,
                     onClick = { onExpenseClick(expense.id) }

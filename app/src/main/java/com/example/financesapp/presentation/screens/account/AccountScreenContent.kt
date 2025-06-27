@@ -22,7 +22,7 @@ fun AccountScreenContent(
             title = "Баланс",
             amount = account.balance + " ${account.currency.toCurrencySymbol()}",
             backgroundColor = MaterialTheme.colorScheme.secondary,
-            leadingIcon = R.drawable.money,
+            leadingIcon = "\uD83D\uDCB0",
             trailingIcon = R.drawable.more_vert,
             onClick = { },
             modifier = Modifier.height(56.dp)

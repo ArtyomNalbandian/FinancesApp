@@ -19,15 +19,6 @@ import com.example.financesapp.presentation.common.ListItem
 
 @Composable
 fun SettingsScreen() {
-    val items = listOf(
-        "Основной цвет" to R.drawable.test_icon,
-        "Звуки" to R.drawable.test_icon,
-        "Хаптики" to R.drawable.test_icon,
-        "Код пароль" to R.drawable.test_icon,
-        "Синхронизация" to R.drawable.test_icon,
-        "Язык" to R.drawable.test_icon,
-        "О программе" to R.drawable.test_icon
-    )
 
     var isDarkTheme by remember { mutableStateOf(false) }
 
@@ -49,7 +40,7 @@ fun SettingsScreen() {
             )
             HorizontalDivider()
         }
-        itemsIndexed(items) { _, icon ->
+        itemsIndexed(settingsItems) { _, icon ->
             ListItem(
                 title = icon.first,
                 trailingIcon = icon.second,
@@ -60,3 +51,13 @@ fun SettingsScreen() {
         }
     }
 }
+
+private val settingsItems = listOf(
+    "Основной цвет" to R.drawable.more,
+    "Звуки" to R.drawable.more,
+    "Хаптики" to R.drawable.more,
+    "Код пароль" to R.drawable.more,
+    "Синхронизация" to R.drawable.more,
+    "Язык" to R.drawable.more,
+    "О программе" to R.drawable.more
+)

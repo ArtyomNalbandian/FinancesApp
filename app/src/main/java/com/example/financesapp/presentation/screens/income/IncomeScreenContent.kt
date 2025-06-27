@@ -35,7 +35,7 @@ fun IncomeScreenContent(
                 ListItem(
                     title = income.title,
                     supportingText = income.subtitle,
-                    leadingIconStr = income.leadingIcon,
+                    leadingIcon = income.leadingIcon,
                     trailingIcon = R.drawable.more_vert,
                     amount = income.amount,
                     onClick = { onIncomeClick(income.id) }
