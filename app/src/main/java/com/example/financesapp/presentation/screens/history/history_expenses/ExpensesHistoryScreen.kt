@@ -27,14 +27,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
 import com.example.financesapp.data.remote.RetrofitInstance
 import com.example.financesapp.data.remote.repository.AccountRepositoryImpl
 import com.example.financesapp.data.remote.repository.TransactionRepositoryImpl
+import com.example.financesapp.di.module.ViewModelFactory
 import com.example.financesapp.domain.usecases.impl.GetAccountsUseCaseImpl
 import com.example.financesapp.domain.usecases.impl.GetExpensesUseCaseImpl
 import com.example.financesapp.presentation.common.ListItem
+import com.example.financesapp.presentation.screens.expenses.ExpensesViewModel
 import com.example.financesapp.presentation.screens.history.HistoryIntent
 import com.example.financesapp.utils.toCurrencySymbol
 import java.time.Instant
@@ -47,15 +50,18 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpensesHistoryScreen() {
+fun ExpensesHistoryScreen(
+    viewModelFactory: ViewModelProvider.Factory,
+    expensesHistoryViewModel: ExpensesHistoryViewModel = viewModel(factory = viewModelFactory)
+) {
 
-    val accountRepository = remember { AccountRepositoryImpl(RetrofitInstance.api) }
-    val getAccountsUseCase = remember { GetAccountsUseCaseImpl(accountRepository) }
-    val repository =
-        remember { TransactionRepositoryImpl(RetrofitInstance.api, getAccountsUseCase) }
-    val usecase = remember { GetExpensesUseCaseImpl(repository) }
-    val viewModel: ExpensesHistoryViewModel =
-        viewModel(factory = ExpensesHistoryViewModelFactory(usecase))
+//    val accountRepository = remember { AccountRepositoryImpl(RetrofitInstance.api) }
+//    val getAccountsUseCase = remember { GetAccountsUseCaseImpl(accountRepository) }
+//    val repository =
+//        remember { TransactionRepositoryImpl(RetrofitInstance.api, getAccountsUseCase) }
+//    val usecase = remember { GetExpensesUseCaseImpl(repository) }
+//    val viewModel: ExpensesHistoryViewModel =
+//        viewModel(factory = ExpensesHistoryViewModelFactory(usecase))
 
     var startDate by rememberSaveable { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
     var endDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
@@ -64,7 +70,7 @@ fun ExpensesHistoryScreen() {
 
     val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy 'г.'", Locale("ru"))
 
-    val state by viewModel.state.collectAsState()
+    val state by expensesHistoryViewModel.state.collectAsState()
 
     Column(
         Modifier
@@ -165,7 +171,7 @@ fun ExpensesHistoryScreen() {
                             "start" -> startDate = picked
                             "end" -> endDate = picked
                         }
-                        viewModel.handleIntent(
+                        expensesHistoryViewModel.handleIntent(
                             HistoryIntent.LoadHistory(
                                 startDate = startDate.toString(),
                                 endDate = endDate.toString()

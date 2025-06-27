@@ -1,6 +1,5 @@
 package com.example.financesapp.utils
 
-import android.util.Log
 import kotlinx.coroutines.delay
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -19,13 +18,11 @@ suspend fun <T> retryRequest(
             throw e
         } catch (e: Throwable) {
             val willRetry = shouldRetry(e)
+
             if (!willRetry) {
-                Log.d("testLog", "NOT retrying — ${e::class.java.simpleName}")
                 throw e
             }
-
             lastError = e
-            Log.d("testLog", "retry attempt ${attempt + 1} --- $e")
 
             if (attempt < maxRetries - 1) {
                 delay(delayMillis)
@@ -35,5 +32,3 @@ suspend fun <T> retryRequest(
 
     throw lastError ?: Exception("Unknown error after $maxRetries attempts")
 }
-
-

@@ -17,11 +17,9 @@ import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.ListItem
 
-
 @Composable
 fun SettingsScreen() {
     val items = listOf(
-        "Темная тема" to null,
         "Основной цвет" to R.drawable.test_icon,
         "Звуки" to R.drawable.test_icon,
         "Хаптики" to R.drawable.test_icon,
@@ -55,7 +53,7 @@ fun SettingsScreen() {
             ListItem(
                 title = icon.first,
                 trailingIcon = icon.second,
-                onClick = { /* TODO */ },
+                onClick = { },
                 modifier = Modifier.height(56.dp)
             )
             HorizontalDivider()

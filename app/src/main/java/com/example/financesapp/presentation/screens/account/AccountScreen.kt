@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.data.remote.RetrofitInstance
 import com.example.financesapp.data.remote.repository.AccountRepositoryImpl
@@ -23,22 +24,25 @@ import com.example.financesapp.presentation.common.AddButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AccountScreen() {
+fun AccountScreen(
+    viewModelFactory: ViewModelProvider.Factory,
+    accountViewModel: AccountViewModel = viewModel(factory = viewModelFactory)
+) {
 
     val context = LocalContext.current
 
-    val repository = remember { AccountRepositoryImpl(RetrofitInstance.api) }
-    val usecase = remember { GetAccountsUseCaseImpl(repository) }
-    val viewModel: AccountViewModel = viewModel(
-        factory = AccountViewModelFactory(usecase)
-    )
+//    val repository = remember { AccountRepositoryImpl(RetrofitInstance.api) }
+//    val usecase = remember { GetAccountsUseCaseImpl(repository) }
+//    val viewModel: AccountViewModel = viewModel(
+//        factory = AccountViewModelFactory(usecase)
+//    )
 
     val sheetState = rememberModalBottomSheetState()
 
-    val state by viewModel.state.collectAsState()
+    val state by accountViewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.event.collect { event ->
+        accountViewModel.event.collect { event ->
             when (event) {
                 is AccountEvent.ShowError -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
@@ -62,7 +66,7 @@ fun AccountScreen() {
                 AccountScreenContent(
                     account = currentState.account,
                     onCurrencySelectorClick = {
-                        viewModel.handleIntent(
+                        accountViewModel.handleIntent(
                             AccountIntent.ShowCurrencySelector(
                                 currentState.account.id
                             )
@@ -77,10 +81,10 @@ fun AccountScreen() {
                     AccountBottomSheet(
                         sheetState = sheetState,
                         onDismissRequest = {
-                            viewModel.handleIntent(AccountIntent.HideCurrencySelector)
+                            accountViewModel.handleIntent(AccountIntent.HideCurrencySelector)
                         },
                         onCurrencySelected = { selectedCurrency ->
-                            viewModel.handleIntent(
+                            accountViewModel.handleIntent(
                                 AccountIntent.ChangeCurrency(
                                     accountId = currentState.account.id,
                                     currency = selectedCurrency

@@ -16,8 +16,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class IncomeHistoryViewModel(
+class IncomeHistoryViewModel @Inject constructor(
     private val getIncomesUseCase: GetIncomesUseCase,
 ) : ViewModel() {
 
@@ -60,13 +61,13 @@ class IncomeHistoryViewModel(
 
 }
 
-class IncomeHistoryViewModelFactory(
-    private val usecase: GetIncomesUseCase,
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(IncomeHistoryViewModel::class.java)) {
-            return IncomeHistoryViewModel(usecase) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
+//class IncomeHistoryViewModelFactory(
+//    private val usecase: GetIncomesUseCase,
+//) : ViewModelProvider.Factory {
+//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//        if (modelClass.isAssignableFrom(IncomeHistoryViewModel::class.java)) {
+//            return IncomeHistoryViewModel(usecase) as T
+//        }
+//        throw IllegalArgumentException("Unknown ViewModel class")
+//    }
+//}

@@ -2,7 +2,7 @@ package com.example.financesapp.data.remote.repository
 
 import com.example.financesapp.data.mapper.toExpense
 import com.example.financesapp.data.mapper.toIncome
-import com.example.financesapp.data.remote.api.ApiService
+import com.example.financesapp.data.remote.api.TransactionApi
 import com.example.financesapp.domain.models.expenses.Expense
 import com.example.financesapp.domain.models.income.Income
 import com.example.financesapp.domain.repositories.TransactionRepository
@@ -13,9 +13,10 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.UnknownHostException
+import javax.inject.Inject
 
-class TransactionRepositoryImpl(
-    private val apiService: ApiService,
+class TransactionRepositoryImpl @Inject constructor(
+    private val transactionApi: TransactionApi,
     private val getAccountsUseCase: GetAccountsUseCase
 ) : TransactionRepository {
     override suspend fun getExpensesByPeriod(startDate: String?, endDate: String?): List<Expense> {
@@ -29,7 +30,7 @@ class TransactionRepositoryImpl(
                 }
             }
         ) {
-            apiService.getTransactionsByPeriod(
+            transactionApi.getTransactionsByPeriod(
                 accountId = getAccountId(),
                 startDate = startDate,
                 endDate = endDate
@@ -51,7 +52,7 @@ class TransactionRepositoryImpl(
                 }
             }
         ) {
-            apiService.getTransactionsByPeriod(
+            transactionApi.getTransactionsByPeriod(
                 accountId = getAccountId(),
                 startDate = startDate,
                 endDate = endDate

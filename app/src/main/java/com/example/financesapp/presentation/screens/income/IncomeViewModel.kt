@@ -1,7 +1,6 @@
 package com.example.financesapp.presentation.screens.income
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecases.interfaces.GetIncomesUseCase
 import kotlinx.coroutines.Dispatchers
@@ -13,19 +12,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class IncomeViewModelFactory(
-    private val repository: GetIncomesUseCase,
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(IncomeViewModel::class.java)) {
-            return IncomeViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
-
-class IncomeViewModel(
+class IncomeViewModel @Inject constructor(
     private val getIncomesUseCase: GetIncomesUseCase,
 ) : ViewModel() {
 

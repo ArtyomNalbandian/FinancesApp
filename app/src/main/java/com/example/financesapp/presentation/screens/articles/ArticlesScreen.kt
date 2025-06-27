@@ -19,7 +19,7 @@ fun ArticlesScreen() {
                 ListItem(
                     title = article.title,
                     leadingIcon = article.leadingIcon,
-                    onClick = { } //TODO()
+                    onClick = { }
                 )
                 HorizontalDivider()
             }

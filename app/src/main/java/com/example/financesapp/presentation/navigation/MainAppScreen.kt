@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -24,7 +25,7 @@ import com.example.financesapp.presentation.common.TopBar
 
 
 @Composable
-fun MainAppScreen() {
+fun MainAppScreen(viewModelFactory: ViewModelProvider.Factory) {
     val navController = rememberNavController()
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination
@@ -76,6 +77,7 @@ fun MainAppScreen() {
     ) { padding ->
         RootNavGraph(
             navController = navController,
+            viewModelFactory = viewModelFactory,
             modifier = Modifier.padding(padding),
         )
     }

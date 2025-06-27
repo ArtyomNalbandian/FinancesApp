@@ -1,16 +1,17 @@
 package com.example.financesapp.data.remote.repository
 
 import com.example.financesapp.data.mapper.toAccount
-import com.example.financesapp.data.remote.api.ApiService
+import com.example.financesapp.data.remote.api.AccountsApi
 import com.example.financesapp.domain.models.account.Account
 import com.example.financesapp.domain.repositories.AccountRepository
 import com.example.financesapp.utils.retryRequest
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.UnknownHostException
+import javax.inject.Inject
 
-class AccountRepositoryImpl(
-    private val apiService: ApiService
+class AccountRepositoryImpl @Inject constructor(
+    private val accountApi: AccountsApi
 ) : AccountRepository {
     override suspend fun getAccount(): Account {
         return retryRequest(
@@ -23,7 +24,7 @@ class AccountRepositoryImpl(
                 }
             }
         ) {
-            apiService.getAccounts().first().toAccount()
+            accountApi.getAccounts().first().toAccount()
         }
     }
 }

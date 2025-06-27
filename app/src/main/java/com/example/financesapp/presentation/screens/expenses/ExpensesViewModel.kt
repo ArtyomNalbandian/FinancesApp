@@ -1,7 +1,6 @@
 package com.example.financesapp.presentation.screens.expenses
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecases.interfaces.GetExpensesUseCase
 import kotlinx.coroutines.Dispatchers
@@ -13,20 +12,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class ExpensesViewModelFactory(
-    private val repository: GetExpensesUseCase,
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ExpensesViewModel::class.java)) {
-            return ExpensesViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
-
-
-class ExpensesViewModel(
+class ExpensesViewModel @Inject constructor(
     private val getExpensesUseCase: GetExpensesUseCase,
 ) : ViewModel() {
 
@@ -35,8 +23,6 @@ class ExpensesViewModel(
 
     private val _event = MutableSharedFlow<ExpensesEvent>()
     val event: SharedFlow<ExpensesEvent> = _event.asSharedFlow()
-
-    private var isFirstLoad = true
 
     init {
         loadExpenses()
@@ -58,5 +44,4 @@ class ExpensesViewModel(
             }
         }
     }
-
 }

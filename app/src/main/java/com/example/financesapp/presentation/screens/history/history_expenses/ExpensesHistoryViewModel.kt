@@ -16,8 +16,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class ExpensesHistoryViewModel(
+class ExpensesHistoryViewModel @Inject constructor(
     private val getExpensesUseCase: GetExpensesUseCase,
 ) : ViewModel() {
 

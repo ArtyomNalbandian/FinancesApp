@@ -12,19 +12,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AccountViewModelFactory(
-    private val usecase: GetAccountsUseCase,
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AccountViewModel::class.java)) {
-            return AccountViewModel(usecase) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
+//class AccountViewModelFactory(
+//    private val usecase: GetAccountsUseCase,
+//) : ViewModelProvider.Factory {
+//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//        if (modelClass.isAssignableFrom(AccountViewModel::class.java)) {
+//            return AccountViewModel(usecase) as T
+//        }
+//        throw IllegalArgumentException("Unknown ViewModel class")
+//    }
+//}
 
-class AccountViewModel(
+class AccountViewModel @Inject constructor(
     private val getAccountsUseCase: GetAccountsUseCase,
 ) : ViewModel() {
 
