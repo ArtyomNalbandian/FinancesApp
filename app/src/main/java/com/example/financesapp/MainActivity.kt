@@ -31,41 +31,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FinancesAppTheme {
-//                var isSplashVisible by remember { mutableStateOf(true) }
-//
-//                if (isSplashVisible) {
-//                    SplashScreen(
-//                        onLoadingComplete = { isSplashVisible = false }
-//                    )
-//                } else {
-                    MainAppScreen()
-//                }
+                MainAppScreen()
             }
-        }
-    }
-}
-
-@Composable
-fun SplashScreen(onLoadingComplete: () -> Unit) {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splash_animation))
-    val progress by animateLottieCompositionAsState(composition, speed = 1.3f, iterations = 1)
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
-        contentAlignment = Alignment.Center
-    ) {
-        LottieAnimation(
-            composition = composition,
-            progress = { progress },
-            modifier = Modifier.size(360.dp)
-        )
-    }
-
-    LaunchedEffect(progress) {
-        if (progress >= 1.0f) {
-            onLoadingComplete()
         }
     }
 }

@@ -6,7 +6,7 @@ import com.example.financesapp.data.remote.api.ApiService
 import com.example.financesapp.domain.models.expenses.Expense
 import com.example.financesapp.domain.models.income.Income
 import com.example.financesapp.domain.repositories.TransactionRepository
-import com.example.financesapp.domain.usecase.GetAccountsUseCase
+import com.example.financesapp.domain.usecases.interfaces.GetAccountsUseCase
 import com.example.financesapp.utils.retryRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

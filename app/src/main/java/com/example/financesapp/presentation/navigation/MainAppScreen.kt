@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -22,7 +21,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.TopBar
-import com.example.financesapp.utils.NetworkMonitor
 
 
 @Composable
@@ -40,11 +38,11 @@ fun MainAppScreen() {
         bottomBar = {
             NavigationBar {
                 val items = listOf(
-                    Triple(Screen.ExpensesGraph, R.drawable.expenses, "Расходы"),
-                    Triple(Screen.IncomeGraph, R.drawable.income, "Доходы"),
-                    Triple(Screen.AccountGraph, R.drawable.account, "Счет"),
-                    Triple(Screen.ArticlesGraph, R.drawable.articles_new, "Статьи"),
-                    Triple(Screen.SettingsGraph, R.drawable.settings, "Настройки")
+                    Triple(ScreenRoute.ExpensesGraph, R.drawable.expenses, "Расходы"),
+                    Triple(ScreenRoute.IncomeGraph, R.drawable.income, "Доходы"),
+                    Triple(ScreenRoute.AccountGraph, R.drawable.account, "Счет"),
+                    Triple(ScreenRoute.ArticlesGraph, R.drawable.articles_new, "Статьи"),
+                    Triple(ScreenRoute.SettingsGraph, R.drawable.settings, "Настройки")
                 )
 
                 items.forEach { (screen, icon, label) ->

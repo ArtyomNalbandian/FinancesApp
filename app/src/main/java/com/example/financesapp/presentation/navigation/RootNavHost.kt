@@ -6,16 +6,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.financesapp.presentation.account.AccountScreen
-import com.example.financesapp.presentation.add_account.AddAccountScreen
-import com.example.financesapp.presentation.analysis.AnalysisScreen
-import com.example.financesapp.presentation.articles.ArticlesTestScreen
-import com.example.financesapp.presentation.expenses.ExpensesScreen
-import com.example.financesapp.presentation.history.history_expenses.ExpensesHistoryScreen
-import com.example.financesapp.presentation.history.history_income.IncomeHistoryScreen
-import com.example.financesapp.presentation.income.IncomeScreen
-import com.example.financesapp.presentation.settings.SettingsTestScreen
-import com.example.financesapp.utils.NetworkMonitor
+import com.example.financesapp.presentation.screens.account.AccountScreen
+import com.example.financesapp.presentation.screens.articles.ArticlesTestScreen
+import com.example.financesapp.presentation.screens.expenses.ExpensesScreen
+import com.example.financesapp.presentation.screens.history.history_expenses.ExpensesHistoryScreen
+import com.example.financesapp.presentation.screens.history.history_income.IncomeHistoryScreen
+import com.example.financesapp.presentation.screens.income.IncomeScreen
+import com.example.financesapp.presentation.screens.settings.SettingsTestScreen
 
 
 @Composable
@@ -25,73 +22,57 @@ fun RootNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.ExpensesGraph.route,
+        startDestination = ScreenRoute.ExpensesGraph.route,
         modifier = modifier
     ) {
         navigation(
-            startDestination = Screen.Expenses.route,
-            route = Screen.ExpensesGraph.route
+            startDestination = ScreenRoute.Expenses.route,
+            route = ScreenRoute.ExpensesGraph.route
         ) {
-            composable(Screen.Expenses.route) {
+            composable(ScreenRoute.Expenses.route) {
                 ExpensesScreen()
             }
-            composable(Screen.History("expenses").route) {
+            composable(ScreenRoute.History("expenses").route) {
                 ExpensesHistoryScreen()
             }
-            composable(Screen.Analysis("expenses").route) {
-                AnalysisScreen("expenses")
-            }
-            composable(Screen.AddExpense.route) {
-                // TODO()
-            }
         }
 
         navigation(
-            startDestination = Screen.Income.route,
-            route = Screen.IncomeGraph.route
+            startDestination = ScreenRoute.Income.route,
+            route = ScreenRoute.IncomeGraph.route
         ) {
-            composable(Screen.Income.route) {
+            composable(ScreenRoute.Income.route) {
                 IncomeScreen()
             }
-            composable(Screen.History("income").route) {
+            composable(ScreenRoute.History("income").route) {
                 IncomeHistoryScreen()
             }
-            composable(Screen.Analysis("income").route) {
-                AnalysisScreen("income")
-            }
         }
 
         navigation(
-            startDestination = Screen.Account.route,
-            route = Screen.AccountGraph.route
+            startDestination = ScreenRoute.Account.route,
+            route = ScreenRoute.AccountGraph.route
         ) {
-            composable(Screen.Account.route) {
+            composable(ScreenRoute.Account.route) {
                 AccountScreen()
             }
-            composable(Screen.AddAccount.route) {
-                AddAccountScreen(
-                    onLeadingIconClick = { navController.popBackStack() },
-                    onTrailingIconClick = { navController.popBackStack() }
-                )
-            }
-            composable(Screen.EditAccount.route) {}
         }
 
         navigation(
-            startDestination = Screen.Articles.route,
-            route = Screen.ArticlesGraph.route
+            startDestination = ScreenRoute.Articles.route,
+            route = ScreenRoute.ArticlesGraph.route
         ) {
-            composable(Screen.Articles.route) {
+            composable(ScreenRoute.Articles.route) {
                 ArticlesTestScreen()
 
             }
         }
 
         navigation(
-            startDestination = Screen.Settings.route,
-            route = Screen.SettingsGraph.route
+            startDestination = ScreenRoute.Settings.route,
+            route = ScreenRoute.SettingsGraph.route
         ) {
-            composable(Screen.Settings.route) {
+            composable(ScreenRoute.Settings.route) {
                 SettingsTestScreen()
             }
         }

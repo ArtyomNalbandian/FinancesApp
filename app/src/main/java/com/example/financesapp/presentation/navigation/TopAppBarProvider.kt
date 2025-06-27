@@ -10,79 +10,43 @@ fun provideTopAppBarState(
     navController: NavController,
 ): TopAppBarState {
     return when (currentBackStackEntry?.destination?.route) {
-        Screen.Expenses.route -> TopAppBarState(
+        ScreenRoute.Expenses.route -> TopAppBarState(
             title = "Расходы сегодня",
             trailingIcon = R.drawable.ic_history,
-            onTrailingIconClick = { navController.navigate(Screen.History("expenses").route) }
+            onTrailingIconClick = { navController.navigate(ScreenRoute.History("expenses").route) }
         )
-        Screen.History("expenses").route -> TopAppBarState(
+
+        ScreenRoute.History("expenses").route -> TopAppBarState(
             title = "Моя история",
             leadingIcon = R.drawable.ic_back,
             trailingIcon = R.drawable.ic_analysis,
             onLeadingIconClick = { navController.popBackStack() },
-            onTrailingIconClick = { navController.navigate(Screen.Analysis("expenses").route) }
-        )
-        Screen.Analysis("expenses").route -> TopAppBarState(
-            title = "Анализ расходов",
-            leadingIcon = R.drawable.ic_back,
-            onLeadingIconClick = { navController.popBackStack() }
-        )
-        Screen.AddExpense.route -> TopAppBarState(
-            title = "Новый расход",
-            leadingIcon = R.drawable.ic_cancel,
-            trailingIcon = R.drawable.ic_apply,
-            onLeadingIconClick = { navController.popBackStack() },
-            onTrailingIconClick = { navController.navigate(Screen.Expenses.route) }
+            onTrailingIconClick = { }
         )
 
-        Screen.Income.route -> TopAppBarState(
+        ScreenRoute.Income.route -> TopAppBarState(
             title = "Доходы сегодня",
             trailingIcon = R.drawable.ic_history,
-            onTrailingIconClick = { navController.navigate(Screen.History("income").route) }
+            onTrailingIconClick = { navController.navigate(ScreenRoute.History("income").route) }
         )
-        Screen.History("income").route -> TopAppBarState(
+
+        ScreenRoute.History("income").route -> TopAppBarState(
             title = "Моя история",
             leadingIcon = R.drawable.ic_back,
             trailingIcon = R.drawable.ic_analysis,
             onLeadingIconClick = { navController.popBackStack() },
-            onTrailingIconClick = { navController.navigate(Screen.Analysis("income").route) }
-        )
-        Screen.Analysis("income").route -> TopAppBarState(
-            title = "Анализ доходов",
-            leadingIcon = R.drawable.ic_back,
-            onLeadingIconClick = { navController.popBackStack() }
-        )
-        Screen.AddExpense.route -> TopAppBarState(
-            title = "Новый доход",
-            leadingIcon = R.drawable.ic_cancel,
-            trailingIcon = R.drawable.ic_apply,
-            onLeadingIconClick = { navController.popBackStack() },
-            onTrailingIconClick = { navController.navigate(Screen.Income.route) }
+            onTrailingIconClick = { }
         )
 
-        Screen.Account.route -> TopAppBarState(
+        ScreenRoute.Account.route -> TopAppBarState(
             title = "Мой счет",
             trailingIcon = R.drawable.ic_edit,
-            onTrailingIconClick = { navController.navigate(Screen.EditAccount.route) }
-        )
-        Screen.EditAccount.route -> TopAppBarState(
-            title = "Мой счет",
-            leadingIcon = R.drawable.ic_back,
-            trailingIcon = R.drawable.ic_apply,
-            onLeadingIconClick = { navController.popBackStack() },
-            onTrailingIconClick = { navController.navigate(Screen.Account.route) }
-        )
-        Screen.AddAccount.route -> TopAppBarState(
-            title = "Новый счет",
-            leadingIcon = R.drawable.ic_back,
-            trailingIcon = R.drawable.ic_apply,
-            onLeadingIconClick = { navController.popBackStack() },
-            onTrailingIconClick = { navController.navigate(Screen.Account.route) }
+            onTrailingIconClick = { }
         )
 
-        Screen.Articles.route -> TopAppBarState(title = "Мои статьи")
+        ScreenRoute.Articles.route -> TopAppBarState(title = "Мои статьи")
 
-        Screen.Account.route -> TopAppBarState(title = "Настройки")
+        ScreenRoute.Account.route -> TopAppBarState(title = "Настройки")
 
         else -> TopAppBarState()
     }
