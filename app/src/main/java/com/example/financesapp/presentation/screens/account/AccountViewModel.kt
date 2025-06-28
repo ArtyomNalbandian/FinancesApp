@@ -13,6 +13,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel для управления состоянием счета и валюты.
+ * @property getAccountsUseCase UseCase для получения данных аккаунта
+ */
 class AccountViewModel @Inject constructor(
     private val getAccountsUseCase: GetAccountsUseCase,
 ) : ViewModel() {

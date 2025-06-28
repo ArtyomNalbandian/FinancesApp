@@ -1,32 +1,32 @@
 package com.example.financesapp.presentation.screens.history.history_income
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecases.interfaces.GetIncomesUseCase
-import com.example.financesapp.presentation.screens.history.HistoryIntent
-import com.example.financesapp.presentation.screens.income.IncomeEvent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
+/**
+ * ViewModel для экрана истории доходов.
+ * Управляет:
+ * - Загрузкой истории доходов за выбранный период
+ * - Расчетом общей суммы
+ * - Обработкой ошибок
+ * Автоматически загружает данные за текущий месяц при инициализации.
+ * @property getIncomesUseCase UseCase для получения доходов
+ */
 class IncomeHistoryViewModel @Inject constructor(
     private val getIncomesUseCase: GetIncomesUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<IncomeHistoryState>(IncomeHistoryState.Loading)
     val state: StateFlow<IncomeHistoryState> = _state.asStateFlow()
-
-    private val _event = MutableSharedFlow<IncomeEvent>()
-    val event: SharedFlow<IncomeEvent> = _event.asSharedFlow()
 
     init {
         loadHistory(
@@ -35,9 +35,9 @@ class IncomeHistoryViewModel @Inject constructor(
         )
     }
 
-    fun handleIntent(intent: HistoryIntent) {
+    fun handleIntent(intent: IncomeHistoryIntent) {
         when (intent) {
-            is HistoryIntent.LoadHistory -> loadHistory(intent.startDate, intent.endDate)
+            is IncomeHistoryIntent.LoadHistory -> loadHistory(intent.startDate, intent.endDate)
         }
     }
 
@@ -58,16 +58,4 @@ class IncomeHistoryViewModel @Inject constructor(
             }
         }
     }
-
 }
-
-//class IncomeHistoryViewModelFactory(
-//    private val usecase: GetIncomesUseCase,
-//) : ViewModelProvider.Factory {
-//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-//        if (modelClass.isAssignableFrom(IncomeHistoryViewModel::class.java)) {
-//            return IncomeHistoryViewModel(usecase) as T
-//        }
-//        throw IllegalArgumentException("Unknown ViewModel class")
-//    }
-//}

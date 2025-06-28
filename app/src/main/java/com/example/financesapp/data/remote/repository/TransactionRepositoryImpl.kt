@@ -15,6 +15,19 @@ import java.io.IOException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
+/**
+ * Реализация [TransactionRepository] для работы с транзакциями через API.
+ * Обеспечивает:
+ * - Получение расходов/доходов за указанный период
+ * - Автоматические повторы запросов при сетевых ошибках
+ * - Фильтрацию и сортировку транзакций
+ * - Преобразование DTO в доменные модели
+ * @property transactionApi API для работы с транзакциями [TransactionApi]
+ * @property getAccountsUseCase UseCase для получения текущего аккаунта [GetAccountsUseCase]
+ * @constructor Создает репозиторий с внедренными зависимостями
+ * @param transactionApi Реализация сетевого API транзакций
+ * @param getAccountsUseCase UseCase для получения ID аккаунта
+ */
 class TransactionRepositoryImpl @Inject constructor(
     private val transactionApi: TransactionApi,
     private val getAccountsUseCase: GetAccountsUseCase

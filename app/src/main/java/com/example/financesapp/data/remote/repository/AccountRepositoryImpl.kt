@@ -10,6 +10,13 @@ import java.io.IOException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
+/**
+ * Реализация [AccountRepository] для работы со счетом через API.
+ * Предоставляет методы для получения информации о счете с обработкой ошибок и автоматическими повторами запросов.
+ * @property accountApi API-интерфейс [AccountsApi]
+ * @constructor Создает экземпляр репозитория [AccountsApi]
+ * @param accountApi Реализация сетевого API для работы со счетами
+ */
 class AccountRepositoryImpl @Inject constructor(
     private val accountApi: AccountsApi
 ) : AccountRepository {

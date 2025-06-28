@@ -9,14 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,38 +26,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.ListItem
-import com.example.financesapp.presentation.screens.history.HistoryIntent
+import com.example.financesapp.presentation.screens.history.DatePickerDialogWrapper
+import com.example.financesapp.presentation.screens.history.DateRangeSelector
 import com.example.financesapp.utils.toCurrencySymbol
 import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDate.now
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpensesHistoryScreen(
     viewModelFactory: ViewModelProvider.Factory,
     expensesHistoryViewModel: ExpensesHistoryViewModel = viewModel(factory = viewModelFactory)
 ) {
-
-//    val accountRepository = remember { AccountRepositoryImpl(RetrofitInstance.api) }
-//    val getAccountsUseCase = remember { GetAccountsUseCaseImpl(accountRepository) }
-//    val repository =
-//        remember { TransactionRepositoryImpl(RetrofitInstance.api, getAccountsUseCase) }
-//    val usecase = remember { GetExpensesUseCaseImpl(repository) }
-//    val viewModel: ExpensesHistoryViewModel =
-//        viewModel(factory = ExpensesHistoryViewModelFactory(usecase))
-
     var startDate by rememberSaveable { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
     var endDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
     var pickerTarget by remember { mutableStateOf<String?>(null) }
     var showDialog by remember { mutableStateOf(false) }
 
     val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy 'г.'", Locale("ru"))
-
     val state by expensesHistoryViewModel.state.collectAsState()
 
     Column(
@@ -70,116 +52,98 @@ fun ExpensesHistoryScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        ListItem(
-            title = "Начало",
-            amount = startDate.format(dateFormatter),
-            backgroundColor = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier.height(56.dp),
-            onClick = {
+        DateRangeSelector(
+            startDate = startDate,
+            endDate = endDate,
+            dateFormatter = dateFormatter,
+            onStartClick = {
                 pickerTarget = "start"
                 showDialog = true
-            }
-        )
-        HorizontalDivider()
-        ListItem(
-            title = "Конец",
-            amount = endDate.format(dateFormatter),
-            backgroundColor = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier.height(56.dp),
-            onClick = {
+            },
+            onEndClick = {
                 pickerTarget = "end"
                 showDialog = true
             }
         )
-        HorizontalDivider()
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.tertiary)
-        ) {
-            when (val currentState = state) {
-                is ExpensesHistoryState.Loading -> {
-                    CircularProgressIndicator()
-                }
+        ExpensesHistoryContent(state = state)
 
-                is ExpensesHistoryState.Error -> {
-                    Text(
-                        currentState.message,
-                        modifier = Modifier.padding(16.dp, top = 64.dp)
-                    )
-                }
-
-                is ExpensesHistoryState.Content -> {
-                    Column {
-                        ListItem(
-                            title = "Сумма",
-                            amount = currentState.total,
-                            currency = "",
-                            modifier = Modifier.height(56.dp),
-                            backgroundColor = MaterialTheme.colorScheme.secondary,
-                        )
-                        if (currentState.items.isEmpty()) {
-                            Text(
-                                "Нет операций",
-                                modifier = Modifier.padding(16.dp),
-                                color = Color.Gray
-                            )
-                        } else {
-                            currentState.items.sortedBy { Instant.parse(it.transactionDate) }
-                                .forEach { expense ->
-                                    ListItem(
-                                        title = expense.title,
-                                        leadingIcon = expense.leadingIcon,
-                                        trailingIcon = R.drawable.more_vert,
-                                        amount = expense.amount,
-                                        currency = expense.currency.toCurrencySymbol(),
-                                        supportingText = expense.subtitle,
-                                        onClick = {}
-                                    )
-                                    HorizontalDivider()
-                                }
-                        }
+        if (showDialog) {
+            DatePickerDialogWrapper(
+                pickerTarget = pickerTarget,
+                startDate = startDate,
+                endDate = endDate,
+                onDateSelected = { selectedDate ->
+                    when (pickerTarget) {
+                        "start" -> startDate = selectedDate
+                        "end" -> endDate = selectedDate
                     }
-
-                }
-            }
+                    expensesHistoryViewModel.handleIntent(
+                        ExpensesHistoryIntent.LoadHistory(
+                            startDate = startDate.toString(),
+                            endDate = endDate.toString()
+                        )
+                    )
+                    showDialog = false
+                },
+                onDismiss = { showDialog = false }
+            )
         }
     }
-    if (showDialog) {
-        val initialDateMillis = when (pickerTarget) {
-            "start" -> startDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-            "end" -> endDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-            else -> now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-        }
-        val datePickerState = rememberDatePickerState(initialSelectedDateMillis = initialDateMillis)
-        DatePickerDialog(
-            onDismissRequest = { showDialog = false },
-            confirmButton = {
-                TextButton(onClick = {
-                    datePickerState.selectedDateMillis?.let { millis ->
-                        val picked = Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault())
-                            .toLocalDate()
-                        when (pickerTarget) {
-                            "start" -> startDate = picked
-                            "end" -> endDate = picked
-                        }
-                        expensesHistoryViewModel.handleIntent(
-                            HistoryIntent.LoadHistory(
-                                startDate = startDate.toString(),
-                                endDate = endDate.toString()
-                            )
-                        )
-                    }
-                    showDialog = false
-                }) { Text("Ок") }
+}
 
-            },
-            dismissButton = {
-                TextButton(onClick = { showDialog = false }) { Text("Отмена") }
+@Composable
+private fun ExpensesHistoryContent(state: ExpensesHistoryState) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.tertiary)
+    ) {
+        when (state) {
+            is ExpensesHistoryState.Loading -> {
+                CircularProgressIndicator()
             }
-        ) {
-            DatePicker(state = datePickerState, showModeToggle = false)
+
+            is ExpensesHistoryState.Error -> {
+                Text(
+                    state.message,
+                    modifier = Modifier.padding(16.dp, top = 64.dp)
+                )
+            }
+
+            is ExpensesHistoryState.Content -> {
+                Column {
+                    ListItem(
+                        title = "Сумма",
+                        amount = state.total,
+                        currency = "",
+                        modifier = Modifier.height(56.dp),
+                        backgroundColor = MaterialTheme.colorScheme.secondary,
+                    )
+
+                    if (state.items.isEmpty()) {
+                        Text(
+                            "Нет операций",
+                            modifier = Modifier.padding(16.dp),
+                            color = Color.Gray
+                        )
+                    } else {
+                        state.items.sortedBy { Instant.parse(it.transactionDate) }
+                            .forEach { expense ->
+                                ListItem(
+                                    title = expense.title,
+                                    leadingIcon = expense.leadingIcon,
+                                    trailingIcon = R.drawable.more_vert,
+                                    amount = expense.amount,
+                                    currency = expense.currency.toCurrencySymbol(),
+                                    supportingText = expense.subtitle,
+                                    onClick = {}
+                                )
+                                HorizontalDivider()
+                            }
+                    }
+                }
+            }
         }
     }
 }

@@ -14,6 +14,14 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
+/**
+ * ViewModel для управления состоянием экрана доходов.
+ * Основные функции:
+ * - Загрузка доходов за текущий день
+ * - Расчет общей суммы доходов
+ * - Обработка и отображение ошибок
+ * @property getIncomesUseCase UseCase для получения доходов
+ */
 class IncomeViewModel @Inject constructor(
     private val getIncomesUseCase: GetIncomesUseCase,
 ) : ViewModel() {

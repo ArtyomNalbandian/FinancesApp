@@ -1,32 +1,32 @@
 package com.example.financesapp.presentation.screens.history.history_expenses
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecases.interfaces.GetExpensesUseCase
-import com.example.financesapp.presentation.screens.history.HistoryIntent
-import com.example.financesapp.presentation.screens.income.IncomeEvent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
+/**
+ * ViewModel для экрана истории расходов.
+ * Управляет:
+ * - Загрузкой истории расходов за выбранный период
+ * - Расчетом общей суммы
+ * - Обработкой ошибок
+ * Автоматически загружает данные за текущий месяц при инициализации.
+ * @property getExpensesUseCase UseCase для получения расходов
+ */
 class ExpensesHistoryViewModel @Inject constructor(
     private val getExpensesUseCase: GetExpensesUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<ExpensesHistoryState>(ExpensesHistoryState.Loading)
     val state: StateFlow<ExpensesHistoryState> = _state.asStateFlow()
-
-    private val _event = MutableSharedFlow<IncomeEvent>()
-    val event: SharedFlow<IncomeEvent> = _event.asSharedFlow()
 
     init {
         loadHistory(
@@ -35,9 +35,9 @@ class ExpensesHistoryViewModel @Inject constructor(
         )
     }
 
-    fun handleIntent(intent: HistoryIntent) {
+    fun handleIntent(intent: ExpensesHistoryIntent) {
         when (intent) {
-            is HistoryIntent.LoadHistory -> loadHistory(intent.startDate, intent.endDate)
+            is ExpensesHistoryIntent.LoadHistory -> loadHistory(intent.startDate, intent.endDate)
         }
     }
 
@@ -56,16 +56,5 @@ class ExpensesHistoryViewModel @Inject constructor(
                 )
             }
         }
-    }
-}
-
-class ExpensesHistoryViewModelFactory(
-    private val usecase: GetExpensesUseCase,
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ExpensesHistoryViewModel::class.java)) {
-            return ExpensesHistoryViewModel(usecase) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

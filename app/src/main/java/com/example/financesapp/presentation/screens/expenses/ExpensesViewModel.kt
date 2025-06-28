@@ -14,6 +14,14 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
+/**
+ * ViewModel для управления состоянием экрана расходов.
+ * Основные функции:
+ * - Загрузка расходов за текущий день
+ * - Расчет общей суммы расходов
+ * - Обработка и отображение ошибок
+ * @property getExpensesUseCase UseCase для получения расходов
+ */
 class ExpensesViewModel @Inject constructor(
     private val getExpensesUseCase: GetExpensesUseCase,
 ) : ViewModel() {
