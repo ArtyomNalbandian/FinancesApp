@@ -170,7 +170,15 @@ fun ExpensesHistoryScreen() {
                                 color = Color.Gray
                             )
                         } else {
+                            val outputFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy, HH:mm", Locale("ru"))
                             currentState.items.sortedBy { Instant.parse(it.transactionDate) }.forEach { expense ->
+                                val formattedDate = try {
+                                    val instant = Instant.parse(expense.transactionDate)
+                                    val dateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
+                                    dateTime.format(outputFormatter)
+                                } catch (e: Exception) {
+                                    expense.transactionDate
+                                }
                                 ListItem(
                                     title = expense.title,
                                     leadingIconStr = expense.leadingIcon,
@@ -178,6 +186,7 @@ fun ExpensesHistoryScreen() {
                                     amount = expense.amount,
                                     currency = expense.currency.toCurrencySymbol(),
                                     supportingText = expense.subtitle,
+                                    subtitle = formattedDate,
                                     onClick = {}
                                 )
                                 HorizontalDivider()
