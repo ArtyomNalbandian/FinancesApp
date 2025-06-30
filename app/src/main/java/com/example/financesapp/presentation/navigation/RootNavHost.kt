@@ -27,39 +27,51 @@ fun RootNavGraph(
         startDestination = ScreenRoute.ExpensesGraph.route,
         modifier = modifier
     ) {
-        addExpensesGraph(viewModelFactory)
-        addIncomeGraph(viewModelFactory)
-        addAccountGraph(viewModelFactory)
+        addExpensesGraph(viewModelFactory, navController)
+        addIncomeGraph(viewModelFactory, navController)
+        addAccountGraph(viewModelFactory, navController)
         addArticlesGraph()
         addSettingsGraph()
     }
 }
 
 private fun NavGraphBuilder.addExpensesGraph(
-    viewModelFactory: ViewModelProvider.Factory
+    viewModelFactory: ViewModelProvider.Factory,
+    navController: NavHostController,
 ) {
     navigation(
         startDestination = ScreenRoute.Expenses.route,
         route = ScreenRoute.ExpensesGraph.route
     ) {
         composable(ScreenRoute.Expenses.route) {
-            ExpensesScreen(viewModelFactory = viewModelFactory)
+            ExpensesScreen(
+                viewModelFactory = viewModelFactory,
+                navigateToHistory = { navController.navigate(ScreenRoute.History("expenses").route) }
+            )
         }
         composable(ScreenRoute.History("expenses").route) {
-            ExpensesHistoryScreen(viewModelFactory = viewModelFactory)
+            ExpensesHistoryScreen(
+                viewModelFactory = viewModelFactory,
+                navigateBack = { navController.popBackStack() },
+                navigateToAnalysis = { }
+            )
         }
     }
 }
 
 private fun NavGraphBuilder.addIncomeGraph(
-    viewModelFactory: ViewModelProvider.Factory
+    viewModelFactory: ViewModelProvider.Factory,
+    navController: NavHostController,
 ) {
     navigation(
         startDestination = ScreenRoute.Income.route,
         route = ScreenRoute.IncomeGraph.route
     ) {
         composable(ScreenRoute.Income.route) {
-            IncomeScreen(viewModelFactory = viewModelFactory)
+            IncomeScreen(
+                viewModelFactory = viewModelFactory,
+                navigateToHistory = { navController.navigate(ScreenRoute.History("income").route) }
+            )
         }
         composable(ScreenRoute.History("income").route) {
             IncomeHistoryScreen(viewModelFactory = viewModelFactory)
@@ -68,14 +80,18 @@ private fun NavGraphBuilder.addIncomeGraph(
 }
 
 private fun NavGraphBuilder.addAccountGraph(
-    viewModelFactory: ViewModelProvider.Factory
+    viewModelFactory: ViewModelProvider.Factory,
+    navController: NavHostController,
 ) {
     navigation(
         startDestination = ScreenRoute.Account.route,
         route = ScreenRoute.AccountGraph.route
     ) {
         composable(ScreenRoute.Account.route) {
-            AccountScreen(viewModelFactory = viewModelFactory)
+            AccountScreen(
+                viewModelFactory = viewModelFactory,
+                navigateToEditAccount = { navController.navigate(ScreenRoute.EditAccount.route) }
+            )
         }
     }
 }

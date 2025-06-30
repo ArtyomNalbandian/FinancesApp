@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,16 +17,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.financesapp.R
 import com.example.financesapp.presentation.common.AddButton
+import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarActions
+import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarTitle
 
 
 @Composable
 fun ExpensesScreen(
     viewModelFactory: ViewModelProvider.Factory,
-    expensesViewModel: ExpensesViewModel = viewModel(factory = viewModelFactory)
+    expensesViewModel: ExpensesViewModel = viewModel(factory = viewModelFactory),
+    navigateToHistory: () -> Unit,
 ) {
+
+    ProvideFinancesTopAppBarTitle { Text("Расходы сегодня") }
+    ProvideFinancesTopAppBarActions {
+        IconButton(
+            onClick = { navigateToHistory() }
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_history),
+                contentDescription = "История расходов"
+            )
+        }
+    }
 
     val context = LocalContext.current
     val state by expensesViewModel.state.collectAsState()

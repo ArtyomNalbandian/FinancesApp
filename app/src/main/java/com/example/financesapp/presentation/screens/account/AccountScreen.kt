@@ -17,13 +17,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.presentation.common.AddButton
+import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarTitle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccountScreen(
     viewModelFactory: ViewModelProvider.Factory,
-    accountViewModel: AccountViewModel = viewModel(factory = viewModelFactory)
+    accountViewModel: AccountViewModel = viewModel(factory = viewModelFactory),
+    navigateToEditAccount: () -> Unit,
 ) {
+
+    ProvideFinancesTopAppBarTitle { Text("Мой счет") }
 
     val context = LocalContext.current
     val sheetState = rememberModalBottomSheetState()

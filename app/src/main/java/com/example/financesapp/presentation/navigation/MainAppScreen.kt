@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.financesapp.presentation.common.FinancesTopAppBar
 import com.example.financesapp.presentation.common.TopBar
 
 @Composable
@@ -22,7 +23,8 @@ fun MainAppScreen(viewModelFactory: ViewModelProvider.Factory) {
     }
 
     Scaffold(
-        topBar = { TopBar(state = topAppBarState) },
+//        topBar = { TopBar(state = topAppBarState) },
+        topBar = { FinancesTopAppBar(navController = navController) },
         bottomBar = {
             BottomNavigationBar(
                 navController = navController,
