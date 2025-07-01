@@ -10,6 +10,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,10 +23,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
+import com.example.financesapp.presentation.common.FinancesTopBarConfig
 import com.example.financesapp.presentation.common.ListItem
 import com.example.financesapp.presentation.screens.history.DatePickerDialogWrapper
 import com.example.financesapp.presentation.screens.history.DateRangeSelector
@@ -37,8 +41,25 @@ import java.util.Locale
 @Composable
 fun IncomeHistoryScreen(
     viewModelFactory: ViewModelProvider.Factory,
-    incomeHistoryViewModel: IncomeHistoryViewModel = viewModel(factory = viewModelFactory)
+    incomeHistoryViewModel: IncomeHistoryViewModel = viewModel(factory = viewModelFactory),
+    navigateBack: () -> Unit,
+    navigateToAnalysis: () -> Unit,
 ) {
+
+    FinancesTopBarConfig(
+        title = { Text("История доходов") },
+        navAction = {
+            IconButton(onClick = navigateBack) {
+                Icon(painterResource(R.drawable.ic_back), contentDescription = "Назад")
+            }
+        },
+        actions = {
+            IconButton(onClick = navigateToAnalysis) {
+                Icon(painterResource(R.drawable.ic_analysis), contentDescription = "Анализ доходов")
+            }
+        }
+    )
+
     var startDate by rememberSaveable { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
     var endDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
     var pickerTarget by remember { mutableStateOf<String?>(null) }

@@ -7,6 +7,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,10 +16,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
+import com.example.financesapp.presentation.common.FinancesTopBarConfig
 import com.example.financesapp.presentation.common.ListItem
 
 @Composable
 fun SettingsScreen() {
+
+    FinancesTopBarConfig(
+        title = { Text("Настройки") },
+    )
 
     var isDarkTheme by remember { mutableStateOf(false) }
 

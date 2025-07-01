@@ -28,10 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
+import com.example.financesapp.presentation.common.FinancesTopBarConfig
 import com.example.financesapp.presentation.common.ListItem
-import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarActions
-import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarNavAction
-import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarTitle
 import com.example.financesapp.presentation.screens.history.DatePickerDialogWrapper
 import com.example.financesapp.presentation.screens.history.DateRangeSelector
 import com.example.financesapp.utils.toCurrencySymbol
@@ -48,27 +46,22 @@ fun ExpensesHistoryScreen(
     navigateToAnalysis: () -> Unit,
 ) {
 
-    ProvideFinancesTopAppBarTitle { Text("Расходы сегодня") }
-    ProvideFinancesTopAppBarActions {
-        IconButton(
-            onClick = { navigateToAnalysis() }
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_analysis),
-                contentDescription = "Анализ расходов"
-            )
+    FinancesTopBarConfig(
+        title = { Text("История расходов") },
+        navAction = {
+            IconButton(onClick = navigateBack) {
+                Icon(painterResource(R.drawable.ic_back), contentDescription = "Назад")
+            }
+        },
+        actions = {
+            IconButton(onClick = navigateToAnalysis) {
+                Icon(
+                    painterResource(R.drawable.ic_analysis),
+                    contentDescription = "Анализ расходов"
+                )
+            }
         }
-    }
-    ProvideFinancesTopAppBarNavAction {
-        IconButton(
-            onClick = { navigateBack() }
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back),
-                contentDescription = "Вернуться назад"
-            )
-        }
-    }
+    )
 
     var startDate by rememberSaveable { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
     var endDate by rememberSaveable { mutableStateOf(LocalDate.now()) }

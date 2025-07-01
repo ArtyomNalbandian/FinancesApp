@@ -74,7 +74,11 @@ private fun NavGraphBuilder.addIncomeGraph(
             )
         }
         composable(ScreenRoute.History("income").route) {
-            IncomeHistoryScreen(viewModelFactory = viewModelFactory)
+            IncomeHistoryScreen(
+                viewModelFactory = viewModelFactory,
+                navigateBack = { navController.popBackStack() },
+                navigateToAnalysis = { }
+            )
         }
     }
 }
@@ -90,7 +94,7 @@ private fun NavGraphBuilder.addAccountGraph(
         composable(ScreenRoute.Account.route) {
             AccountScreen(
                 viewModelFactory = viewModelFactory,
-                navigateToEditAccount = { navController.navigate(ScreenRoute.EditAccount.route) }
+                navigateToEditAccount = { }
             )
         }
     }

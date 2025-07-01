@@ -22,8 +22,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.AddButton
-import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarActions
-import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarTitle
+import com.example.financesapp.presentation.common.FinancesTopBarConfig
+
+//import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarActions
+//import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarTitle
 
 
 @Composable
@@ -33,17 +35,28 @@ fun ExpensesScreen(
     navigateToHistory: () -> Unit,
 ) {
 
-    ProvideFinancesTopAppBarTitle { Text("Расходы сегодня") }
-    ProvideFinancesTopAppBarActions {
-        IconButton(
-            onClick = { navigateToHistory() }
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_history),
-                contentDescription = "История расходов"
-            )
+    FinancesTopBarConfig(
+        title = { Text("Расходы сегодня") },
+        actions = {
+            IconButton(onClick = navigateToHistory) {
+                Icon(painterResource(R.drawable.ic_history), contentDescription = "История")
+            }
         }
-    }
+    )
+
+    // остальной код
+
+//    ProvideFinancesTopAppBarTitle { Text("Расходы сегодня") }
+//    ProvideFinancesTopAppBarActions {
+//        IconButton(
+//            onClick = { navigateToHistory() }
+//        ) {
+//            Icon(
+//                painter = painterResource(R.drawable.ic_history),
+//                contentDescription = "История расходов"
+//            )
+//        }
+//    }
 
     val context = LocalContext.current
     val state by expensesViewModel.state.collectAsState()

@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -14,10 +16,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.financesapp.R
 import com.example.financesapp.presentation.common.AddButton
-import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarTitle
+import com.example.financesapp.presentation.common.FinancesTopBarConfig
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,7 +31,14 @@ fun AccountScreen(
     navigateToEditAccount: () -> Unit,
 ) {
 
-    ProvideFinancesTopAppBarTitle { Text("Мой счет") }
+    FinancesTopBarConfig(
+        title = { Text("Мой счет") },
+        actions = {
+            IconButton(onClick = navigateToEditAccount) {
+                Icon(painterResource(R.drawable.ic_edit), contentDescription = "Редактировать")
+            }
+        }
+    )
 
     val context = LocalContext.current
     val sheetState = rememberModalBottomSheetState()

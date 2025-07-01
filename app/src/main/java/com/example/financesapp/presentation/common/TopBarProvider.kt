@@ -10,6 +10,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.referentialEqualityPolicy
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -21,84 +22,111 @@ import androidx.navigation.compose.LocalOwnersProvider
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
-fun ProvideFinancesTopAppBarNavAction(action : @Composable () -> Unit) {
-    if (LocalViewModelStoreOwner.current == null || LocalViewModelStoreOwner.current !is NavBackStackEntry)
-        return
-    val actionViewModel = viewModel(initializer = { FinancesTopAppBarViewModel() })
-    SideEffect {
-        actionViewModel.navActionState = action
-    }
-}
-
-@Composable
-fun ProvideFinancesTopAppBarActions(actions: @Composable RowScope.() -> Unit) {
-    if (LocalViewModelStoreOwner.current == null || LocalViewModelStoreOwner.current !is NavBackStackEntry)
-        return
-    val actionViewModel = viewModel(initializer = { FinancesTopAppBarViewModel() })
-    SideEffect {
-        actionViewModel.actionState = actions
-    }
-}
-
-@Composable
-fun ProvideFinancesTopAppBarTitle(title: @Composable () -> Unit) {
-    if (LocalViewModelStoreOwner.current == null || LocalViewModelStoreOwner.current !is NavBackStackEntry)
-        return
-    val actionViewModel = viewModel(initializer = { FinancesTopAppBarViewModel() })
-    SideEffect {
-        actionViewModel.titleState = title
-    }
-}
-
-@Composable
 fun FinancesTopAppBarNavAction(backStackEntry: NavBackStackEntry?) {
+
     val stateHolder = rememberSaveableStateHolder()
+    var currentContent by remember { mutableStateOf<(@Composable () -> Unit)?>(null) }
+
     backStackEntry?.LocalOwnersProvider(stateHolder) {
-        val actionViewModel = viewModel(initializer = { FinancesTopAppBarViewModel() })
-        actionViewModel.navActionState?.let { content -> content() }
-    }
+        val actionViewModel = viewModel<FinancesTopAppBarViewModel>()
+        val newContent = actionViewModel.navActionState
+
+        if (newContent != null) {
+            currentContent = newContent
+        }
+
+        currentContent?.let { it() }
+    } ?: currentContent?.let { it() }
 }
 
 @Composable
 fun RowScope.FinancesTopAppBarActions(backStackEntry: NavBackStackEntry?) {
+
     val stateHolder = rememberSaveableStateHolder()
+    var currentContent by remember { mutableStateOf<(@Composable RowScope.() -> Unit)?>(null) }
+
     backStackEntry?.LocalOwnersProvider(stateHolder) {
-        val actionViewModel = viewModel(initializer = { FinancesTopAppBarViewModel() })
-        actionViewModel.actionState?.let { content -> content() }
-    }
+        val actionViewModel = viewModel<FinancesTopAppBarViewModel>()
+        val newContent = actionViewModel.actionState
+
+        if (newContent != null) {
+            currentContent = newContent
+        }
+
+        currentContent?.invoke(this)
+    } ?: currentContent?.invoke(this)
 }
 
 @Composable
 fun FinancesTopAppBarTitle(backStackEntry: NavBackStackEntry?) {
+
     val stateHolder = rememberSaveableStateHolder()
+    var currentContent by remember { mutableStateOf<(@Composable () -> Unit)?>(null) }
+
     backStackEntry?.LocalOwnersProvider(stateHolder) {
-        val actionViewModel = viewModel(initializer = { FinancesTopAppBarViewModel() })
-        actionViewModel.titleState?.let { content -> content() }
+        val actionViewModel = viewModel<FinancesTopAppBarViewModel>()
+        val newContent = actionViewModel.titleState
+
+        if (newContent != null) {
+            currentContent = newContent
+        }
+
+        currentContent?.let { it() }
+    } ?: currentContent?.let { it() }
+}
+
+@Composable
+fun FinancesTopBarConfig(
+    title: (@Composable () -> Unit)? = {},
+    navAction: (@Composable () -> Unit)? = {},
+    actions: (@Composable RowScope.() -> Unit)? = {},
+) {
+
+    val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
+    val viewModel = viewModel<FinancesTopAppBarViewModel>(viewModelStoreOwner = viewModelStoreOwner)
+
+    SideEffect {
+        viewModel.setTopBarContent(title, navAction, actions)
     }
 }
 
-private class FinancesTopAppBarViewModel : ViewModel() {
-    var titleState by mutableStateOf(null as (@Composable () -> Unit)?, referentialEqualityPolicy())
-    var navActionState by mutableStateOf(null as (@Composable () -> Unit)?, referentialEqualityPolicy())
-    var actionState by mutableStateOf(null as (@Composable RowScope.() -> Unit)?, referentialEqualityPolicy())
+
+class FinancesTopAppBarViewModel : ViewModel() {
+
+    var titleState by mutableStateOf<(@Composable () -> Unit)?>(null, referentialEqualityPolicy())
+        private set
+
+    var navActionState by mutableStateOf<(@Composable () -> Unit)?>(null, referentialEqualityPolicy())
+        private set
+
+    var actionState by mutableStateOf<(@Composable RowScope.() -> Unit)?>(null, referentialEqualityPolicy())
+        private set
+
+    fun setTopBarContent(
+        title: (@Composable () -> Unit)?,
+        navAction: (@Composable () -> Unit)?,
+        actions: (@Composable RowScope.() -> Unit)?
+    ) {
+        titleState = title
+        navActionState = navAction
+        actionState = actions
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FinancesTopAppBar(navController: NavController) {
+
     val backStackEntry by navController.currentBackStackEntryAsState()
 
     CenterAlignedTopAppBar(
         navigationIcon = {
             FinancesTopAppBarNavAction(backStackEntry)
-        },
-        title = {
+        }, title = {
             FinancesTopAppBarTitle(backStackEntry)
-        },
-        actions = {
+        }, actions = {
             FinancesTopAppBarActions(backStackEntry)
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
+        }, colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary
         )
     )
