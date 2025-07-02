@@ -5,11 +5,14 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.financesapp.presentation.screens.account.AccountScreen
 import com.example.financesapp.presentation.screens.articles.ArticlesScreen
+import com.example.financesapp.presentation.screens.edit_account.EditAccountScreen
 import com.example.financesapp.presentation.screens.expenses.ExpensesScreen
 import com.example.financesapp.presentation.screens.history.history_expenses.ExpensesHistoryScreen
 import com.example.financesapp.presentation.screens.history.history_income.IncomeHistoryScreen
@@ -22,6 +25,7 @@ fun RootNavGraph(
     viewModelFactory: ViewModelProvider.Factory,
     modifier: Modifier = Modifier
 ) {
+
     NavHost(
         navController = navController,
         startDestination = ScreenRoute.ExpensesGraph.route,
@@ -94,8 +98,21 @@ private fun NavGraphBuilder.addAccountGraph(
         composable(ScreenRoute.Account.route) {
             AccountScreen(
                 viewModelFactory = viewModelFactory,
-                navigateToEditAccount = { }
+                navigateToEditAccount = { accountId ->
+                    navController.navigate(ScreenRoute.EditAccount(accountId).route)
+                }
             )
+        }
+        composable(
+            route = ScreenRoute.EditAccount("{accountId}").route,
+            arguments = listOf(navArgument("accountId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val accountId = backStackEntry.arguments?.getString("accountId") ?: return@composable
+                EditAccountScreen(
+                    accountId = accountId,
+                    viewModelFactory = viewModelFactory,
+                    navigateBack = { navController.popBackStack() }
+                )
         }
     }
 }

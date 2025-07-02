@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecases.interfaces.GetAccountsUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -42,6 +43,7 @@ class AccountViewModel @Inject constructor(
 
     private fun loadAccount() {
         viewModelScope.launch(Dispatchers.IO) {
+            delay(2000)
             _state.value = AccountState.Loading
             try {
                 val account = getAccountsUseCase.invoke()

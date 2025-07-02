@@ -44,20 +44,6 @@ fun ExpensesScreen(
         }
     )
 
-    // остальной код
-
-//    ProvideFinancesTopAppBarTitle { Text("Расходы сегодня") }
-//    ProvideFinancesTopAppBarActions {
-//        IconButton(
-//            onClick = { navigateToHistory() }
-//        ) {
-//            Icon(
-//                painter = painterResource(R.drawable.ic_history),
-//                contentDescription = "История расходов"
-//            )
-//        }
-//    }
-
     val context = LocalContext.current
     val state by expensesViewModel.state.collectAsState()
 

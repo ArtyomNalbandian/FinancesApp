@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecases.interfaces.GetExpensesUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -40,6 +41,7 @@ class ExpensesViewModel @Inject constructor(
         val today = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = ExpensesState.Loading
+            delay(3000)
             try {
                 val income = getExpensesUseCase(today, today)
                 val total = income.sumOf { it.amount.toDouble() }.toString()

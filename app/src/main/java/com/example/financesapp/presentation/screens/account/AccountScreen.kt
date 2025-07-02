@@ -1,5 +1,6 @@
 package com.example.financesapp.presentation.screens.account
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,27 +29,37 @@ import com.example.financesapp.presentation.common.FinancesTopBarConfig
 fun AccountScreen(
     viewModelFactory: ViewModelProvider.Factory,
     accountViewModel: AccountViewModel = viewModel(factory = viewModelFactory),
-    navigateToEditAccount: () -> Unit,
+    navigateToEditAccount: (String) -> Unit
 ) {
+
+    val state by accountViewModel.state.collectAsState()
+    val context = LocalContext.current
+    val sheetState = rememberModalBottomSheetState()
 
     FinancesTopBarConfig(
         title = { Text("Мой счет") },
         actions = {
-            IconButton(onClick = navigateToEditAccount) {
-                Icon(painterResource(R.drawable.ic_edit), contentDescription = "Редактировать")
+            IconButton(
+                onClick = {
+                    if (state is AccountState.Content) {
+                        Log.d("testLog", "if scope")
+                        navigateToEditAccount((state as AccountState.Content).account.id.toString())
+                    } else {
+                        Log.d("testLog", "else scope")
+                        // TODO() показать snackbar с текстом "Подождите пока загрузится ваш счет"
+                    }
+                }
+            ) {
+                Icon(painterResource(R.drawable.ic_edit), contentDescription = "Редактировать счет")
             }
         }
     )
-
-    val context = LocalContext.current
-    val sheetState = rememberModalBottomSheetState()
-    val state by accountViewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
         accountViewModel.event.collect { event ->
             when (event) {
                 is AccountEvent.ShowError -> {
-                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show() // TODO() заменить на snackbar с нормальным сообщением
                 }
             }
         }

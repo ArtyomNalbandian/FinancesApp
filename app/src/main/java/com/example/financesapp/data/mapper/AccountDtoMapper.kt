@@ -9,3 +9,11 @@ fun AccountDto.toAccount() = Account(
     balance = balance,
     currency = currency
 )
+
+fun Account.toUpdateRequest(): Map<String, String> {
+    return mapOf(
+        "name" to name,
+        "balance" to balance,
+        "currency" to currency
+    )
+}

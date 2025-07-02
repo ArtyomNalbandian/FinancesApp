@@ -1,6 +1,7 @@
 package com.example.financesapp.data.remote.repository
 
 import com.example.financesapp.data.mapper.toAccount
+import com.example.financesapp.data.mapper.toUpdateRequest
 import com.example.financesapp.data.remote.api.AccountsApi
 import com.example.financesapp.domain.models.account.Account
 import com.example.financesapp.domain.repositories.AccountRepository
@@ -32,6 +33,39 @@ class AccountRepositoryImpl @Inject constructor(
             }
         ) {
             accountApi.getAccounts().first().toAccount()
+        }
+    }
+
+    override suspend fun updateAccount(account: Account): Account {
+        return retryRequest(
+            shouldRetry = { throwable ->
+                when (throwable) {
+                    is UnknownHostException -> false
+                    is IOException -> true
+                    is HttpException -> throwable.code() in 500..599
+                    else -> false
+                }
+            }
+        ) {
+            accountApi.updateAccount(
+                id = account.id,
+                accountUpdate = account.toUpdateRequest()
+            ).toAccount()
+        }
+    }
+
+    override suspend fun getAccountById(accountId: String): Account {
+        return retryRequest(
+            shouldRetry = { throwable ->
+                when (throwable) {
+                    is UnknownHostException -> false
+                    is IOException -> true
+                    is HttpException -> throwable.code() in 500..599
+                    else -> false
+                }
+            }
+        ) {
+            accountApi.getAccountById(accountId.toInt()).toAccount()
         }
     }
 }

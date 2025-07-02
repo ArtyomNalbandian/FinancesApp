@@ -19,7 +19,8 @@ sealed class ScreenRoute(val route: String) {
 
     // AccountGraph routes
     data object Account : ScreenRoute("account")
-    data object EditAccount : ScreenRoute("edit_account")
+    data class EditAccount(val accountId: String): ScreenRoute("account/$accountId")
+
 
     // ArticlesGraph routes
     data object Articles : ScreenRoute("articles")
