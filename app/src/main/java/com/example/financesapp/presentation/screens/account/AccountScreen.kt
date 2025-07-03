@@ -21,7 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
-import com.example.financesapp.presentation.common.AddButton
+import com.example.financesapp.domain.models.account.Account
 import com.example.financesapp.presentation.common.FinancesTopBarConfig
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +29,7 @@ import com.example.financesapp.presentation.common.FinancesTopBarConfig
 fun AccountScreen(
     viewModelFactory: ViewModelProvider.Factory,
     accountViewModel: AccountViewModel = viewModel(factory = viewModelFactory),
-    navigateToEditAccount: (String) -> Unit
+    navigateToEditAccount: (Account) -> Unit
 ) {
 
     val state by accountViewModel.state.collectAsState()
@@ -43,7 +43,7 @@ fun AccountScreen(
                 onClick = {
                     if (state is AccountState.Content) {
                         Log.d("testLog", "if scope")
-                        navigateToEditAccount((state as AccountState.Content).account.id.toString())
+                        navigateToEditAccount((state as AccountState.Content).account)
                     } else {
                         Log.d("testLog", "else scope")
                         // TODO() показать snackbar с текстом "Подождите пока загрузится ваш счет"
@@ -59,7 +59,8 @@ fun AccountScreen(
         accountViewModel.event.collect { event ->
             when (event) {
                 is AccountEvent.ShowError -> {
-                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show() // TODO() заменить на snackbar с нормальным сообщением
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                    // TODO() заменить на snackbar с нормальным сообщением
                 }
             }
         }
@@ -86,10 +87,6 @@ fun AccountScreen(
                             )
                         )
                     }
-                )
-                AddButton(
-                    onClick = {},
-                    modifier = Modifier.align(Alignment.BottomEnd)
                 )
                 if (currentState.isCurrencySelectorVisible) {
                     CurrencySelectorBottomSheet(

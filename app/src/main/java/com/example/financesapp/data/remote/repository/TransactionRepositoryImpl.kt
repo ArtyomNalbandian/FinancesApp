@@ -48,7 +48,7 @@ class TransactionRepositoryImpl @Inject constructor(
                 startDate = startDate,
                 endDate = endDate
             )
-                .filter { !it.category.isIncome }
+                .filter { !it.categoryDto.isIncome }
                 .sortedByDescending { it.transactionDate }
                 .map { it.toExpense() }
         }
@@ -70,7 +70,7 @@ class TransactionRepositoryImpl @Inject constructor(
                 startDate = startDate,
                 endDate = endDate
             )
-                .filter { it.category.isIncome }
+                .filter { it.categoryDto.isIncome }
                 .sortedByDescending { it.transactionDate }
                 .map { it.toIncome() }
         }

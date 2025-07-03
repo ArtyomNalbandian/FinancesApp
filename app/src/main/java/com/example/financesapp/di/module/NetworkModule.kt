@@ -2,6 +2,7 @@ package com.example.financesapp.di.module
 
 import com.example.financesapp.BuildConfig
 import com.example.financesapp.data.remote.api.AccountsApi
+import com.example.financesapp.data.remote.api.CategoriesApi
 import com.example.financesapp.data.remote.api.TransactionApi
 import dagger.Module
 import dagger.Provides
@@ -48,5 +49,11 @@ class NetworkModule {
     @Singleton
     fun provideTransactionApi(retrofit: Retrofit): TransactionApi {
         return retrofit.create(TransactionApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCategoriesApi(retrofit: Retrofit): CategoriesApi {
+        return retrofit.create(CategoriesApi::class.java)
     }
 }

@@ -24,10 +24,6 @@ import com.example.financesapp.R
 import com.example.financesapp.presentation.common.AddButton
 import com.example.financesapp.presentation.common.FinancesTopBarConfig
 
-//import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarActions
-//import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarTitle
-
-
 @Composable
 fun ExpensesScreen(
     viewModelFactory: ViewModelProvider.Factory,
