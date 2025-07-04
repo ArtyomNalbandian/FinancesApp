@@ -73,6 +73,7 @@ class TransactionRepositoryImpl @Inject constructor(
                 .filter { it.categoryDto.isIncome }
                 .sortedByDescending { it.transactionDate }
                 .map { it.toIncome() }
+
         }
     }
 

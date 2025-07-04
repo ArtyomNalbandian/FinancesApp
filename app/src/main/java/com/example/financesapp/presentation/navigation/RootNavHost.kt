@@ -100,25 +100,6 @@ private fun NavGraphBuilder.addAccountGraph(
                 }
             )
         }
-//        composable<EditRoute> {
-//            val args = it.toRoute<ScreenRoute.EditAccount>()
-//            EditAccountScreen(
-//                account = args.account,
-//                viewModelFactory = viewModelFactory,
-//                navigateBack = { navController.popBackStack() }
-//            )
-//        }
-//        composable(
-//            arguments = listOf(navArgument("account") { type = NavType.StringType }),
-//            route = ScreenRoute.EditAccount().route,
-//        ) { backStackEntry ->
-//            val accountId = backStackEntry.arguments?.getString("accountId") ?: return@composable
-//                EditAccountScreen(
-//                    accountId = accountId,
-//                    viewModelFactory = viewModelFactory,
-//                    navigateBack = { navController.popBackStack() }
-//                )
-//        }
     }
 }
 
@@ -130,9 +111,7 @@ private fun NavGraphBuilder.addArticlesGraph(
         route = ScreenRoute.ArticlesGraph.route
     ) {
         composable(ScreenRoute.Articles.route) {
-            CategoriesScreen(
-                viewModelFactory = viewModelFactory
-            )
+            CategoriesScreen(viewModelFactory = viewModelFactory)
         }
     }
 }

@@ -6,10 +6,7 @@ import com.example.financesapp.domain.models.categories.Category
 import com.example.financesapp.domain.usecases.interfaces.GetCategoriesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -52,31 +49,3 @@ class CategoriesViewModel @Inject constructor(
         _state.value = CategoriesState.Content(filtered)
     }
 }
-
-
-//class CategoriesViewModel @Inject constructor(
-//    private val getCategoriesUseCase: GetCategoriesUseCase,
-//) : ViewModel() {
-//
-//    private val _state = MutableStateFlow<CategoriesState>(CategoriesState.Loading)
-//    val state = _state
-//        .onStart { loadCategories() }
-//        .stateIn(
-//            viewModelScope,
-//            SharingStarted.WhileSubscribed(5000),
-//            CategoriesState.Loading
-//        )
-//
-//    private fun loadCategories() {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            _state.value = CategoriesState.Loading
-//            try {
-//                val categories = getCategoriesUseCase.invoke()
-//                _state.value = CategoriesState.Content(categories)
-//            } catch (e: Exception) {
-//                val message = e.message ?: "Ошибка загрузки"
-//                _state.value = CategoriesState.Error(message)
-//            }
-//        }
-//    }
-//}
