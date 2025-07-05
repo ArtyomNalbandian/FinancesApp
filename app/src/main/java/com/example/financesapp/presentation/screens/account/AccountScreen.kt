@@ -9,22 +9,20 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
 import com.example.financesapp.domain.models.account.Account
 import com.example.financesapp.presentation.common.FinancesTopBarConfig
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccountScreen(
     viewModelFactory: ViewModelProvider.Factory,
@@ -32,9 +30,8 @@ fun AccountScreen(
     navigateToEditAccount: (Account) -> Unit
 ) {
 
-    val state by accountViewModel.state.collectAsState()
+    val state by accountViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val sheetState = rememberModalBottomSheetState()
 
     FinancesTopBarConfig(
         title = { Text("Мой счет") },
@@ -78,32 +75,8 @@ fun AccountScreen(
             }
 
             is AccountState.Content -> {
-                AccountScreenContent(
-                    account = currentState.account,
-                    onCurrencySelectorClick = {
-                        accountViewModel.handleIntent(
-                            AccountIntent.ShowCurrencySelector(
-                                currentState.account.id
-                            )
-                        )
-                    }
-                )
-                if (currentState.isCurrencySelectorVisible) {
-                    CurrencySelectorBottomSheet(
-                        sheetState = sheetState,
-                        onDismissRequest = {
-                            accountViewModel.handleIntent(AccountIntent.HideCurrencySelector)
-                        },
-                        onCurrencySelected = { selectedCurrency ->
-                            accountViewModel.handleIntent(
-                                AccountIntent.ChangeCurrency(
-                                    accountId = currentState.account.id,
-                                    currency = selectedCurrency
-                                )
-                            )
-                        }
-                    )
-                }
+                AccountScreenContent(account = currentState.account)
+
             }
         }
     }

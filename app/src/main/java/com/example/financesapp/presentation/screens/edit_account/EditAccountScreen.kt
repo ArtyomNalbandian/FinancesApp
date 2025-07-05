@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,10 +35,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
-import com.example.financesapp.domain.models.account.Account
 import com.example.financesapp.presentation.common.FinancesTopBarConfig
 import com.example.financesapp.presentation.common.ListItem
 import com.example.financesapp.presentation.screens.account.CurrencySelectorBottomSheet
+import com.example.financesapp.utils.toCurrencyFromSymbol
 import com.example.financesapp.utils.toCurrencySymbol
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,7 +50,7 @@ fun EditAccountScreen(
 ) {
 
     val context = LocalContext.current
-    val state by editAccountViewModel.state.collectAsState()
+    val state by editAccountViewModel.state.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState()
 
     val account by editAccountViewModel.editAccountState.collectAsStateWithLifecycle()
@@ -85,7 +82,8 @@ fun EditAccountScreen(
                     navigateBack()
                 },
                 enabled = (name.isNotBlank() && name != account?.name) ||
-                        (balance.isNotBlank() && balance != account?.balance)
+                        (balance.isNotBlank() && balance != account?.balance) ||
+                        (currency.isNotBlank() && currency != account?.currency)
             ) {
                 Icon(painterResource(R.drawable.ic_apply), contentDescription = "Подтвердить")
             }
@@ -134,63 +132,35 @@ fun EditAccountScreen(
                             .padding(horizontal = 16.dp),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
-//                    Button(
-//                        onClick = { editAccountViewModel.onNameChange("Тест") }
-//                    ) {
-//                        Text("Тест")
-//                    }
-//                    Button(
-//                        onClick = { editAccountViewModel.onBalanceChange("1000") }
-//                    ) {
-//                        Text("Тест2")
-//                    }
-//                    ListItem(
-//                        title = "Баланс",
-//                        amount = account.balance + " ${account.currency.toCurrencySymbol()}",
-//                        backgroundColor = MaterialTheme.colorScheme.secondary,
-//                        leadingIcon = "\uD83D\uDCB0",
-//                        trailingIcon = R.drawable.more_vert,
-//                        onClick = { },
-//                        modifier = Modifier.height(56.dp)
-//                    )
-//                    HorizontalDivider()
-//                    ListItem(
-//                        title = "Валюта",
-//                        amount = account.currency.toCurrencySymbol(),
-//                        backgroundColor = MaterialTheme.colorScheme.secondary,
-//                        trailingIcon = R.drawable.more_vert,
-//                        onClick = {
-//                            editAccountViewModel.toggleCurrencySelector()
-//                        },
-//                        modifier = Modifier.height(56.dp)
-//                    )
+                    ListItem(
+                        title = "Валюта",
+                        amount = currentState.account.currency.toCurrencySymbol(),
+                        backgroundColor = MaterialTheme.colorScheme.secondary,
+                        trailingIcon = R.drawable.more_vert,
+                        modifier = Modifier.height(56.dp),
+                        onClick = {
+                            editAccountViewModel.handleIntent(
+                                EditAccountIntent.ShowCurrencySelector(
+                                    currentState.account.id
+                                )
+                            )
+                        }
+                    )
                 }
-//                EditAccountScreenContent(
-//                    account = account,
-//                    onCurrencySelectorClick = {
-//                        editAccountViewModel.toggleCurrencySelector()
-//                        editAccountViewModel.handleIntent(
-//                            EditAccountIntent.ShowCurrencySelector(
-//                                currentState.account.id
-//                            )
-//                        )
-//                    }
-//                )
                 if (currentState.isCurrencySelectorVisible) {
                     CurrencySelectorBottomSheet(
                         sheetState = sheetState,
                         onDismissRequest = {
-//                            editAccountViewModel.toggleCurrencySelector()
-//                            editAccountViewModel.handleIntent(EditAccountIntent.HideCurrencySelector)
+                            editAccountViewModel.handleIntent(EditAccountIntent.HideCurrencySelector)
                         },
                         onCurrencySelected = { selectedCurrency ->
-//                            editAccountViewModel.onCurrencyChange(selectedCurrency)
-//                            editAccountViewModel.handleIntent(
-//                                EditAccountIntent.ChangeCurrency(
-//                                    accountId = currentState.account.id,
-//                                    currency = selectedCurrency
-//                                )
-//                            )
+                            editAccountViewModel.handleIntent(
+                                EditAccountIntent.ChangeCurrency(
+                                    accountId = currentState.account.id,
+                                    currency = selectedCurrency.toCurrencyFromSymbol()
+                                )
+                            )
+                            currency = selectedCurrency
                         }
                     )
                 }
@@ -199,41 +169,3 @@ fun EditAccountScreen(
     }
 }
 
-@Composable
-fun EditAccountScreenContent(
-    account: Account,
-    onCurrencySelectorClick: () -> Unit,
-    onBalanceChange: () -> Unit,
-) {
-    Column {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.tertiary)
-                .height(56.dp)
-        ) {
-            Text(text = "Баланс")
-            Text(text = "Название счета")
-
-        }
-//        ListItem(
-//            title = "Баланс",
-//            amount = account.balance + " ${account.currency.toCurrencySymbol()}",
-//            backgroundColor = MaterialTheme.colorScheme.secondary,
-//            leadingIcon = "\uD83D\uDCB0",
-//            trailingIcon = R.drawable.more_vert,
-//            onClick = { },
-//            modifier = Modifier.height(56.dp)
-//        )
-        HorizontalDivider()
-        ListItem(
-            title = "Валюта",
-            amount = account.currency.toCurrencySymbol(),
-            backgroundColor = MaterialTheme.colorScheme.secondary,
-            trailingIcon = R.drawable.more_vert,
-            onClick = { onCurrencySelectorClick() },
-            modifier = Modifier.height(56.dp)
-        )
-    }
-}

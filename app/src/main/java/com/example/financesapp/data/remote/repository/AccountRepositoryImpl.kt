@@ -56,22 +56,22 @@ class AccountRepositoryImpl @Inject constructor(
         )
         val updatedAccount = updatedAccountDto.toAccount()
         _currentAccount.value = updatedAccount
-        return updatedAccount
-//        return retryRequest(
-//            shouldRetry = { throwable ->
-//                when (throwable) {
-//                    is UnknownHostException -> false
-//                    is IOException -> true
-//                    is HttpException -> throwable.code() in 500..599
-//                    else -> false
-//                }
-//            }
-//        ) {
-//            accountApi.updateAccount(
-//                id = account.id,
-//                accountUpdate = account.toUpdateRequest()
-//            ).toAccount()
-//        }
+//        return updatedAccount
+        return retryRequest(
+            shouldRetry = { throwable ->
+                when (throwable) {
+                    is UnknownHostException -> false
+                    is IOException -> true
+                    is HttpException -> throwable.code() in 500..599
+                    else -> false
+                }
+            }
+        ) {
+            accountApi.updateAccount(
+                id = accountId,
+                accountRequest = accountRequest
+            ).toAccount()
+        }
     }
 
     override suspend fun refreshAccount() {

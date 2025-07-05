@@ -8,3 +8,12 @@ fun String.toCurrencySymbol(): String {
         else -> this
     }
 }
+
+fun String.toCurrencyFromSymbol(): String {
+    return when (this) {
+        "₽" -> "RUB"
+        "$" -> "USD"
+        "€" -> "EUR"
+        else -> this
+    }
+}

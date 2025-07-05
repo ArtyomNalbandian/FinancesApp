@@ -15,7 +15,6 @@ import com.example.financesapp.utils.toCurrencySymbol
 @Composable
 fun AccountScreenContent(
     account: Account,
-    onCurrencySelectorClick: () -> Unit
 ) {
     Column {
         ListItem(
@@ -33,7 +32,6 @@ fun AccountScreenContent(
             amount = account.currency.toCurrencySymbol(),
             backgroundColor = MaterialTheme.colorScheme.secondary,
             trailingIcon = R.drawable.more_vert,
-            onClick = { onCurrencySelectorClick() },
             modifier = Modifier.height(56.dp)
         )
     }

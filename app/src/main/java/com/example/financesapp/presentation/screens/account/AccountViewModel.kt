@@ -26,8 +26,8 @@ class AccountViewModel @Inject constructor(
     private val _state = MutableStateFlow<AccountState>(AccountState.Loading)
     val state: StateFlow<AccountState> = _state.asStateFlow()
 
-    private val _selectedAccount = MutableStateFlow<Account?>(null)
-    val selectedAccount: StateFlow<Account?> = _selectedAccount.asStateFlow()
+//    private val _selectedAccount = MutableStateFlow<Account?>(null)
+//    val selectedAccount: StateFlow<Account?> = _selectedAccount.asStateFlow()
 
     private val _event = MutableSharedFlow<AccountEvent>()
     val event: SharedFlow<AccountEvent> = _event.asSharedFlow()
@@ -50,7 +50,7 @@ class AccountViewModel @Inject constructor(
             _state.value = AccountState.Loading
             try {
                 val account = getAccountsUseCase.invoke()
-                _selectedAccount.value = account
+//                _selectedAccount.value = account
                 _state.value = AccountState.Content(account, isCurrencySelectorVisible = false)
             } catch (e: Exception) {
                 _state.value = AccountState.Error(e.message.orEmpty())

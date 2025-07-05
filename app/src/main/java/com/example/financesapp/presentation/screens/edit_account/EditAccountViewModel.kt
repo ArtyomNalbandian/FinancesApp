@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.financesapp.data.remote.models.account.AccountRequestDto
 import com.example.financesapp.domain.models.account.Account
 import com.example.financesapp.domain.repositories.AccountRepository
+import com.example.financesapp.presentation.screens.account.AccountEvent
+import com.example.financesapp.presentation.screens.account.AccountState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -23,8 +25,6 @@ class EditAccountViewModel @Inject constructor(
 
     private val _editAccountState = MutableStateFlow<Account?>(null)
     val editAccountState: StateFlow<Account?> = _editAccountState.asStateFlow()
-
-    private val _test = MutableStateFlow<EditAccountState>(EditAccountState.Loading)
 
     private val _event = MutableSharedFlow<EditAccountEvent>()
     val event: SharedFlow<EditAccountEvent> = _event
@@ -57,6 +57,38 @@ class EditAccountViewModel @Inject constructor(
                 Log.d("testLog", "submit in ViewModel --- ${_state.value}")
             } catch (e: Exception) {
                 _event.emit(EditAccountEvent.ShowError("Ошибка при сохранении: ${e.message}"))
+            }
+        }
+    }
+
+    fun handleIntent(intent: EditAccountIntent) {
+        when (intent) {
+            is EditAccountIntent.ChangeCurrency -> changeCurrency(intent.currency)
+            is EditAccountIntent.HideCurrencySelector -> updateCurrencySelector(false)
+            is EditAccountIntent.ShowCurrencySelector -> updateCurrencySelector(true)
+        }
+    }
+
+    private fun updateCurrencySelector(visible: Boolean) {
+        val current = _state.value
+        if (current is EditAccountState.Content) {
+            _state.value = current.copy(isCurrencySelectorVisible = visible)
+        }
+    }
+
+    private fun changeCurrency(newCurrency: String) {
+        viewModelScope.launch {
+            val current = _state.value
+            if (current is EditAccountState.Content) {
+                try {
+                    val newAccount = current.account.copy(currency = newCurrency)
+                    _state.value = current.copy(
+                        account = newAccount,
+                        isCurrencySelectorVisible = false
+                    )
+                } catch (e: Exception) {
+                    _event.emit(EditAccountEvent.ShowError("Не удалось изменить валюту"))
+                }
             }
         }
     }
