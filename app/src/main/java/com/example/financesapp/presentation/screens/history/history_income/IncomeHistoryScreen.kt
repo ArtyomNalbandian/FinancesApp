@@ -10,9 +10,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,11 +24,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
+import com.example.financesapp.presentation.common.FinancesTopBarConfig
 import com.example.financesapp.presentation.common.ListItem
+import com.example.financesapp.presentation.screens.account.AccountViewModel
 import com.example.financesapp.presentation.screens.history.DatePickerDialogWrapper
 import com.example.financesapp.presentation.screens.history.DateRangeSelector
 import com.example.financesapp.utils.toCurrencySymbol
@@ -37,8 +44,33 @@ import java.util.Locale
 @Composable
 fun IncomeHistoryScreen(
     viewModelFactory: ViewModelProvider.Factory,
-    incomeHistoryViewModel: IncomeHistoryViewModel = viewModel(factory = viewModelFactory)
+    accountViewModel: AccountViewModel = viewModel(factory = viewModelFactory),
+    incomeHistoryViewModel: IncomeHistoryViewModel = viewModel(factory = viewModelFactory),
+    navigateBack: () -> Unit,
+    navigateToAnalysis: () -> Unit,
 ) {
+
+    FinancesTopBarConfig(
+        title = { Text("История доходов") },
+        navAction = {
+            IconButton(onClick = navigateBack) {
+                Icon(painterResource(R.drawable.ic_back), contentDescription = "Назад")
+            }
+        },
+        actions = {
+            IconButton(onClick = navigateToAnalysis) {
+                Icon(painterResource(R.drawable.ic_analysis), contentDescription = "Анализ доходов")
+            }
+        }
+    )
+
+    val account by accountViewModel.selectedAccount.collectAsStateWithLifecycle()
+    val currency = account?.currency?.toCurrencySymbol().orEmpty()
+
+    LaunchedEffect(Unit) {
+        accountViewModel.loadAccount()
+    }
+
     var startDate by rememberSaveable { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
     var endDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
     var pickerTarget by remember { mutableStateOf<String?>(null) }
@@ -66,7 +98,7 @@ fun IncomeHistoryScreen(
             }
         )
 
-        IncomeHistoryContent(state = state)
+        IncomeHistoryContent(state = state, currency = currency)
 
         if (showDialog) {
             DatePickerDialogWrapper(
@@ -93,7 +125,7 @@ fun IncomeHistoryScreen(
 }
 
 @Composable
-private fun IncomeHistoryContent(state: IncomeHistoryState) {
+private fun IncomeHistoryContent(state: IncomeHistoryState, currency: String) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -116,7 +148,7 @@ private fun IncomeHistoryContent(state: IncomeHistoryState) {
                     ListItem(
                         title = "Сумма",
                         amount = state.total,
-                        currency = "",
+                        currency = currency,
                         modifier = Modifier.height(56.dp),
                         backgroundColor = MaterialTheme.colorScheme.secondary,
                     )
@@ -135,7 +167,7 @@ private fun IncomeHistoryContent(state: IncomeHistoryState) {
                                     leadingIcon = income.leadingIcon,
                                     trailingIcon = R.drawable.more_vert,
                                     amount = income.amount,
-                                    currency = income.currency.toCurrencySymbol(),
+                                    currency = currency,
                                     supportingText = income.subtitle,
                                     onClick = {}
                                 )

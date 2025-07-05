@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
 import com.example.financesapp.domain.models.account.CurrencyItem
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CurrencySelectorBottomSheet(

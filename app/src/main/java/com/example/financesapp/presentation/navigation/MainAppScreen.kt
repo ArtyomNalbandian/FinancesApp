@@ -4,12 +4,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.financesapp.presentation.common.TopBar
+import com.example.financesapp.presentation.common.FinancesTopAppBar
 
 @Composable
 fun MainAppScreen(viewModelFactory: ViewModelProvider.Factory) {
@@ -17,12 +16,8 @@ fun MainAppScreen(viewModelFactory: ViewModelProvider.Factory) {
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination
 
-    val topAppBarState = remember(currentBackStack) {
-        provideTopAppBarState(currentBackStack, navController)
-    }
-
     Scaffold(
-        topBar = { TopBar(state = topAppBarState) },
+        topBar = { FinancesTopAppBar(navController = navController) },
         bottomBar = {
             BottomNavigationBar(
                 navController = navController,

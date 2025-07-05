@@ -6,9 +6,9 @@ import com.example.financesapp.domain.models.income.Income
 
 fun TransactionResponseDto.toExpense() = Expense(
     id = id,
-    title = category.name,
+    title = categoryDto.name,
     subtitle = comment,
-    leadingIcon = category.emoji,
+    leadingIcon = categoryDto.emoji,
     amount = amount,
     currency = account.currency,
     transactionDate = transactionDate
@@ -16,10 +16,10 @@ fun TransactionResponseDto.toExpense() = Expense(
 
 fun TransactionResponseDto.toIncome() = Income(
     id = id,
-    title = category.name,
+    title = categoryDto.name,
     subtitle = comment,
     amount = amount,
-    leadingIcon = category.emoji,
+    leadingIcon = categoryDto.emoji,
     currency = account.currency,
     transactionDate = transactionDate
 )

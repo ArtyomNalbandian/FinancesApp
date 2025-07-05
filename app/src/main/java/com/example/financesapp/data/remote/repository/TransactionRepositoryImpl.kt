@@ -1,5 +1,6 @@
 package com.example.financesapp.data.remote.repository
 
+import android.util.Log
 import com.example.financesapp.data.mapper.toExpense
 import com.example.financesapp.data.mapper.toIncome
 import com.example.financesapp.data.remote.api.TransactionApi
@@ -48,7 +49,7 @@ class TransactionRepositoryImpl @Inject constructor(
                 startDate = startDate,
                 endDate = endDate
             )
-                .filter { !it.category.isIncome }
+                .filter { !it.categoryDto.isIncome }
                 .sortedByDescending { it.transactionDate }
                 .map { it.toExpense() }
         }
@@ -70,9 +71,10 @@ class TransactionRepositoryImpl @Inject constructor(
                 startDate = startDate,
                 endDate = endDate
             )
-                .filter { it.category.isIncome }
+                .filter { it.categoryDto.isIncome }
                 .sortedByDescending { it.transactionDate }
                 .map { it.toIncome() }
+
         }
     }
 

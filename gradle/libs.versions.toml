@@ -15,6 +15,8 @@ retrofit = "2.11.0"
 ksp = "2.0.21-1.0.27"
 dagger = "2.51.1"
 detekt = "1.23.8"
+serialization = "2.0.21"
+accompanistPlaceholderMaterial = "0.34.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,12 +45,20 @@ lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" 
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
 # Dagger2
-google-dagger-dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger"}
+google-dagger-dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
 google-dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
+
+# Shimmer
+accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanistPlaceholderMaterial" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt"}
+
+# Detekt
+arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+
+# Serialization
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }

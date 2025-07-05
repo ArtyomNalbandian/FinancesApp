@@ -32,11 +32,7 @@ class IncomeViewModel @Inject constructor(
     private val _event = MutableSharedFlow<IncomeEvent>()
     val event: SharedFlow<IncomeEvent> = _event.asSharedFlow()
 
-    init {
-        loadIncome()
-    }
-
-    private fun loadIncome() {
+    fun loadIncome() {
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = IncomeState.Loading
             try {

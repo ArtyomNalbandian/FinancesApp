@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.arturbosch.detekt)
     alias(libs.plugins.google.ksp)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 android {
@@ -79,4 +80,6 @@ dependencies {
     implementation(libs.google.dagger.dagger)
     ksp(libs.google.dagger.compiler)
 
+    // Shimmer
+    implementation(libs.accompanist.placeholder.material)
 }

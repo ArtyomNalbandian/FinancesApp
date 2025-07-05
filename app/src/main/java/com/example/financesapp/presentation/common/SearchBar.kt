@@ -31,7 +31,10 @@ fun SearchBar(
 
     TextField(
         value = query,
-        onValueChange = { query = it },
+        onValueChange = {
+            query = it
+            onSearch(it)
+        },
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
