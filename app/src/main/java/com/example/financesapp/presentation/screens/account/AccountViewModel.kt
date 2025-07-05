@@ -2,6 +2,7 @@ package com.example.financesapp.presentation.screens.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.financesapp.domain.models.account.Account
 import com.example.financesapp.domain.usecases.interfaces.GetAccountsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -25,6 +26,9 @@ class AccountViewModel @Inject constructor(
     private val _state = MutableStateFlow<AccountState>(AccountState.Loading)
     val state: StateFlow<AccountState> = _state.asStateFlow()
 
+    private val _selectedAccount = MutableStateFlow<Account?>(null)
+    val selectedAccount: StateFlow<Account?> = _selectedAccount.asStateFlow()
+
     private val _event = MutableSharedFlow<AccountEvent>()
     val event: SharedFlow<AccountEvent> = _event.asSharedFlow()
 
@@ -43,10 +47,10 @@ class AccountViewModel @Inject constructor(
 
     private fun loadAccount() {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(2000)
             _state.value = AccountState.Loading
             try {
                 val account = getAccountsUseCase.invoke()
+                _selectedAccount.value = account
                 _state.value = AccountState.Content(account, isCurrencySelectorVisible = false)
             } catch (e: Exception) {
                 _state.value = AccountState.Error(e.message.orEmpty())

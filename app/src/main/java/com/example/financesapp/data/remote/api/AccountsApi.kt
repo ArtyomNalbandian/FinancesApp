@@ -1,6 +1,7 @@
 package com.example.financesapp.data.remote.api
 
 import com.example.financesapp.data.remote.models.account.AccountDto
+import com.example.financesapp.data.remote.models.account.AccountRequestDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PUT
@@ -14,7 +15,7 @@ interface AccountsApi {
     @PUT("accounts/{id}")
     suspend fun updateAccount(
         @Path("id") id: Int,
-        @Body accountUpdate: Map<String, String>
+        @Body accountRequest: AccountRequestDto
     ): AccountDto
 
     @GET("accounts/{is}")

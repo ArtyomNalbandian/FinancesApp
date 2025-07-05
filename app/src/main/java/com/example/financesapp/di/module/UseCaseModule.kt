@@ -5,7 +5,6 @@ import com.example.financesapp.domain.usecases.impl.GetAccountsUseCaseImpl
 import com.example.financesapp.domain.usecases.impl.GetCategoriesUseCaseImpl
 import com.example.financesapp.domain.usecases.impl.GetExpensesUseCaseImpl
 import com.example.financesapp.domain.usecases.impl.GetIncomesUseCaseImpl
-import com.example.financesapp.domain.usecases.impl.UpdateAccountUseCaseImpl
 import com.example.financesapp.domain.usecases.interfaces.GetAccountByIdUseCase
 import com.example.financesapp.domain.usecases.interfaces.GetAccountsUseCase
 import com.example.financesapp.domain.usecases.interfaces.GetCategoriesUseCase
@@ -37,11 +36,11 @@ abstract class UseCaseModule {
         useCase: GetIncomesUseCaseImpl
     ): GetIncomesUseCase
 
-    @Binds
-    @Singleton
-    abstract fun bindUpdateAccountUseCase(
-        useCase: UpdateAccountUseCaseImpl
-    ): UpdateAccountUseCase
+//    @Binds
+//    @Singleton
+//    abstract fun bindUpdateAccountUseCase(
+//        useCase: UpdateAccountUseCaseImpl
+//    ): UpdateAccountUseCase
 
     @Binds
     @Singleton

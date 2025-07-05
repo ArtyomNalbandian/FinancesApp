@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.financesapp.presentation.screens.account.AccountScreen
 import com.example.financesapp.presentation.screens.categories.CategoriesScreen
+import com.example.financesapp.presentation.screens.edit_account.EditAccountScreen
 import com.example.financesapp.presentation.screens.expenses.ExpensesScreen
 import com.example.financesapp.presentation.screens.history.history_expenses.ExpensesHistoryScreen
 import com.example.financesapp.presentation.screens.history.history_income.IncomeHistoryScreen
@@ -96,8 +97,21 @@ private fun NavGraphBuilder.addAccountGraph(
             AccountScreen(
                 viewModelFactory = viewModelFactory,
                 navigateToEditAccount = { account ->
-//                    navController.navigate(ScreenRoute.EditAccount(account).route)
+                    navController.navigate(
+                        ScreenRoute.EditAccountRoute(
+                            account.id,
+                            account.name,
+                            account.balance,
+                            account.currency
+                        )
+                    )
                 }
+            )
+        }
+        composable<ScreenRoute.EditAccountRoute> {
+            EditAccountScreen(
+                navigateBack = { navController.popBackStack() },
+                viewModelFactory = viewModelFactory
             )
         }
     }

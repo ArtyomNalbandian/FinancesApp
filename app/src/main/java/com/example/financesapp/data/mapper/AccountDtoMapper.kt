@@ -1,6 +1,7 @@
 package com.example.financesapp.data.mapper
 
 import com.example.financesapp.data.remote.models.account.AccountDto
+import com.example.financesapp.data.remote.models.account.AccountRequestDto
 import com.example.financesapp.domain.models.account.Account
 
 fun AccountDto.toAccount() = Account(
@@ -17,3 +18,9 @@ fun Account.toUpdateRequest(): Map<String, String> {
         "currency" to currency
     )
 }
+
+fun Account.toAccountRequestDto() = AccountRequestDto(
+    name = name,
+    balance = balance,
+    currency = currency
+)
