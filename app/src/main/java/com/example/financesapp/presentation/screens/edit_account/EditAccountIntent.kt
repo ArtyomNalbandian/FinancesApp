@@ -1,7 +1,5 @@
 package com.example.financesapp.presentation.screens.edit_account
 
-import com.example.financesapp.domain.models.account.Account
-
 sealed interface EditAccountIntent {
 
     data class ShowCurrencySelector(val accountId: Int) : EditAccountIntent

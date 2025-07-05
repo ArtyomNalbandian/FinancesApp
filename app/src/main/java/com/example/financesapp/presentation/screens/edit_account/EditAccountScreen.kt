@@ -8,15 +8,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -111,27 +110,37 @@ fun EditAccountScreen(
             }
 
             is EditAccountState.Content -> {
-                val content = state as EditAccountState.Content
                 Column {
-                    OutlinedTextField(
+                    TextField(
                         value = name,
                         onValueChange = { name = it },
                         label = { Text("Название счета") },
                         singleLine = true,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
+                            .height(56.dp)
+                            .background(MaterialTheme.colorScheme.secondary),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
-                    OutlinedTextField(
+                    HorizontalDivider()
+                    TextField(
                         value = balance,
                         onValueChange = { balance = it },
                         label = { Text("Баланс") },
                         singleLine = true,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            .height(56.dp)
+                            .background(MaterialTheme.colorScheme.secondary),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+                        )
                     )
+                    HorizontalDivider()
                     ListItem(
                         title = "Валюта",
                         amount = currentState.account.currency.toCurrencySymbol(),

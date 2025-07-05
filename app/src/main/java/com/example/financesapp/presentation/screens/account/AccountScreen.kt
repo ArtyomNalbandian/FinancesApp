@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -32,6 +31,8 @@ fun AccountScreen(
 
     val state by accountViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val currentAccount by accountViewModel.selectedAccount.collectAsStateWithLifecycle()
+    Log.d("testLog", "currAcc --- $currentAccount")
 
     FinancesTopBarConfig(
         title = { Text("Мой счет") },
@@ -53,6 +54,7 @@ fun AccountScreen(
     )
 
     LaunchedEffect(Unit) {
+        accountViewModel.loadAccount()
         accountViewModel.event.collect { event ->
             when (event) {
                 is AccountEvent.ShowError -> {
@@ -75,8 +77,9 @@ fun AccountScreen(
             }
 
             is AccountState.Content -> {
-                AccountScreenContent(account = currentState.account)
-
+                AccountScreenContent(
+                    account = currentAccount ?: currentState.account
+                )
             }
         }
     }

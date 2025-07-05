@@ -19,14 +19,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.AddButton
 import com.example.financesapp.presentation.common.FinancesTopBarConfig
+import com.example.financesapp.presentation.screens.account.AccountViewModel
+import com.example.financesapp.utils.toCurrencySymbol
 
 @Composable
 fun ExpensesScreen(
     viewModelFactory: ViewModelProvider.Factory,
+    accountViewModel: AccountViewModel = viewModel(factory = viewModelFactory),
     expensesViewModel: ExpensesViewModel = viewModel(factory = viewModelFactory),
     navigateToHistory: () -> Unit,
 ) {
@@ -42,8 +46,12 @@ fun ExpensesScreen(
 
     val context = LocalContext.current
     val state by expensesViewModel.state.collectAsState()
+    val account by accountViewModel.selectedAccount.collectAsStateWithLifecycle()
+    val currency = account?.currency?.toCurrencySymbol().orEmpty()
 
     LaunchedEffect(Unit) {
+        accountViewModel.loadAccount()
+        expensesViewModel.loadExpenses()
         expensesViewModel.event.collect { event ->
             when (event) {
                 is ExpensesEvent.ShowError -> {
@@ -73,7 +81,7 @@ fun ExpensesScreen(
                 ExpensesScreenContent(
                     expenses = content.expenses,
                     amount = content.total,
-                    currency = content.currency,
+                    currency = currency,
                     onExpenseClick = {})
                 AddButton(
                     onClick = {}, modifier = Modifier.align(Alignment.BottomEnd)

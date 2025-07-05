@@ -1,5 +1,6 @@
 package com.example.financesapp.presentation.screens.expenses
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financesapp.domain.usecases.interfaces.GetExpensesUseCase
@@ -32,11 +33,7 @@ class ExpensesViewModel @Inject constructor(
     private val _event = MutableSharedFlow<ExpensesEvent>()
     val event: SharedFlow<ExpensesEvent> = _event.asSharedFlow()
 
-    init {
-        loadExpenses()
-    }
-
-    private fun loadExpenses() {
+    fun loadExpenses() {
         val today = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = ExpensesState.Loading
@@ -44,6 +41,7 @@ class ExpensesViewModel @Inject constructor(
                 val expenses = getExpensesUseCase(today, today)
                 val total = expenses.sumOf { it.amount.toDouble() }.toString()
                 val currency = expenses.firstOrNull()?.currency ?: "RUB"
+                Log.d("testLog", "currency --- ${expenses.firstOrNull()?.currency}")
                 _state.value = ExpensesState.Content(expenses, total, currency)
             } catch (e: Exception) {
                 val message = e.message ?: "Ошибка загрузки"

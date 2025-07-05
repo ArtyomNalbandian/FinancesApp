@@ -19,17 +19,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.AddButton
 import com.example.financesapp.presentation.common.FinancesTopBarConfig
-
-//import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarActions
-//import com.example.financesapp.presentation.common.ProvideFinancesTopAppBarTitle
+import com.example.financesapp.presentation.screens.account.AccountViewModel
+import com.example.financesapp.utils.toCurrencySymbol
 
 @Composable
 fun IncomeScreen(
     viewModelFactory: ViewModelProvider.Factory,
+    accountViewModel: AccountViewModel = viewModel(factory = viewModelFactory),
     incomeViewModel: IncomeViewModel = viewModel(factory = viewModelFactory),
     navigateToHistory: () -> Unit,
 ) {
@@ -43,22 +44,14 @@ fun IncomeScreen(
         }
     )
 
-//    ProvideFinancesTopAppBarTitle { Text("Доходы сегодня") }
-//    ProvideFinancesTopAppBarActions {
-//        IconButton(
-//            onClick = { navigateToHistory() }
-//        ) {
-//            Icon(
-//                painter = painterResource(R.drawable.ic_history),
-//                contentDescription = "История доходов"
-//            )
-//        }
-//    }
-
     val context = LocalContext.current
     val state by incomeViewModel.state.collectAsState()
+    val account by accountViewModel.selectedAccount.collectAsStateWithLifecycle()
+    val currency = account?.currency?.toCurrencySymbol().orEmpty()
 
     LaunchedEffect(Unit) {
+        accountViewModel.loadAccount()
+        incomeViewModel.loadIncome()
         incomeViewModel.event.collect { event ->
             when (event) {
                 is IncomeEvent.ShowError -> {
@@ -87,7 +80,7 @@ fun IncomeScreen(
                 IncomeScreenContent(
                     income = currentState.income,
                     amount = currentState.total,
-                    currency = currentState.currency,
+                    currency = currency,
                     onIncomeClick = { }
                 )
                 AddButton(

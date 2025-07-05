@@ -82,6 +82,7 @@ class EditAccountViewModel @Inject constructor(
             if (current is EditAccountState.Content) {
                 try {
                     val newAccount = current.account.copy(currency = newCurrency)
+//                    _editAccountState.value = newAccount
                     _state.value = current.copy(
                         account = newAccount,
                         isCurrencySelectorVisible = false

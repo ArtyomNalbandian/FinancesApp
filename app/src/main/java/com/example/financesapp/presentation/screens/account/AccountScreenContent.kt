@@ -23,7 +23,6 @@ fun AccountScreenContent(
             backgroundColor = MaterialTheme.colorScheme.secondary,
             leadingIcon = "\uD83D\uDCB0",
             trailingIcon = R.drawable.more_vert,
-            onClick = { },
             modifier = Modifier.height(56.dp)
         )
         HorizontalDivider()

@@ -15,6 +15,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,10 +27,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.FinancesTopBarConfig
 import com.example.financesapp.presentation.common.ListItem
+import com.example.financesapp.presentation.screens.account.AccountViewModel
 import com.example.financesapp.presentation.screens.history.DatePickerDialogWrapper
 import com.example.financesapp.presentation.screens.history.DateRangeSelector
 import com.example.financesapp.utils.toCurrencySymbol
@@ -41,6 +44,7 @@ import java.util.Locale
 @Composable
 fun ExpensesHistoryScreen(
     viewModelFactory: ViewModelProvider.Factory,
+    accountViewModel: AccountViewModel = viewModel(factory = viewModelFactory),
     expensesHistoryViewModel: ExpensesHistoryViewModel = viewModel(factory = viewModelFactory),
     navigateBack: () -> Unit,
     navigateToAnalysis: () -> Unit,
@@ -62,6 +66,13 @@ fun ExpensesHistoryScreen(
             }
         }
     )
+
+    val account by accountViewModel.selectedAccount.collectAsStateWithLifecycle()
+    val currency = account?.currency?.toCurrencySymbol().orEmpty()
+
+    LaunchedEffect(Unit) {
+        accountViewModel.loadAccount()
+    }
 
     var startDate by rememberSaveable { mutableStateOf(LocalDate.now().withDayOfMonth(1)) }
     var endDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
@@ -90,7 +101,7 @@ fun ExpensesHistoryScreen(
             }
         )
 
-        ExpensesHistoryContent(state = state)
+        ExpensesHistoryContent(state = state, currency = currency)
 
         if (showDialog) {
             DatePickerDialogWrapper(
@@ -117,7 +128,7 @@ fun ExpensesHistoryScreen(
 }
 
 @Composable
-private fun ExpensesHistoryContent(state: ExpensesHistoryState) {
+private fun ExpensesHistoryContent(state: ExpensesHistoryState, currency: String) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -140,7 +151,7 @@ private fun ExpensesHistoryContent(state: ExpensesHistoryState) {
                     ListItem(
                         title = "Сумма",
                         amount = state.total,
-                        currency = "",
+                        currency = currency,
                         modifier = Modifier.height(56.dp),
                         backgroundColor = MaterialTheme.colorScheme.secondary,
                     )
@@ -159,7 +170,7 @@ private fun ExpensesHistoryContent(state: ExpensesHistoryState) {
                                     leadingIcon = expense.leadingIcon,
                                     trailingIcon = R.drawable.more_vert,
                                     amount = expense.amount,
-                                    currency = expense.currency.toCurrencySymbol(),
+                                    currency = currency,
                                     supportingText = expense.subtitle,
                                     onClick = {}
                                 )
