@@ -49,7 +49,7 @@ class ExpensesHistoryViewModel @Inject constructor(
                     startDate, endDate
                 )
                 val total = historyList.sumOf { it.amount.toDouble() }
-                _state.value = ExpensesHistoryState.Content(historyList, "%,.2f ₽".format(total))
+                _state.value = ExpensesHistoryState.Content(historyList, "%,.2f".format(total))
             } catch (e: Exception) {
                 _state.value = ExpensesHistoryState.Error(
                     "Ошибка: ${e.message}"
