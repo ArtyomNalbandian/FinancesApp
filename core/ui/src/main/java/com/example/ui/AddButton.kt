@@ -1,4 +1,4 @@
-package com.example.financesapp.presentation.common
+package com.example.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape

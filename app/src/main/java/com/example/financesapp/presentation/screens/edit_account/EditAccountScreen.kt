@@ -35,7 +35,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.FinancesTopBarConfig
-import com.example.financesapp.presentation.common.ListItem
 import com.example.financesapp.presentation.screens.account.CurrencySelectorBottomSheet
 import com.example.financesapp.utils.toCurrencyFromSymbol
 import com.example.financesapp.utils.toCurrencySymbol
@@ -141,7 +140,7 @@ fun EditAccountScreen(
                         )
                     )
                     HorizontalDivider()
-                    ListItem(
+                    com.example.ui.ListItem(
                         title = "Валюта",
                         amount = currentState.account.currency.toCurrencySymbol(),
                         backgroundColor = MaterialTheme.colorScheme.secondary,

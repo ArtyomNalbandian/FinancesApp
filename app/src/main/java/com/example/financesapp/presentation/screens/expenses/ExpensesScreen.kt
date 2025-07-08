@@ -22,10 +22,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
-import com.example.financesapp.presentation.common.AddButton
 import com.example.financesapp.presentation.common.FinancesTopBarConfig
 import com.example.financesapp.presentation.screens.account.AccountViewModel
 import com.example.financesapp.utils.toCurrencySymbol
+import com.example.ui.AddButton
 
 @Composable
 fun ExpensesScreen(

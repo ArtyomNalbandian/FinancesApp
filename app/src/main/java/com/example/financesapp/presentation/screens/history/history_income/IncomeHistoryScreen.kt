@@ -31,11 +31,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.FinancesTopBarConfig
-import com.example.financesapp.presentation.common.ListItem
 import com.example.financesapp.presentation.screens.account.AccountViewModel
 import com.example.financesapp.presentation.screens.history.DatePickerDialogWrapper
 import com.example.financesapp.presentation.screens.history.DateRangeSelector
 import com.example.financesapp.utils.toCurrencySymbol
+import com.example.ui.ListItem
 import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

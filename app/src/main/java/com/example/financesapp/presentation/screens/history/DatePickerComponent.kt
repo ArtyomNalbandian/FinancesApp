@@ -12,7 +12,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.financesapp.presentation.common.ListItem
+import com.example.ui.ListItem
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDate.now

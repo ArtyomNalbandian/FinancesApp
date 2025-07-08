@@ -8,8 +8,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.financesapp.domain.models.categories.Category
-import com.example.financesapp.presentation.common.ListItem
 import com.example.financesapp.presentation.common.SearchBar
+import com.example.ui.ListItem
 
 @Composable
 fun CategoriesScreenContent(

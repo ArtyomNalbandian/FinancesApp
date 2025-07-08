@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
 import com.example.financesapp.presentation.common.FinancesTopBarConfig
-import com.example.financesapp.presentation.common.ListItem
+import com.example.ui.ListItem
 
 @Composable
 fun SettingsScreen() {

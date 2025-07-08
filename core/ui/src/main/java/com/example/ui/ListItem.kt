@@ -1,4 +1,4 @@
-package com.example.financesapp.presentation.common
+package com.example.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +28,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.financesapp.ui.theme.SupportingTextColor
 
 @Composable
 fun ListItem(
@@ -104,7 +103,6 @@ private fun LeadingContent(
                 Text(
                     text = it,
                     style = MaterialTheme.typography.bodySmall,
-                    color = SupportingTextColor
                 )
             }
         }
@@ -142,110 +140,3 @@ private fun TrailingContent(
 private fun Modifier.conditionalClickable(onClick: (() -> Unit)?): Modifier {
     return if (onClick != null) clickable(onClick = onClick) else this
 }
-
-
-//@Composable
-//fun ListItem(
-//    title: String,
-//    modifier: Modifier = Modifier,
-//    supportingText: String? = null,
-//    amount: String? = null,
-//    leadingIcon: String? = null,
-//    trailingIcon: Int? = null,
-//    currency: String? = null,
-//    backgroundColor: Color = MaterialTheme.colorScheme.tertiary,
-//    trailingComposable: @Composable (() -> Unit)? = null,
-//    onClick: (() -> Unit)? = null,
-//) {
-//    Row(
-//        modifier = modifier
-//            .fillMaxWidth()
-//            .background(backgroundColor)
-//            .conditionalClickable(onClick)
-//            .padding(horizontal = 16.dp)
-//            .height(72.dp),
-//        verticalAlignment = Alignment.CenterVertically,
-//        horizontalArrangement = Arrangement.SpaceBetween
-//    ) {
-//        LeadingContent(
-//            title = title,
-//            supportingText = supportingText,
-//            leadingIcon = leadingIcon
-//        )
-//        TrailingContent(
-//            amount = amount,
-//            currency = currency,
-//            trailingIcon = trailingIcon,
-//            trailingComposable = trailingComposable
-//        )
-//    }
-//}
-//
-//@Composable
-//private fun LeadingContent(
-//    title: String,
-//    supportingText: String?,
-//    leadingIcon: String?
-//) {
-//    Row(verticalAlignment = Alignment.CenterVertically) {
-//        leadingIcon?.let { icon ->
-//            Box(
-//                modifier = Modifier
-//                    .background(
-//                        color = Color(0xFFD4FAE6),
-//                        shape = CircleShape
-//                    )
-//                    .size(24.dp),
-//                contentAlignment = Alignment.Center
-//            ) {
-//                Text(
-//                    text = icon,
-//                    fontSize = 16.sp,
-//                )
-//            }
-//            Spacer(modifier = Modifier.width(16.dp))
-//        }
-//        Column {
-//            Text(
-//                text = title,
-//                style = MaterialTheme.typography.bodyLarge
-//            )
-//            supportingText?.takeIf { it.isNotEmpty() }?.let { text ->
-//                Text(
-//                    text = text,
-//                    style = MaterialTheme.typography.bodySmall,
-//                    color = SupportingTextColor
-//                )
-//            }
-//        }
-//    }
-//}
-//
-//@Composable
-//private fun TrailingContent(
-//    amount: String?,
-//    currency: String?,
-//    trailingIcon: Int?,
-//    trailingComposable: @Composable (() -> Unit)?
-//) {
-//    Row(verticalAlignment = Alignment.CenterVertically) {
-//        amount?.let {
-//            Text(
-//                text = if (currency != null) "$it $currency" else it,
-//                style = MaterialTheme.typography.bodyLarge,
-//            )
-//        }
-//        trailingIcon?.let { icon ->
-//            Spacer(modifier = Modifier.width(16.dp))
-//            Icon(
-//                painter = painterResource(icon),
-//                contentDescription = "Trailing Icon",
-//            )
-//        }
-//        trailingComposable?.invoke()
-//    }
-//}
-//
-//private fun Modifier.conditionalClickable(onClick: (() -> Unit)?): Modifier {
-//    return onClick?.let { clickable { it() } } ?: this
-//}
