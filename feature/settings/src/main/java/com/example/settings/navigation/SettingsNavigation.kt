@@ -10,8 +10,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object SettingsScreenRoute
 
-fun NavGraphBuilder.settingsSection() {
-    composable(SettingsScreenRoute.toString()) {
+fun NavGraphBuilder.settingsScreen() {
+    composable<SettingsScreenRoute> {
         SettingsScreen()
     }
 }

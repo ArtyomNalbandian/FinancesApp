@@ -15,20 +15,19 @@ import com.example.financesapp.presentation.screens.expenses.ExpensesScreen
 import com.example.financesapp.presentation.screens.history.history_expenses.ExpensesHistoryScreen
 import com.example.financesapp.presentation.screens.history.history_income.IncomeHistoryScreen
 import com.example.financesapp.presentation.screens.income.IncomeScreen
-import com.example.settings.navigation.settingsSection
-import kotlinx.serialization.Serializable
 import com.example.settings.navigation.SettingsScreenRoute
-
+import com.example.settings.navigation.settingsScreen
+import kotlinx.serialization.Serializable
 
 @Composable
-fun RootNavGraph(
+internal fun RootNavGraph(
     navController: NavHostController,
     viewModelFactory: ViewModelProvider.Factory,
     modifier: Modifier = Modifier
 ) {
     NavHost(
         navController = navController,
-        startDestination = ScreenRoute.ExpensesGraph.route,
+        startDestination = ScreenRoute.ExpensesGraph,
         modifier = modifier
     ) {
         addExpensesGraph(viewModelFactory, navController)
@@ -40,91 +39,102 @@ fun RootNavGraph(
 }
 
 @Serializable
-data object ExpensesScreen
+data object ExpensesScreenRoute
+
+@Serializable
+data object ExpensesHistoryScreenRoute
 
 private fun NavGraphBuilder.addExpensesGraph(
     viewModelFactory: ViewModelProvider.Factory,
     navController: NavHostController,
 ) {
-    navigation(
-        startDestination = ExpensesScreen.toString()/*ScreenRoute.Expenses.route*/,
-        route = ScreenRoute.ExpensesGraph.route
+    navigation<ScreenRoute.ExpensesGraph>(
+        startDestination = ExpensesScreenRoute,
     ) {
-        composable(ExpensesScreen.toString()/*ScreenRoute.Expenses.route*/) {
+        composable<ExpensesScreenRoute> {
             ExpensesScreen(
                 viewModelFactory = viewModelFactory,
-                navigateToHistory = { /*navController.navigate(ScreenRoute.History("expenses").route)*/ }
+                navigateToHistory = { navController.navigate(ExpensesHistoryScreenRoute) }
             )
         }
-//        composable(ScreenRoute.History("expenses").route) {
-//            ExpensesHistoryScreen(
-//                viewModelFactory = viewModelFactory,
-//                navigateBack = { navController.popBackStack() },
-//                navigateToAnalysis = { }
-//            )
-//        }
+        composable<ExpensesHistoryScreenRoute> {
+            ExpensesHistoryScreen(
+                viewModelFactory = viewModelFactory,
+                navigateBack = { navController.popBackStack() },
+                navigateToAnalysis = { }
+            )
+        }
     }
 }
 
 @Serializable
-data object IncomeScreen
+data object IncomeScreenRoute
+
+@Serializable
+data object IncomeHistoryScreenRoute
 
 private fun NavGraphBuilder.addIncomeGraph(
     viewModelFactory: ViewModelProvider.Factory,
     navController: NavHostController,
 ) {
-    navigation(
-        startDestination = IncomeScreen.toString()/*ScreenRoute.Income.route*/,
-        route = ScreenRoute.IncomeGraph.route
+    navigation<ScreenRoute.IncomeGraph>(
+        startDestination = IncomeScreenRoute,
     ) {
-        composable(IncomeScreen.toString()/*ScreenRoute.Income.route*/) {
+        composable<IncomeScreenRoute> {
             IncomeScreen(
                 viewModelFactory = viewModelFactory,
-                navigateToHistory = { /*navController.navigate(ScreenRoute.History("income").route)*/ }
+                navigateToHistory = { navController.navigate(IncomeHistoryScreenRoute) }
             )
         }
-//        composable(ScreenRoute.History("income").route) {
-//            IncomeHistoryScreen(
-//                viewModelFactory = viewModelFactory,
-//                navigateBack = { navController.popBackStack() },
-//                navigateToAnalysis = { }
-//            )
-//        }
+        composable<IncomeHistoryScreenRoute> {
+            IncomeHistoryScreen(
+                viewModelFactory = viewModelFactory,
+                navigateBack = { navController.popBackStack() },
+                navigateToAnalysis = { }
+            )
+        }
     }
 }
 
 @Serializable
 data object AccountScreen
 
+@Serializable
+data class EditAccountScreenRoute(
+    val id: Int,
+    val name: String,
+    val sum: String,
+    val currency: String,
+)
+
 private fun NavGraphBuilder.addAccountGraph(
     viewModelFactory: ViewModelProvider.Factory,
     navController: NavHostController,
 ) {
-    navigation(
-        startDestination = AccountScreen.toString()/*ScreenRoute.Account.route*/,
-        route = ScreenRoute.AccountGraph.route
+    navigation<ScreenRoute.AccountGraph>(
+        startDestination = AccountScreen,
     ) {
-        composable(AccountScreen.toString()/*ScreenRoute.Account.route*/) {
+        composable<AccountScreen> {
             AccountScreen(
                 viewModelFactory = viewModelFactory,
                 navigateToEditAccount = { account ->
-//                    navController.navigate(
-//                        ScreenRoute.EditAccountRoute(
-//                            account.id,
-//                            account.name,
-//                            account.balance,
-//                            account.currency
-//                        )
-//                    )
+                    navController.navigate(
+                        EditAccountScreenRoute(
+                            account.id,
+                            account.name,
+                            account.balance,
+                            account.currency
+                        )
+                    )
                 }
             )
         }
-//        composable<ScreenRoute.EditAccountRoute> {
-//            EditAccountScreen(
-//                navigateBack = { navController.popBackStack() },
-//                viewModelFactory = viewModelFactory
-//            )
-//        }
+        composable<EditAccountScreenRoute> {
+            EditAccountScreen(
+                navigateBack = { navController.popBackStack() },
+                viewModelFactory = viewModelFactory
+            )
+        }
     }
 }
 
@@ -134,21 +144,19 @@ data object ArticlesScreen
 private fun NavGraphBuilder.addArticlesGraph(
     viewModelFactory: ViewModelProvider.Factory
 ) {
-    navigation(
-        startDestination = ArticlesScreen.toString()/*ScreenRoute.Articles.route*/,
-        route = ScreenRoute.ArticlesGraph.route
+    navigation<ScreenRoute.ArticlesGraph>(
+        startDestination = ArticlesScreen,
     ) {
-        composable(ArticlesScreen.toString()/*ScreenRoute.Articles.route*/) {
+        composable<ArticlesScreen> {
             CategoriesScreen(viewModelFactory = viewModelFactory)
         }
     }
 }
 
 private fun NavGraphBuilder.addSettingsGraph() {
-    navigation(
-        startDestination = SettingsScreenRoute.toString(),
-        route = ScreenRoute.SettingsGraph.route
+    navigation<ScreenRoute.SettingsGraph>(
+        startDestination = SettingsScreenRoute,
     ) {
-        settingsSection()
+        settingsScreen()
     }
 }

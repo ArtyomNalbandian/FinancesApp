@@ -10,7 +10,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun MainAppScreen(viewModelFactory: ViewModelProvider.Factory) {
+internal fun MainAppScreen(viewModelFactory: ViewModelProvider.Factory) {
     val navController = rememberNavController()
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination
