@@ -7,10 +7,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.financesapp.R
 import com.example.financesapp.domain.models.account.Account
 import com.example.financesapp.utils.toCurrencySymbol
 import com.example.ui.ListItem
+import com.example.ui.R
 
 @Composable
 fun AccountScreenContent(
@@ -22,7 +22,7 @@ fun AccountScreenContent(
             amount = account.balance + " ${account.currency.toCurrencySymbol()}",
             backgroundColor = MaterialTheme.colorScheme.secondary,
             leadingIcon = "\uD83D\uDCB0",
-            trailingIcon = R.drawable.more_vert,
+            trailingIcon = R.drawable.more_settings,
             modifier = Modifier.height(56.dp)
         )
         HorizontalDivider()
@@ -30,7 +30,7 @@ fun AccountScreenContent(
             title = "Валюта",
             amount = account.currency.toCurrencySymbol(),
             backgroundColor = MaterialTheme.colorScheme.secondary,
-            trailingIcon = R.drawable.more_vert,
+            trailingIcon = R.drawable.more_settings,
             modifier = Modifier.height(56.dp)
         )
     }

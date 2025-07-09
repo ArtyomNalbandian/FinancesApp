@@ -10,7 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.financesapp.R
+import com.example.ui.R
 import com.example.financesapp.domain.models.income.Income
 import com.example.financesapp.utils.toCurrencySymbol
 import com.example.ui.ListItem
@@ -36,7 +36,7 @@ fun IncomeScreenContent(
                     title = income.title,
                     supportingText = income.subtitle,
                     leadingIcon = income.leadingIcon,
-                    trailingIcon = R.drawable.more_vert,
+                    trailingIcon = R.drawable.more_settings,
                     amount = income.amount,
                     onClick = { onIncomeClick(income.id) }
                 )

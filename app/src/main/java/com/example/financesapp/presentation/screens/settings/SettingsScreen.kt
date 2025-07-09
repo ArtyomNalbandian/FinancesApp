@@ -16,54 +16,54 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.financesapp.R
-import com.example.financesapp.presentation.common.FinancesTopBarConfig
+import com.example.ui.FinancesTopBarConfig
 import com.example.ui.ListItem
 
-@Composable
-fun SettingsScreen() {
-
-    FinancesTopBarConfig(
-        title = { Text("Настройки") },
-    )
-
-    var isDarkTheme by remember { mutableStateOf(false) }
-
-    LazyColumn {
-        item {
-            ListItem(
-                title = "Темная тема",
-                trailingComposable = {
-                    Switch(
-                        checked = isDarkTheme,
-                        onCheckedChange = { isDarkTheme = it },
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colorScheme.secondary,
-                            checkedTrackColor = MaterialTheme.colorScheme.primary,
-                        )
-                    )
-                },
-                modifier = Modifier.height(56.dp)
-            )
-            HorizontalDivider()
-        }
-        itemsIndexed(settingsItems) { _, icon ->
-            ListItem(
-                title = icon.first,
-                trailingIcon = icon.second,
-                onClick = { },
-                modifier = Modifier.height(56.dp)
-            )
-            HorizontalDivider()
-        }
-    }
-}
-
-private val settingsItems = listOf(
-    "Основной цвет" to R.drawable.more,
-    "Звуки" to R.drawable.more,
-    "Хаптики" to R.drawable.more,
-    "Код пароль" to R.drawable.more,
-    "Синхронизация" to R.drawable.more,
-    "Язык" to R.drawable.more,
-    "О программе" to R.drawable.more
-)
+//@Composable
+//private fun SettingsScreen() {
+//
+//    FinancesTopBarConfig(
+//        title = { Text("Настройки") },
+//    )
+//
+//    var isDarkTheme by remember { mutableStateOf(false) }
+//
+//    LazyColumn {
+//        item {
+//            ListItem(
+//                title = "Темная тема",
+//                trailingComposable = {
+//                    Switch(
+//                        checked = isDarkTheme,
+//                        onCheckedChange = { isDarkTheme = it },
+//                        colors = SwitchDefaults.colors(
+//                            checkedThumbColor = MaterialTheme.colorScheme.secondary,
+//                            checkedTrackColor = MaterialTheme.colorScheme.primary,
+//                        )
+//                    )
+//                },
+//                modifier = Modifier.height(56.dp)
+//            )
+//            HorizontalDivider()
+//        }
+//        itemsIndexed(settingsItems) { _, icon ->
+//            ListItem(
+//                title = icon.first,
+//                trailingIcon = icon.second,
+//                onClick = { },
+//                modifier = Modifier.height(56.dp)
+//            )
+//            HorizontalDivider()
+//        }
+//    }
+//}
+//
+//private val settingsItems = listOf(
+//    "Основной цвет" to R.drawable.more_settings,
+//    "Звуки" to R.drawable.more_settings,
+//    "Хаптики" to R.drawable.more_settings,
+//    "Код пароль" to R.drawable.more_settings,
+//    "Синхронизация" to R.drawable.more_settings,
+//    "Язык" to R.drawable.more_settings,
+//    "О программе" to R.drawable.more_settings
+//)

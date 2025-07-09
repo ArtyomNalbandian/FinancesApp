@@ -33,11 +33,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.financesapp.R
-import com.example.financesapp.presentation.common.FinancesTopBarConfig
+import com.example.ui.FinancesTopBarConfig
 import com.example.financesapp.presentation.screens.account.CurrencySelectorBottomSheet
 import com.example.financesapp.utils.toCurrencyFromSymbol
 import com.example.financesapp.utils.toCurrencySymbol
+import com.example.ui.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -144,7 +144,7 @@ fun EditAccountScreen(
                         title = "Валюта",
                         amount = currentState.account.currency.toCurrencySymbol(),
                         backgroundColor = MaterialTheme.colorScheme.secondary,
-                        trailingIcon = R.drawable.more_vert,
+                        trailingIcon = com.example.ui.R.drawable.more_settings,
                         modifier = Modifier.height(56.dp),
                         onClick = {
                             editAccountViewModel.handleIntent(

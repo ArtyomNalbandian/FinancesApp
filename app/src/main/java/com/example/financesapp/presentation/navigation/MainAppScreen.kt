@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.financesapp.presentation.common.FinancesTopAppBar
 
 @Composable
 fun MainAppScreen(viewModelFactory: ViewModelProvider.Factory) {

@@ -17,7 +17,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.financesapp.presentation.common.FinancesTopBarConfig
+import com.example.ui.FinancesTopBarConfig
 
 @Composable
 fun CategoriesScreen(

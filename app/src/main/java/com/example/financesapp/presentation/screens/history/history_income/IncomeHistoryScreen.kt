@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.financesapp.R
-import com.example.financesapp.presentation.common.FinancesTopBarConfig
+import com.example.ui.R
+import com.example.ui.FinancesTopBarConfig
 import com.example.financesapp.presentation.screens.account.AccountViewModel
 import com.example.financesapp.presentation.screens.history.DatePickerDialogWrapper
 import com.example.financesapp.presentation.screens.history.DateRangeSelector
@@ -165,7 +165,7 @@ private fun IncomeHistoryContent(state: IncomeHistoryState, currency: String) {
                                 ListItem(
                                     title = income.title,
                                     leadingIcon = income.leadingIcon,
-                                    trailingIcon = R.drawable.more_vert,
+                                    trailingIcon = R.drawable.more_settings,
                                     amount = income.amount,
                                     currency = currency,
                                     supportingText = income.subtitle,

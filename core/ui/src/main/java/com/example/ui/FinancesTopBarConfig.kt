@@ -1,10 +1,6 @@
-package com.example.financesapp.presentation.common
+package com.example.ui
 
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -17,9 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.navigation.compose.LocalOwnersProvider
-import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun FinancesTopAppBarNavAction(backStackEntry: NavBackStackEntry?) {
@@ -90,7 +84,6 @@ fun FinancesTopBarConfig(
     }
 }
 
-
 class FinancesTopAppBarViewModel : ViewModel() {
 
     var titleState by mutableStateOf<(@Composable () -> Unit)?>(null, referentialEqualityPolicy())
@@ -111,23 +104,4 @@ class FinancesTopAppBarViewModel : ViewModel() {
         navActionState = navAction
         actionState = actions
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun FinancesTopAppBar(navController: NavController) {
-
-    val backStackEntry by navController.currentBackStackEntryAsState()
-
-    CenterAlignedTopAppBar(
-        navigationIcon = {
-            FinancesTopAppBarNavAction(backStackEntry)
-        }, title = {
-            FinancesTopAppBarTitle(backStackEntry)
-        }, actions = {
-            FinancesTopAppBarActions(backStackEntry)
-        }, colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary
-        )
-    )
 }

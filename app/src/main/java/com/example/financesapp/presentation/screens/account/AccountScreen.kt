@@ -20,7 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.financesapp.R
 import com.example.financesapp.domain.models.account.Account
-import com.example.financesapp.presentation.common.FinancesTopBarConfig
+import com.example.ui.FinancesTopBarConfig
 
 @Composable
 fun AccountScreen(
