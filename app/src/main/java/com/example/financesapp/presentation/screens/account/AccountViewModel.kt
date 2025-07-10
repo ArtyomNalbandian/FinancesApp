@@ -2,7 +2,7 @@ package com.example.financesapp.presentation.screens.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.financesapp.domain.models.account.Account
+import com.example.common.model.account.Account
 import com.example.financesapp.domain.usecases.interfaces.GetAccountsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow

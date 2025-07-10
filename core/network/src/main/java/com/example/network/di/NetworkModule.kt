@@ -15,7 +15,6 @@ import com.example.network.BuildConfig
 class NetworkModule {
 
     @Provides
-    @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
@@ -29,7 +28,6 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://shmr-finance.ru/api/v1/")
@@ -39,20 +37,17 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
     fun provideAccountsApi(retrofit: Retrofit): AccountsApi {
         return retrofit.create(AccountsApi::class.java)
     }
 
 
     @Provides
-    @Singleton
     fun provideTransactionApi(retrofit: Retrofit): TransactionApi {
         return retrofit.create(TransactionApi::class.java)
     }
 
     @Provides
-    @Singleton
     fun provideCategoriesApi(retrofit: Retrofit): CategoriesApi {
         return retrofit.create(CategoriesApi::class.java)
     }

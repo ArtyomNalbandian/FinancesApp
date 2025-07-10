@@ -1,6 +1,7 @@
 package com.example.financesapp.presentation.screens.history.history_income
 
-import com.example.financesapp.domain.models.income.Income
+import com.example.common.model.income.Income
+
 
 sealed interface IncomeHistoryState {
 

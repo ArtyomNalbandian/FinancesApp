@@ -1,6 +1,6 @@
 package com.example.financesapp.domain.usecases.interfaces
 
-import com.example.financesapp.domain.models.income.Income
+import com.example.common.model.income.Income
 
 interface GetIncomesUseCase {
 

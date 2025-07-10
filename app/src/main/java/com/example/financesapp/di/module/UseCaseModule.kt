@@ -2,15 +2,12 @@ package com.example.financesapp.di.module
 
 import com.example.financesapp.domain.usecases.impl.GetAccountByIdUseCaseImpl
 import com.example.financesapp.domain.usecases.impl.GetAccountsUseCaseImpl
-import com.example.financesapp.domain.usecases.impl.GetCategoriesUseCaseImpl
 import com.example.financesapp.domain.usecases.impl.GetExpensesUseCaseImpl
 import com.example.financesapp.domain.usecases.impl.GetIncomesUseCaseImpl
 import com.example.financesapp.domain.usecases.interfaces.GetAccountByIdUseCase
 import com.example.financesapp.domain.usecases.interfaces.GetAccountsUseCase
-import com.example.financesapp.domain.usecases.interfaces.GetCategoriesUseCase
 import com.example.financesapp.domain.usecases.interfaces.GetExpensesUseCase
 import com.example.financesapp.domain.usecases.interfaces.GetIncomesUseCase
-import com.example.financesapp.domain.usecases.interfaces.UpdateAccountUseCase
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
@@ -48,9 +45,9 @@ abstract class UseCaseModule {
         useCase: GetAccountByIdUseCaseImpl
     ): GetAccountByIdUseCase
 
-    @Binds
-    @Singleton
-    abstract fun bindGetCategoriesUseCase(
-        useCase: GetCategoriesUseCaseImpl
-    ): GetCategoriesUseCase
+//    @Binds
+//    @Singleton
+//    abstract fun bindGetCategoriesUseCase(
+//        useCase: GetCategoriesUseCaseImpl
+//    ): GetCategoriesUseCase
 }

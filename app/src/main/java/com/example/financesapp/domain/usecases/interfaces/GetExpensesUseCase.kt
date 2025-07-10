@@ -1,6 +1,6 @@
 package com.example.financesapp.domain.usecases.interfaces
 
-import com.example.financesapp.domain.models.expenses.Expense
+import com.example.common.model.expense.Expense
 
 interface GetExpensesUseCase {
 

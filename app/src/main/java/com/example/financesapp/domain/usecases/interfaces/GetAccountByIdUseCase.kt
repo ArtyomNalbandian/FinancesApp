@@ -1,6 +1,6 @@
 package com.example.financesapp.domain.usecases.interfaces
 
-import com.example.financesapp.domain.models.account.Account
+import com.example.common.model.account.Account
 
 interface GetAccountByIdUseCase {
 

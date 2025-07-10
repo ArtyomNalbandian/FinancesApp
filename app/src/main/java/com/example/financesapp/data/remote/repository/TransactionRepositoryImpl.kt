@@ -1,9 +1,9 @@
 package com.example.financesapp.data.remote.repository
 
+import com.example.common.model.expense.Expense
+import com.example.common.model.income.Income
 import com.example.financesapp.data.mapper.toExpense
 import com.example.financesapp.data.mapper.toIncome
-import com.example.financesapp.domain.models.expenses.Expense
-import com.example.financesapp.domain.models.income.Income
 import com.example.financesapp.domain.repositories.TransactionRepository
 import com.example.financesapp.domain.usecases.interfaces.GetAccountsUseCase
 import com.example.financesapp.utils.retryRequest

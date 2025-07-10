@@ -1,6 +1,6 @@
 package com.example.financesapp.data.mapper
 
-import com.example.financesapp.domain.models.account.Account
+import com.example.common.model.account.Account
 import com.example.network.dto.account.AccountDto
 import com.example.network.dto.account.AccountRequestDto
 

@@ -16,7 +16,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        appComponent.inject(this)
+        (application as FinancesApplication).appComponent.inject(this)
+
+//        appComponent.inject(this)
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

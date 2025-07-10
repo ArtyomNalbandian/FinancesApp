@@ -15,7 +15,7 @@ sealed interface ScreenRoute {
     data object AccountGraph : ScreenRoute
 
     @Serializable
-    data object ArticlesGraph : ScreenRoute
+    data object CategoriesGraph : ScreenRoute
 
     @Serializable
     data object SettingsGraph : ScreenRoute

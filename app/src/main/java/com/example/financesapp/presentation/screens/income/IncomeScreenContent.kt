@@ -10,8 +10,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.common.model.income.Income
 import com.example.ui.R
-import com.example.financesapp.domain.models.income.Income
 import com.example.financesapp.utils.toCurrencySymbol
 import com.example.ui.ListItem
 

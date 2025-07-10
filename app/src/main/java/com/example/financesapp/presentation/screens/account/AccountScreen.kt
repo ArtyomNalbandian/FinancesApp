@@ -18,8 +18,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.common.model.account.Account
 import com.example.financesapp.R
-import com.example.financesapp.domain.models.account.Account
 import com.example.ui.FinancesTopBarConfig
 
 @Composable

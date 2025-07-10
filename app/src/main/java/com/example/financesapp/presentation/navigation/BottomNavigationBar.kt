@@ -18,7 +18,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.financesapp.R
 import com.example.financesapp.presentation.navigation.ScreenRoute.AccountGraph
-import com.example.financesapp.presentation.navigation.ScreenRoute.ArticlesGraph
+import com.example.financesapp.presentation.navigation.ScreenRoute.CategoriesGraph
 import com.example.financesapp.presentation.navigation.ScreenRoute.ExpensesGraph
 import com.example.financesapp.presentation.navigation.ScreenRoute.IncomeGraph
 import com.example.financesapp.presentation.navigation.ScreenRoute.SettingsGraph
@@ -62,7 +62,7 @@ private val topLevelRoutes = listOf(
     TopLevelRoute("Расходы", ExpensesGraph, R.drawable.expenses),
     TopLevelRoute("Доходы", IncomeGraph, R.drawable.income),
     TopLevelRoute("Счета", AccountGraph, R.drawable.account),
-    TopLevelRoute("Статьи", ArticlesGraph, R.drawable.articles),
+    TopLevelRoute("Статьи", CategoriesGraph, R.drawable.articles),
     TopLevelRoute("Настройки", SettingsGraph, R.drawable.settings),
 )
 

@@ -1,6 +1,7 @@
 package com.example.financesapp.presentation.screens.expenses
 
-import com.example.financesapp.domain.models.expenses.Expense
+import com.example.common.model.expense.Expense
+
 
 sealed interface ExpensesState {
 

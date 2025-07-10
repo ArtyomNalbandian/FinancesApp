@@ -1,7 +1,7 @@
 package com.example.financesapp.data.remote.repository
 
+import com.example.common.model.account.Account
 import com.example.financesapp.data.mapper.toAccount
-import com.example.financesapp.domain.models.account.Account
 import com.example.financesapp.domain.repositories.AccountRepository
 import com.example.financesapp.utils.retryRequest
 import com.example.network.api.AccountsApi

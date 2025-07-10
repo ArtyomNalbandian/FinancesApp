@@ -1,6 +1,6 @@
 package com.example.financesapp.presentation.screens.account
 
-import com.example.financesapp.domain.models.account.Account
+import com.example.common.model.account.Account
 
 
 sealed interface AccountState {

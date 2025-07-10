@@ -85,8 +85,12 @@ dependencies {
 
     // core:ui module
     implementation(project(":core:ui"))
-    // core:ui network
+    // core:network module
     implementation(project(":core:network"))
+    // core:common module
+    implementation(project(":core:common"))
     // feature:settings module
     implementation(project(":feature:settings"))
+    // feature:categories module
+    implementation(project(":feature:categories"))
 }

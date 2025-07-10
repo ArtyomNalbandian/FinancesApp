@@ -55,6 +55,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Dagger2
+    implementation(libs.google.dagger.dagger)
+    ksp(libs.google.dagger.compiler)
+
     // core:ui module
     implementation(project(":core:ui"))
+    // core:common module
+    implementation(project(":core:common"))
+    // core:network module
+    implementation(project(":core:network"))
 }

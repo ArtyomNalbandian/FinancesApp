@@ -1,7 +1,7 @@
 package com.example.financesapp.domain.repositories
 
-import com.example.financesapp.domain.models.expenses.Expense
-import com.example.financesapp.domain.models.income.Income
+import com.example.common.model.expense.Expense
+import com.example.common.model.income.Income
 
 interface TransactionRepository {
 
