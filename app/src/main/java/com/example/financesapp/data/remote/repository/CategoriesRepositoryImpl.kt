@@ -1,9 +1,9 @@
 package com.example.financesapp.data.remote.repository
 
 import com.example.financesapp.data.mapper.toCategory
-import com.example.financesapp.data.remote.api.CategoriesApi
 import com.example.financesapp.domain.models.categories.Category
 import com.example.financesapp.domain.repositories.CategoriesRepository
+import com.example.network.api.CategoriesApi
 import javax.inject.Inject
 
 class CategoriesRepositoryImpl @Inject constructor(

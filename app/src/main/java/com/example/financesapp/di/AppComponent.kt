@@ -3,10 +3,10 @@ package com.example.financesapp.di
 import android.content.Context
 import com.example.financesapp.MainActivity
 import com.example.financesapp.di.module.AppModule
-import com.example.financesapp.di.module.NetworkModule
 import com.example.financesapp.di.module.RepositoryModule
 import com.example.financesapp.di.module.UseCaseModule
 import com.example.financesapp.di.module.ViewModelModule
+import com.example.network.di.NetworkModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

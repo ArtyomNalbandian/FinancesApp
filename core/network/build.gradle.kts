@@ -1,7 +1,7 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.arturbosch.detekt)
@@ -10,22 +10,29 @@ plugins {
 }
 
 android {
-    namespace = "com.example.financesapp"
+    namespace = "com.example.network"
     compileSdk = 35
 
+    buildFeatures {
+        buildConfig = true
+    }
+
+
+//    val properties = Properties()
+//    properties.load(project.rootProject.file("local.properties").reader())
+
     defaultConfig {
-        applicationId = "com.example.financesapp"
         minSdk = 28
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+
+//        buildConfigField("String", "API_TOKEN", "\"${properties.getProperty("token")}\"")
+
+        val properties = Properties().apply {
+            load(rootProject.file("local.properties").inputStream())
+        }
+        buildConfigField("String", "API_TOKEN", "\"${properties.getProperty("api.token")}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-//        val properties = Properties().apply {
-//            load(rootProject.file("local.properties").inputStream())
-//        }
-//        buildConfigField("String", "API_TOKEN", "\"${properties.getProperty("api.token")}\"")
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -43,10 +50,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
-//        buildConfig = true
     }
 }
 
@@ -69,9 +72,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Lottie
-    implementation(libs.lottie)
-
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
@@ -79,14 +79,4 @@ dependencies {
     // Dagger2
     implementation(libs.google.dagger.dagger)
     ksp(libs.google.dagger.compiler)
-
-    // Shimmer
-    implementation(libs.accompanist.placeholder.material)
-
-    // core:ui module
-    implementation(project(":core:ui"))
-    // core:ui network
-    implementation(project(":core:network"))
-    // feature:settings module
-    implementation(project(":feature:settings"))
 }

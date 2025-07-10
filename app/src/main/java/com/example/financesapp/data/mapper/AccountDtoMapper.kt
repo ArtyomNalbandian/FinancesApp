@@ -1,8 +1,8 @@
 package com.example.financesapp.data.mapper
 
-import com.example.financesapp.data.remote.models.account.AccountDto
-import com.example.financesapp.data.remote.models.account.AccountRequestDto
 import com.example.financesapp.domain.models.account.Account
+import com.example.network.dto.account.AccountDto
+import com.example.network.dto.account.AccountRequestDto
 
 fun AccountDto.toAccount() = Account(
     id = id,

@@ -1,8 +1,8 @@
 package com.example.financesapp.data.mapper
 
-import com.example.financesapp.data.remote.models.transaction.TransactionResponseDto
 import com.example.financesapp.domain.models.expenses.Expense
 import com.example.financesapp.domain.models.income.Income
+import com.example.network.dto.transaction.TransactionResponseDto
 
 fun TransactionResponseDto.toExpense() = Expense(
     id = id,

@@ -1,12 +1,11 @@
 package com.example.financesapp.data.remote.repository
 
 import com.example.financesapp.data.mapper.toAccount
-import com.example.financesapp.data.mapper.toAccountRequestDto
-import com.example.financesapp.data.remote.api.AccountsApi
-import com.example.financesapp.data.remote.models.account.AccountRequestDto
 import com.example.financesapp.domain.models.account.Account
 import com.example.financesapp.domain.repositories.AccountRepository
 import com.example.financesapp.utils.retryRequest
+import com.example.network.api.AccountsApi
+import com.example.network.dto.account.AccountRequestDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -56,7 +55,6 @@ class AccountRepositoryImpl @Inject constructor(
         )
         val updatedAccount = updatedAccountDto.toAccount()
         _currentAccount.value = updatedAccount
-//        return updatedAccount
         return retryRequest(
             shouldRetry = { throwable ->
                 when (throwable) {
