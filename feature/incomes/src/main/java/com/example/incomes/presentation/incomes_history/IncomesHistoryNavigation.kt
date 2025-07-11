@@ -1,19 +1,19 @@
-package com.example.expenses.presentation.expenses_history
+package com.example.incomes.presentation.incomes_history
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 
-// route to ExpensesHistory screen
+// route to IncomesHistory screen
 @Serializable
-data object ExpensesHistoryScreenRoute
+data object IncomesHistoryScreenRoute
 
-fun NavGraphBuilder.expensesHistoryScreen(
+fun NavGraphBuilder.incomesHistoryScreen(
     navigateBack: () -> Unit,
     navigateToAnalysis: () -> Unit
 ) {
-    composable<ExpensesHistoryScreenRoute> {
-        ExpensesHistoryScreen(
+    composable<IncomesHistoryScreenRoute> {
+        IncomesHistoryScreen(
             navigateBack = navigateBack,
             navigateToAnalysis = navigateToAnalysis
         )

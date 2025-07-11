@@ -2,7 +2,7 @@ package com.example.financesapp.presentation.navigation
 
 import kotlinx.serialization.Serializable
 
-sealed interface ScreenRoute {
+internal sealed interface ScreenRoute {
 
     // Top level routes
     @Serializable

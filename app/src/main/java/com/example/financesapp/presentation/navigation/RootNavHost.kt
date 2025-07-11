@@ -2,11 +2,9 @@ package com.example.financesapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.account.presentation.AccountScreenRoute
 import com.example.account.presentation.accountScreen
@@ -18,16 +16,16 @@ import com.example.expenses.presentation.expenses.ExpensesScreenRoute
 import com.example.expenses.presentation.expenses.expensesScreen
 import com.example.expenses.presentation.expenses_history.ExpensesHistoryScreenRoute
 import com.example.expenses.presentation.expenses_history.expensesHistoryScreen
-import com.example.financesapp.presentation.screens.history.history_income.IncomeHistoryScreen
-import com.example.financesapp.presentation.screens.income.IncomeScreen
+import com.example.incomes.presentation.incomes.IncomesScreenRoute
+import com.example.incomes.presentation.incomes.incomesScreen
+import com.example.incomes.presentation.incomes_history.IncomesHistoryScreenRoute
+import com.example.incomes.presentation.incomes_history.incomesHistoryScreen
 import com.example.settings.navigation.SettingsScreenRoute
 import com.example.settings.navigation.settingsScreen
-import kotlinx.serialization.Serializable
 
 @Composable
 internal fun RootNavGraph(
     navController: NavHostController,
-    viewModelFactory: ViewModelProvider.Factory,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -36,7 +34,7 @@ internal fun RootNavGraph(
         modifier = modifier
     ) {
         addExpensesGraph(navController)
-        addIncomeGraph(viewModelFactory, navController)
+        addIncomeGraph(navController)
         addAccountGraph(navController)
         addCategoriesGraph()
         addSettingsGraph()
@@ -59,32 +57,19 @@ private fun NavGraphBuilder.addExpensesGraph(
     }
 }
 
-@Serializable
-data object IncomeScreenRoute
-
-@Serializable
-data object IncomeHistoryScreenRoute
-
 private fun NavGraphBuilder.addIncomeGraph(
-    viewModelFactory: ViewModelProvider.Factory,
-    navController: NavHostController,
+    navController: NavHostController
 ) {
     navigation<ScreenRoute.IncomeGraph>(
-        startDestination = IncomeScreenRoute,
+        startDestination = IncomesScreenRoute,
     ) {
-        composable<IncomeScreenRoute> {
-            IncomeScreen(
-                viewModelFactory = viewModelFactory,
-                navigateToHistory = { navController.navigate(IncomeHistoryScreenRoute) }
-            )
-        }
-        composable<IncomeHistoryScreenRoute> {
-            IncomeHistoryScreen(
-                viewModelFactory = viewModelFactory,
-                navigateBack = { navController.popBackStack() },
-                navigateToAnalysis = { }
-            )
-        }
+        incomesScreen(
+            navigateToHistory = { navController.navigate(IncomesHistoryScreenRoute) }
+        )
+        incomesHistoryScreen(
+            navigateBack = { navController.popBackStack() },
+            navigateToAnalysis = { }
+        )
     }
 }
 

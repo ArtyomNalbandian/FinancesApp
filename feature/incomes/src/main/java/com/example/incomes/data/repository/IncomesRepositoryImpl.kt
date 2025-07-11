@@ -1,9 +1,9 @@
-package com.example.expenses.data.repository
+package com.example.incomes.data.repository
 
 import com.example.account.domain.usecase.interfaces.GetAccountUseCase
-import com.example.common.model.expense.Expense
-import com.example.expenses.data.mapper.toExpense
-import com.example.expenses.domain.repository.ExpensesRepository
+import com.example.common.model.income.Income
+import com.example.incomes.data.mapper.toIncome
+import com.example.incomes.domain.repository.IncomesRepository
 import com.example.network.api.TransactionApi
 import com.example.network.util.retryRequest
 import kotlinx.coroutines.Dispatchers
@@ -14,9 +14,9 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 
 /**
- * Реализация [ExpensesRepository] для работы с транзакциями через API.
+ * Реализация [IncomesRepository] для работы с транзакциями через API.
  * Обеспечивает:
- * - Получение расходов за указанный период
+ * - Получение доходов за указанный период
  * - Автоматические повторы запросов при сетевых ошибках
  * - Фильтрацию и сортировку транзакций
  * - Преобразование DTO в доменные модели
@@ -26,11 +26,12 @@ import javax.inject.Inject
  * @param transactionApi Реализация сетевого API транзакций
  * @param getAccountUseCase UseCase для получения ID аккаунта
  */
-class ExpensesRepositoryImpl @Inject constructor(
+class IncomesRepositoryImpl @Inject constructor(
     private val transactionApi: TransactionApi,
     private val getAccountUseCase: GetAccountUseCase
-) : ExpensesRepository {
-    override suspend fun getExpensesByPeriod(startDate: String?, endDate: String?): List<Expense> {
+) : IncomesRepository {
+
+    override suspend fun getIncomesByPeriod(startDate: String?, endDate: String?): List<Income> {
         return retryRequest(
             shouldRetry = { throwable ->
                 when (throwable) {
@@ -46,9 +47,10 @@ class ExpensesRepositoryImpl @Inject constructor(
                 startDate = startDate,
                 endDate = endDate
             )
-                .filter { !it.categoryDto.isIncome }
+                .filter { it.categoryDto.isIncome }
                 .sortedByDescending { it.transactionDate }
-                .map { it.toExpense() }
+                .map { it.toIncome() }
+
         }
     }
 
