@@ -1,15 +1,14 @@
 package com.example.network.di
 
+import com.example.network.BuildConfig
+import com.example.network.api.AccountsApi
 import com.example.network.api.CategoriesApi
+import com.example.network.api.TransactionApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Singleton
-import com.example.network.api.AccountsApi
-import com.example.network.api.TransactionApi
-import com.example.network.BuildConfig
 
 @Module
 class NetworkModule {
