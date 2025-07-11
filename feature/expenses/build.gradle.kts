@@ -1,7 +1,5 @@
-import java.util.Properties
-
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.arturbosch.detekt)
@@ -10,22 +8,14 @@ plugins {
 }
 
 android {
-    namespace = "com.example.financesapp"
+    namespace = "com.example.expenses"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.financesapp"
         minSdk = 28
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-//        val properties = Properties().apply {
-//            load(rootProject.file("local.properties").inputStream())
-//        }
-//        buildConfigField("String", "API_TOKEN", "\"${properties.getProperty("api.token")}\"")
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -43,10 +33,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
-//        buildConfig = true
     }
 }
 
@@ -69,34 +55,20 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Lottie
-    implementation(libs.lottie)
+    // Dagger2
+    implementation(libs.google.dagger.dagger)
+    ksp(libs.google.dagger.compiler)
 
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-    // Dagger2
-    implementation(libs.google.dagger.dagger)
-    ksp(libs.google.dagger.compiler)
-
-    // Shimmer
-    implementation(libs.accompanist.placeholder.material)
-
     // core:ui module
     implementation(project(":core:ui"))
-    // core:network module
-    implementation(project(":core:network"))
     // core:common module
     implementation(project(":core:common"))
-    // feature:settings module
-    implementation(project(":feature:settings"))
-    // feature:categories module
-    implementation(project(":feature:categories"))
+    // core:network module
+    implementation(project(":core:network"))
     // feature:account module
     implementation(project(":feature:account"))
-    // feature:edit_account module
-    implementation(project(":feature:edit-account"))
-    // feature:expenses module
-    implementation(project(":feature:expenses"))
 }

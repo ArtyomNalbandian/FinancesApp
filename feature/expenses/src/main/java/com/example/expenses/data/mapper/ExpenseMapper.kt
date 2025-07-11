@@ -1,15 +1,14 @@
-package com.example.financesapp.data.mapper
+package com.example.expenses.data.mapper
 
-import com.example.common.model.income.Income
 import com.example.common.model.expense.Expense
 import com.example.network.dto.transaction.TransactionResponseDto
 
-fun TransactionResponseDto.toIncome() = Income(
+fun TransactionResponseDto.toExpense() = Expense(
     id = id,
     title = categoryDto.name,
     subtitle = comment,
-    amount = amount,
     leadingIcon = categoryDto.emoji,
+    amount = amount,
     currency = account.currency,
     transactionDate = transactionDate
 )

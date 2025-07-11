@@ -1,20 +1,20 @@
-package com.example.account.di
+package com.example.expenses.di
 
 import androidx.lifecycle.ViewModelProvider
 import com.example.network.di.NetworkApi
 import dagger.Component
 
-@AccountScope
+@ExpensesScope
 @Component(
-    modules = [AccountModule::class],
+    modules = [ExpensesModule::class],
     dependencies = [NetworkApi::class]
 )
-interface AccountComponent {
+internal interface ExpensesComponent {
 
     fun viewModelFactory(): ViewModelProvider.Factory
 
     @Component.Factory
     interface Factory {
-        fun create(networkApi: NetworkApi): AccountComponent
+        fun create(networkApi: NetworkApi): ExpensesComponent
     }
 }

@@ -14,7 +14,8 @@ import com.example.categories.presentation.CategoriesScreenRoute
 import com.example.categories.presentation.categoriesScreen
 import com.example.edit_account.presentation.EditAccountScreenRoute
 import com.example.edit_account.presentation.editAccountScreen
-import com.example.financesapp.presentation.screens.expenses.ExpensesScreen
+import com.example.expenses.presentation.ExpensesScreenRoute
+import com.example.expenses.presentation.expensesScreen
 import com.example.financesapp.presentation.screens.history.history_expenses.ExpensesHistoryScreen
 import com.example.financesapp.presentation.screens.history.history_income.IncomeHistoryScreen
 import com.example.financesapp.presentation.screens.income.IncomeScreen
@@ -35,14 +36,11 @@ internal fun RootNavGraph(
     ) {
         addExpensesGraph(viewModelFactory, navController)
         addIncomeGraph(viewModelFactory, navController)
-        addAccountGraph(viewModelFactory, navController)
+        addAccountGraph(navController)
         addCategoriesGraph()
         addSettingsGraph()
     }
 }
-
-@Serializable
-data object ExpensesScreenRoute
 
 @Serializable
 data object ExpensesHistoryScreenRoute
@@ -54,12 +52,9 @@ private fun NavGraphBuilder.addExpensesGraph(
     navigation<ScreenRoute.ExpensesGraph>(
         startDestination = ExpensesScreenRoute,
     ) {
-        composable<ExpensesScreenRoute> {
-            ExpensesScreen(
-                viewModelFactory = viewModelFactory,
-                navigateToHistory = { navController.navigate(ExpensesHistoryScreenRoute) }
-            )
-        }
+        expensesScreen(
+            navigateToHistory = { navController.navigate(ExpensesHistoryScreenRoute) }
+        )
         composable<ExpensesHistoryScreenRoute> {
             ExpensesHistoryScreen(
                 viewModelFactory = viewModelFactory,
@@ -100,7 +95,6 @@ private fun NavGraphBuilder.addIncomeGraph(
 }
 
 private fun NavGraphBuilder.addAccountGraph(
-    viewModelFactory: ViewModelProvider.Factory,
     navController: NavHostController,
 ) {
     navigation<ScreenRoute.AccountGraph>(
@@ -114,12 +108,6 @@ private fun NavGraphBuilder.addAccountGraph(
         editAccountScreen(
             navigateBack = { navController.popBackStack() }
         )
-//        composable<EditAccountScreenRoute> {
-//            EditAccountScreen(
-//                navigateBack = { navController.popBackStack() },
-//                viewModelFactory = viewModelFactory
-//            )
-//        }
     }
 }
 
