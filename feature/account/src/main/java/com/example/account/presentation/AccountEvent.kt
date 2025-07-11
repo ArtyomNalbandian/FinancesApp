@@ -1,7 +1,7 @@
 package com.example.account.presentation
 
 
-sealed interface AccountEvent {
+interface AccountEvent {
 
     data class ShowError(val message: String) : AccountEvent
 }

@@ -23,6 +23,7 @@ import com.example.ui.FinancesTopBarConfig
 
 @Composable
 internal fun CategoriesScreen() {
+
     val networkComponent = DaggerNetworkComponent.create()
     val categoriesComponent = DaggerCategoriesComponent.factory().create(networkApi = networkComponent)
     val categoriesViewModel: CategoriesViewModel = viewModel(factory = categoriesComponent.viewModelFactory())

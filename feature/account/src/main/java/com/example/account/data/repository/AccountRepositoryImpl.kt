@@ -27,12 +27,6 @@ class AccountRepositoryImpl @Inject constructor(
     private val accountApi: AccountsApi
 ) : AccountRepository {
 
-    private val _currentAccount = MutableStateFlow<Account?>(null)
-    override val currentAccount: StateFlow<Account?> = _currentAccount.asStateFlow()
-    private val accountFlow = MutableStateFlow<Account?>(null)
-
-    override fun observeAccount(): Flow<Account> = accountFlow.filterNotNull()
-
     override suspend fun getAccount(): Account {
         return retryRequest(
             shouldRetry = { throwable ->
@@ -53,8 +47,8 @@ class AccountRepositoryImpl @Inject constructor(
             id = accountId,
             accountRequest = accountRequest,
         )
-        val updatedAccount = updatedAccountDto.toAccount()
-        _currentAccount.value = updatedAccount
+//        val updatedAccount = updatedAccountDto.toAccount()
+//        _currentAccount.value = updatedAccount
         return retryRequest(
             shouldRetry = { throwable ->
                 when (throwable) {
@@ -69,25 +63,6 @@ class AccountRepositoryImpl @Inject constructor(
                 id = accountId,
                 accountRequest = accountRequest
             ).toAccount()
-        }
-    }
-
-    override suspend fun refreshAccount() {
-        _currentAccount.value = getAccount()
-    }
-
-    override suspend fun getAccountById(accountId: String): Account {
-        return retryRequest(
-            shouldRetry = { throwable ->
-                when (throwable) {
-                    is UnknownHostException -> false
-                    is IOException -> true
-                    is HttpException -> throwable.code() in 500..599
-                    else -> false
-                }
-            }
-        ) {
-            accountApi.getAccountById(accountId.toInt()).toAccount()
         }
     }
 }

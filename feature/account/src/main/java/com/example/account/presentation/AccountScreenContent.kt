@@ -13,7 +13,7 @@ import com.example.ui.ListItem
 import com.example.ui.R
 
 @Composable
-fun AccountScreenContent(
+internal fun AccountScreenContent(
     account: Account,
 ) {
     Column {

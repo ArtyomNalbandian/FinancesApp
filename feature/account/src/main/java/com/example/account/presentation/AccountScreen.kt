@@ -23,7 +23,7 @@ import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesTopBarConfig
 
 @Composable
-fun AccountScreen(
+internal fun AccountScreen(
     navigateToEditAccount: () -> Unit
 ) {
 

@@ -30,16 +30,4 @@ abstract class UseCaseModule {
     abstract fun bindGetIncomesUseCase(
         useCase: GetIncomesUseCaseImpl
     ): GetIncomesUseCase
-
-//    @Binds
-//    @Singleton
-//    abstract fun bindUpdateAccountUseCase(
-//        useCase: UpdateAccountUseCaseImpl
-//    ): UpdateAccountUseCase
-
-//    @Binds
-//    @Singleton
-//    abstract fun bindGetAccountByIdUseCase(
-//        useCase: GetAccountByIdUseCaseImpl
-//    ): GetAccountByIdUseCase
 }

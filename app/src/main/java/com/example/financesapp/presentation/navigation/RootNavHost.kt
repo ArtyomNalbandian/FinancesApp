@@ -12,7 +12,8 @@ import com.example.account.presentation.AccountScreenRoute
 import com.example.account.presentation.accountScreen
 import com.example.categories.presentation.CategoriesScreenRoute
 import com.example.categories.presentation.categoriesScreen
-import com.example.financesapp.presentation.screens.edit_account.EditAccountScreen
+import com.example.edit_account.presentation.EditAccountScreenRoute
+import com.example.edit_account.presentation.editAccountScreen
 import com.example.financesapp.presentation.screens.expenses.ExpensesScreen
 import com.example.financesapp.presentation.screens.history.history_expenses.ExpensesHistoryScreen
 import com.example.financesapp.presentation.screens.history.history_income.IncomeHistoryScreen
@@ -98,9 +99,6 @@ private fun NavGraphBuilder.addIncomeGraph(
     }
 }
 
-@Serializable
-data object EditAccountScreenRoute
-
 private fun NavGraphBuilder.addAccountGraph(
     viewModelFactory: ViewModelProvider.Factory,
     navController: NavHostController,
@@ -113,12 +111,15 @@ private fun NavGraphBuilder.addAccountGraph(
                 navController.navigate(EditAccountScreenRoute)
             }
         )
-        composable<EditAccountScreenRoute> {
-            EditAccountScreen(
-                navigateBack = { navController.popBackStack() },
-                viewModelFactory = viewModelFactory
-            )
-        }
+        editAccountScreen(
+            navigateBack = { navController.popBackStack() }
+        )
+//        composable<EditAccountScreenRoute> {
+//            EditAccountScreen(
+//                navigateBack = { navController.popBackStack() },
+//                viewModelFactory = viewModelFactory
+//            )
+//        }
     }
 }
 
