@@ -14,6 +14,8 @@ import com.example.edit_account.presentation.EditAccountScreenRoute
 import com.example.edit_account.presentation.editAccountScreen
 import com.example.expenses.presentation.expenses.ExpensesScreenRoute
 import com.example.expenses.presentation.expenses.expensesScreen
+import com.example.expenses.presentation.expenses_add.ExpensesAddScreenRoute
+import com.example.expenses.presentation.expenses_add.expensesAddScreen
 import com.example.expenses.presentation.expenses_history.ExpensesHistoryScreenRoute
 import com.example.expenses.presentation.expenses_history.expensesHistoryScreen
 import com.example.incomes.presentation.incomes.IncomesScreenRoute
@@ -48,11 +50,15 @@ private fun NavGraphBuilder.addExpensesGraph(
         startDestination = ExpensesScreenRoute,
     ) {
         expensesScreen(
-            navigateToHistory = { navController.navigate(ExpensesHistoryScreenRoute) }
+            navigateToHistory = { navController.navigate(ExpensesHistoryScreenRoute) },
+            navigateToAddExpense = { navController.navigate(ExpensesAddScreenRoute) }
         )
         expensesHistoryScreen(
             navigateBack = { navController.popBackStack() },
             navigateToAnalysis = { }
+        )
+        expensesAddScreen(
+            navigateBack = { navController.popBackStack() },
         )
     }
 }

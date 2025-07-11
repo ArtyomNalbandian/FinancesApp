@@ -6,7 +6,7 @@ import com.example.common.model.category.Category
 import com.example.network.api.CategoriesApi
 import javax.inject.Inject
 
-internal class CategoriesRepositoryImpl @Inject constructor(
+class CategoriesRepositoryImpl @Inject constructor(
     private val categoriesApi: CategoriesApi
 ) : CategoriesRepository {
 

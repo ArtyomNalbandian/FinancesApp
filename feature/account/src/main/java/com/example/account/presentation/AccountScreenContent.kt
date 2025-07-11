@@ -22,7 +22,7 @@ internal fun AccountScreenContent(
             amount = account.balance + " ${account.currency.toCurrencySymbol()}",
             backgroundColor = MaterialTheme.colorScheme.secondary,
             leadingIcon = "\uD83D\uDCB0",
-            trailingIcon = R.drawable.more_settings,
+            trailingIcon = R.drawable.more,
             modifier = Modifier.height(56.dp)
         )
         HorizontalDivider()
@@ -30,7 +30,7 @@ internal fun AccountScreenContent(
             title = "Валюта",
             amount = account.currency.toCurrencySymbol(),
             backgroundColor = MaterialTheme.colorScheme.secondary,
-            trailingIcon = R.drawable.more_settings,
+            trailingIcon = R.drawable.more,
             modifier = Modifier.height(56.dp)
         )
     }

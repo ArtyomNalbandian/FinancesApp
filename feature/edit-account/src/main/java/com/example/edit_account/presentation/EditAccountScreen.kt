@@ -42,8 +42,6 @@ import com.example.ui.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun EditAccountScreen(
-//    viewModelFactory: ViewModelProvider.Factory,
-//    editAccountViewModel: EditAccountViewModel = viewModel(factory = viewModelFactory),
     navigateBack: () -> Unit,
 ) {
 
@@ -149,7 +147,7 @@ internal fun EditAccountScreen(
                         title = "Валюта",
                         amount = currentState.account.currency.toCurrencySymbol(),
                         backgroundColor = MaterialTheme.colorScheme.secondary,
-                        trailingIcon = com.example.ui.R.drawable.more_settings,
+                        trailingIcon = com.example.ui.R.drawable.more,
                         modifier = Modifier.height(56.dp),
                         onClick = {
                             editAccountViewModel.handleIntent(

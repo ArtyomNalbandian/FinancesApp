@@ -59,11 +59,11 @@ internal fun SettingsScreen() {
 }
 
 private val settingsItems = listOf(
-    "Основной цвет" to R.drawable.more,
-    "Звуки" to R.drawable.more,
-    "Хаптики" to R.drawable.more,
-    "Код пароль" to R.drawable.more,
-    "Синхронизация" to R.drawable.more,
-    "Язык" to R.drawable.more,
-    "О программе" to R.drawable.more
+    "Основной цвет" to R.drawable.more_settings,
+    "Звуки" to R.drawable.more_settings,
+    "Хаптики" to R.drawable.more_settings,
+    "Код пароль" to R.drawable.more_settings,
+    "Синхронизация" to R.drawable.more_settings,
+    "Язык" to R.drawable.more_settings,
+    "О программе" to R.drawable.more_settings
 )

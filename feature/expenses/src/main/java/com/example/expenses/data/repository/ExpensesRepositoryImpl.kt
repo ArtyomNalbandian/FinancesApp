@@ -5,6 +5,7 @@ import com.example.common.model.expense.Expense
 import com.example.expenses.data.mapper.toExpense
 import com.example.expenses.domain.repository.ExpensesRepository
 import com.example.network.api.TransactionApi
+import com.example.network.dto.transaction.TransactionRequestDto
 import com.example.network.util.retryRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,7 +15,7 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 
 /**
- * Реализация [ExpensesRepository] для работы с транзакциями через API.
+ * Реализация [ExpensesRepository] для работы с расходами через API.
  * Обеспечивает:
  * - Получение расходов за указанный период
  * - Автоматические повторы запросов при сетевых ошибках
@@ -49,6 +50,60 @@ class ExpensesRepositoryImpl @Inject constructor(
                 .filter { !it.categoryDto.isIncome }
                 .sortedByDescending { it.transactionDate }
                 .map { it.toExpense() }
+        }
+    }
+
+    override suspend fun createExpense(
+        accountId: Int,
+        categoryId: Int,
+        amount: String,
+        expenseDate: String,
+        comment: String?
+    ): Result<Unit> {
+        return try {
+            val request = TransactionRequestDto(
+                accountId = accountId,
+                categoryId = categoryId,
+                amount = amount,
+                transactionDate = expenseDate,
+                comment = comment
+            )
+            transactionApi.createTransaction(request)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getExpenseById(expenseId: Int): Result<Expense> {
+        return try {
+            val transaction = transactionApi.getTransactionById(expenseId).toExpense()
+            Result.success(transaction)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun updateExpense(
+        expenseId: Int,
+        accountId: Int,
+        categoryId: Int,
+        amount: String,
+        expenseDate: String,
+        comment: String?
+    ): Result<Unit> {
+        return try {
+            val request = TransactionRequestDto(
+                accountId = accountId,
+                categoryId = categoryId,
+                amount = amount,
+                transactionDate = expenseDate,
+                comment = comment
+            )
+            transactionApi.updateTransaction(expenseId, request)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

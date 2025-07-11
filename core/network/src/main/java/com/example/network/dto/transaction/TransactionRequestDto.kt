@@ -1,7 +1,7 @@
 package com.example.network.dto.transaction
 
 // To create transaction
-data class TransactionRequest(
+data class TransactionRequestDto(
     val accountId: Int,
     val categoryId: Int,
     val amount: String,

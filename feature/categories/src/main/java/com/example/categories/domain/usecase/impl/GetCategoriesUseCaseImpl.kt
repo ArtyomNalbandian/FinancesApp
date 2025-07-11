@@ -5,7 +5,7 @@ import com.example.categories.domain.repository.CategoriesRepository
 import com.example.common.model.category.Category
 import javax.inject.Inject
 
-internal class GetCategoriesUseCaseImpl @Inject constructor(
+class GetCategoriesUseCaseImpl @Inject constructor(
     private val categoriesRepository: CategoriesRepository
 ) : GetCategoriesUseCase {
 

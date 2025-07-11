@@ -36,7 +36,7 @@ internal fun IncomesScreenContent(
                     title = income.title,
                     supportingText = income.subtitle,
                     leadingIcon = income.leadingIcon,
-                    trailingIcon = R.drawable.more_settings,
+                    trailingIcon = R.drawable.more,
                     amount = income.amount,
                     onClick = { onIncomeClick(income.id) }
                 )

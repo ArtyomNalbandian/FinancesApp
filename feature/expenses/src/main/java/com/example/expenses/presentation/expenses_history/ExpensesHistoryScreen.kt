@@ -177,7 +177,7 @@ private fun ExpensesHistoryContent(state: ExpensesHistoryState, currency: String
                                 ListItem(
                                     title = expense.title,
                                     leadingIcon = expense.leadingIcon,
-                                    trailingIcon = R.drawable.more_settings,
+                                    trailingIcon = R.drawable.more,
                                     amount = expense.amount,
                                     currency = currency,
                                     supportingText = expense.subtitle,

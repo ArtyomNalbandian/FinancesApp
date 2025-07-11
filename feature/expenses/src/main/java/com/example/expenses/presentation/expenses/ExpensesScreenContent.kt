@@ -36,7 +36,7 @@ internal fun ExpensesScreenContent(
                     title = expense.title,
                     supportingText = expense.subtitle,
                     leadingIcon = expense.leadingIcon,
-                    trailingIcon = R.drawable.more_settings,
+                    trailingIcon = R.drawable.more,
                     amount = expense.amount,
                     onClick = { onExpenseClick(expense.id) }
                 )

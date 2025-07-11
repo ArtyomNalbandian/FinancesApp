@@ -8,10 +8,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object ExpensesScreenRoute
 
-fun NavGraphBuilder.expensesScreen(navigateToHistory: () -> Unit) {
+fun NavGraphBuilder.expensesScreen(
+    navigateToHistory: () -> Unit,
+    navigateToAddExpense: () -> Unit,
+) {
     composable<ExpensesScreenRoute> {
         ExpensesScreen(
-            navigateToHistory = navigateToHistory
+            navigateToHistory = navigateToHistory,
+            navigateToAddExpense = navigateToAddExpense
         )
     }
 }

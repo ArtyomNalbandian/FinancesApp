@@ -1,6 +1,6 @@
 package com.example.network.dto.transaction
 
-data class Transaction(
+data class TransactionDto(
     val id: Int,
     val accountId: Int,
     val categoryId: Int,
