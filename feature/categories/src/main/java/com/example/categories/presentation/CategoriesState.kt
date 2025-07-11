@@ -1,8 +1,8 @@
-package com.example.categories.impl.presentation
+package com.example.categories.presentation
 
 import com.example.common.model.category.Category
 
-sealed interface CategoriesState {
+internal sealed interface CategoriesState {
 
     data object Loading : CategoriesState
     data class Content(

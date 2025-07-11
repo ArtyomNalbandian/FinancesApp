@@ -18,8 +18,4 @@ interface RepositoryModule {
     @Binds
     @Singleton
     fun bindTransactionRepository(repository: TransactionRepositoryImpl): TransactionRepository
-
-//    @Binds
-//    @Singleton
-//    fun bindCategoriesRepository(repository: CategoriesRepositoryImpl): CategoriesRepository
 }

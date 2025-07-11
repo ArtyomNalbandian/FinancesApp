@@ -18,8 +18,6 @@ class MainActivity : ComponentActivity() {
 
         (application as FinancesApplication).appComponent.inject(this)
 
-//        appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {

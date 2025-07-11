@@ -28,10 +28,6 @@ interface AppComponent {
 
     fun viewModelFactory(): ViewModelProvider.Factory
 
-//    fun categoriesComponentFactory(): CategoriesComponent.Factory
-
-//    val networkComponent: NetworkComponent
-
     @Component.Factory
     interface Factory {
         fun create(
@@ -40,76 +36,3 @@ interface AppComponent {
         ): AppComponent
     }
 }
-
-//@Singleton
-//@Component(
-//    modules = [
-//        AppModule::class,
-////        NetworkModule::class,
-//        RepositoryModule::class,
-//        ViewModelModule::class,
-//        UseCaseModule::class,
-//        ViewModelFactoryModule::class
-//    ],
-//    dependencies = [NetworkComponent::class]
-//)
-//interface AppComponent: CategoriesDependencies {
-//
-//    fun inject(activity: MainActivity)
-//
-//    fun categoriesComponentFactory(): CategoriesComponent.Factory
-//
-//    fun appViewModels(): Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
-//
-//    @Component.Factory
-//    interface Factory {
-//        fun create(
-//            @BindsInstance @ApplicationContext
-//            context: Context,
-//            networkComponent: NetworkComponent): AppComponent
-//    }
-//
-//    override fun categoriesApi(): CategoriesApi
-//}
-
-//@Module
-//object ViewModelFactoryModule {
-//    @Provides
-//    @Singleton
-//    fun provideViewModelFactory(
-//        appViewModels: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>,
-//        categoriesComponentFactory: CategoriesComponent.Factory,
-//        appComponent: AppComponent
-//    ): ViewModelProvider.Factory {
-//        val categoriesComponent = categoriesComponentFactory.create(appComponent)
-//
-//        val combinedMap = mutableMapOf<Class<out ViewModel>, Provider<ViewModel>>()
-//        combinedMap.putAll(appViewModels)
-//        combinedMap.putAll(categoriesComponent.viewModelsMap())
-//
-//        return ViewModelFactory(combinedMap)
-//    }
-//
-//    @Provides
-//    fun provideAppViewModels(component: AppComponent): Map<Class<out ViewModel>, Provider<ViewModel>> {
-//        return component.appViewModels()
-//    }
-//}
-
-//@Module
-//object ViewModelFactoryModule {
-//    @Provides
-//    @Singleton
-//    fun provideViewModelFactory(
-//        appComponent: AppComponent,
-//        categoriesComponentFactory: CategoriesComponent.Factory
-//    ): ViewModelProvider.Factory {
-//        val categoriesComponent = categoriesComponentFactory.create(appComponent)
-//
-//        val viewModelsMap = mutableMapOf<Class<out ViewModel>, Provider<ViewModel>>()
-//        viewModelsMap.putAll(appComponent.appViewModels())
-//        viewModelsMap.putAll(categoriesComponent.viewModelsMap())
-//
-//        return ViewModelFactory(viewModelsMap)
-//    }
-//}

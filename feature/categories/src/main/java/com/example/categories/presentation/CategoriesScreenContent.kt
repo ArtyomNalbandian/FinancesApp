@@ -1,4 +1,4 @@
-package com.example.categories.impl.presentation
+package com.example.categories.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +12,7 @@ import com.example.ui.ListItem
 import com.example.ui.SearchBar
 
 @Composable
-fun CategoriesScreenContent(
+internal fun CategoriesScreenContent(
     categories: List<Category>,
     onSearch: (String) -> Unit
 ) {

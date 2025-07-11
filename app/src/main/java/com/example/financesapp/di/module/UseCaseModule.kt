@@ -44,10 +44,4 @@ abstract class UseCaseModule {
     abstract fun bindGetAccountByIdUseCase(
         useCase: GetAccountByIdUseCaseImpl
     ): GetAccountByIdUseCase
-
-//    @Binds
-//    @Singleton
-//    abstract fun bindGetCategoriesUseCase(
-//        useCase: GetCategoriesUseCaseImpl
-//    ): GetCategoriesUseCase
 }

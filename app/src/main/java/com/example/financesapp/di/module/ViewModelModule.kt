@@ -2,7 +2,6 @@ package com.example.financesapp.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.categories.impl.presentation.CategoriesViewModel
 import com.example.financesapp.presentation.screens.account.AccountViewModel
 import com.example.financesapp.presentation.screens.edit_account.EditAccountViewModel
 import com.example.financesapp.presentation.screens.expenses.ExpensesViewModel
@@ -48,9 +47,4 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(IncomeHistoryViewModel::class)
     fun bindIncomeHistoryViewModel(incomeHistoryViewModel: IncomeHistoryViewModel): ViewModel
-
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(CategoriesViewModel::class)
-//    fun bindCategoriesViewModel(categoriesViewModel: CategoriesViewModel): ViewModel
 }

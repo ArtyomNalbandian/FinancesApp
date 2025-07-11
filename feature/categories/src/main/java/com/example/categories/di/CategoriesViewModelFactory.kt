@@ -1,12 +1,11 @@
-package com.example.financesapp.di.module
+package com.example.categories.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
 import javax.inject.Provider
-import javax.inject.Singleton
 
-class ViewModelFactory @Inject constructor(
+internal class CategoriesViewModelFactory @Inject constructor(
     private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

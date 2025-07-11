@@ -8,8 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.categories.api.navigation.CategoriesScreenRoute
-import com.example.categories.api.navigation.categoriesScreen
+import com.example.categories.presentation.CategoriesScreenRoute
+import com.example.categories.presentation.categoriesScreen
 import com.example.financesapp.presentation.screens.account.AccountScreen
 import com.example.financesapp.presentation.screens.edit_account.EditAccountScreen
 import com.example.financesapp.presentation.screens.expenses.ExpensesScreen
@@ -34,7 +34,7 @@ internal fun RootNavGraph(
         addExpensesGraph(viewModelFactory, navController)
         addIncomeGraph(viewModelFactory, navController)
         addAccountGraph(viewModelFactory, navController)
-        addCategoriesGraph(viewModelFactory)
+        addCategoriesGraph()
         addSettingsGraph()
     }
 }
@@ -139,13 +139,11 @@ private fun NavGraphBuilder.addAccountGraph(
     }
 }
 
-private fun NavGraphBuilder.addCategoriesGraph(
-    viewModelFactory: ViewModelProvider.Factory
-) {
+private fun NavGraphBuilder.addCategoriesGraph() {
     navigation<ScreenRoute.CategoriesGraph>(
         startDestination = CategoriesScreenRoute,
     ) {
-        categoriesScreen(categoriesViewModelFactory = viewModelFactory)
+        categoriesScreen()
     }
 }
 

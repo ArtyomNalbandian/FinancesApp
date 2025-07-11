@@ -1,5 +1,6 @@
-package com.example.categories.impl.presentation
+package com.example.categories.presentation
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -14,16 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.categories.di.DaggerCategoriesComponent
+import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesTopBarConfig
 
 @Composable
-fun CategoriesScreen(
-    categoriesViewModelFactory: ViewModelProvider.Factory,
-    categoriesViewModel: CategoriesViewModel = viewModel(factory = categoriesViewModelFactory)
-) {
+internal fun CategoriesScreen() {
+    val networkComponent = DaggerNetworkComponent.create()
+    val categoriesComponent = DaggerCategoriesComponent.factory().create(networkApi = networkComponent)
+    val categoriesViewModel: CategoriesViewModel = viewModel(factory = categoriesComponent.viewModelFactory())
+    Log.d("testLog", "$categoriesComponent")
     val state by categoriesViewModel.state.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
 

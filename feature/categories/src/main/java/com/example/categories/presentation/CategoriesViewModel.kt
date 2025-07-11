@@ -1,11 +1,8 @@
-package com.example.categories.impl.presentation
+package com.example.categories.presentation
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.categories.api.di.CategoriesComponent
-import com.example.categories.api.di.CategoriesDependencies
-import com.example.categories.impl.domain.usecase.interfaces.GetCategoriesUseCase
+import com.example.categories.domain.usecase.interfaces.GetCategoriesUseCase
 import com.example.common.model.category.Category
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,22 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-//class CategoriesViewModelFactory(
-//    private val dependencies: CategoriesDependencies
-//) : ViewModelProvider.Factory {
-//
-//    @Suppress("UNCHECKED_CAST")
-//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-//        val component = CategoriesComponent.init(dependencies)
-//        val viewModel = CategoriesViewModel(
-//            component.getCategoriesUseCase()
-//        )
-//        component.inject(viewModel)
-//        return viewModel as T
-//    }
-//}
-
-class CategoriesViewModel @Inject constructor(
+internal class CategoriesViewModel @Inject constructor(
     private val getCategoriesUseCase: GetCategoriesUseCase,
 ) : ViewModel() {
 
