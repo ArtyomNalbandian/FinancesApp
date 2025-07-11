@@ -1,6 +1,6 @@
-package com.example.financesapp.presentation.screens.history.history_expenses
+package com.example.expenses.presentation.expenses_history
 
-sealed interface ExpensesHistoryIntent {
+internal sealed interface ExpensesHistoryIntent {
 
     data class LoadHistory(
         val startDate: String,

@@ -14,9 +14,10 @@ import com.example.categories.presentation.CategoriesScreenRoute
 import com.example.categories.presentation.categoriesScreen
 import com.example.edit_account.presentation.EditAccountScreenRoute
 import com.example.edit_account.presentation.editAccountScreen
-import com.example.expenses.presentation.ExpensesScreenRoute
-import com.example.expenses.presentation.expensesScreen
-import com.example.financesapp.presentation.screens.history.history_expenses.ExpensesHistoryScreen
+import com.example.expenses.presentation.expenses.ExpensesScreenRoute
+import com.example.expenses.presentation.expenses.expensesScreen
+import com.example.expenses.presentation.expenses_history.ExpensesHistoryScreenRoute
+import com.example.expenses.presentation.expenses_history.expensesHistoryScreen
 import com.example.financesapp.presentation.screens.history.history_income.IncomeHistoryScreen
 import com.example.financesapp.presentation.screens.income.IncomeScreen
 import com.example.settings.navigation.SettingsScreenRoute
@@ -34,7 +35,7 @@ internal fun RootNavGraph(
         startDestination = ScreenRoute.ExpensesGraph,
         modifier = modifier
     ) {
-        addExpensesGraph(viewModelFactory, navController)
+        addExpensesGraph(navController)
         addIncomeGraph(viewModelFactory, navController)
         addAccountGraph(navController)
         addCategoriesGraph()
@@ -42,12 +43,8 @@ internal fun RootNavGraph(
     }
 }
 
-@Serializable
-data object ExpensesHistoryScreenRoute
-
 private fun NavGraphBuilder.addExpensesGraph(
-    viewModelFactory: ViewModelProvider.Factory,
-    navController: NavHostController,
+    navController: NavHostController
 ) {
     navigation<ScreenRoute.ExpensesGraph>(
         startDestination = ExpensesScreenRoute,
@@ -55,13 +52,10 @@ private fun NavGraphBuilder.addExpensesGraph(
         expensesScreen(
             navigateToHistory = { navController.navigate(ExpensesHistoryScreenRoute) }
         )
-        composable<ExpensesHistoryScreenRoute> {
-            ExpensesHistoryScreen(
-                viewModelFactory = viewModelFactory,
-                navigateBack = { navController.popBackStack() },
-                navigateToAnalysis = { }
-            )
-        }
+        expensesHistoryScreen(
+            navigateBack = { navController.popBackStack() },
+            navigateToAnalysis = { }
+        )
     }
 }
 

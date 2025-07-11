@@ -1,4 +1,4 @@
-package com.example.expenses.presentation
+package com.example.expenses.presentation.expenses
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable

@@ -1,8 +1,8 @@
-package com.example.financesapp.presentation.screens.history.history_expenses
+package com.example.expenses.presentation.expenses_history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.financesapp.domain.usecases.interfaces.GetExpensesUseCase
+import com.example.expenses.domain.usecase.interfaces.GetExpensesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +21,7 @@ import javax.inject.Inject
  * Автоматически загружает данные за текущий месяц при инициализации.
  * @property getExpensesUseCase UseCase для получения расходов
  */
-class ExpensesHistoryViewModel @Inject constructor(
+internal class ExpensesHistoryViewModel @Inject constructor(
     private val getExpensesUseCase: GetExpensesUseCase,
 ) : ViewModel() {
 

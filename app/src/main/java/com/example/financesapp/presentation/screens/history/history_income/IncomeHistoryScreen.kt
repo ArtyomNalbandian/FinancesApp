@@ -32,8 +32,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.account.presentation.AccountViewModel
 import com.example.ui.R
 import com.example.ui.FinancesTopBarConfig
-import com.example.financesapp.presentation.screens.history.DatePickerDialogWrapper
-import com.example.financesapp.presentation.screens.history.DateRangeSelector
+import com.example.financesapp.presentation.screens.history.FinancesDatePickerDialog
+import com.example.financesapp.presentation.screens.history.FinancesDateRangeSelector
 import com.example.financesapp.utils.toCurrencySymbol
 import com.example.ui.ListItem
 import java.time.Instant
@@ -84,7 +84,7 @@ fun IncomeHistoryScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        DateRangeSelector(
+        FinancesDateRangeSelector(
             startDate = startDate,
             endDate = endDate,
             dateFormatter = dateFormatter,
@@ -101,7 +101,7 @@ fun IncomeHistoryScreen(
         IncomeHistoryContent(state = state, currency = currency)
 
         if (showDialog) {
-            DatePickerDialogWrapper(
+            FinancesDatePickerDialog(
                 pickerTarget = pickerTarget,
                 startDate = startDate,
                 endDate = endDate,

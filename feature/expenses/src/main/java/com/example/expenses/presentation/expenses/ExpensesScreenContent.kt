@@ -1,4 +1,4 @@
-package com.example.expenses.presentation
+package com.example.expenses.presentation.expenses
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

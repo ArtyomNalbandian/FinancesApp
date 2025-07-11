@@ -10,7 +10,8 @@ import com.example.expenses.data.repository.ExpensesRepositoryImpl
 import com.example.expenses.domain.repository.ExpensesRepository
 import com.example.expenses.domain.usecase.impl.GetExpensesUseCaseImpl
 import com.example.expenses.domain.usecase.interfaces.GetExpensesUseCase
-import com.example.expenses.presentation.ExpensesViewModel
+import com.example.expenses.presentation.expenses.ExpensesViewModel
+import com.example.expenses.presentation.expenses_history.ExpensesHistoryViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -37,6 +38,11 @@ internal abstract class ExpensesModule {
     @IntoMap
     @ViewModelKey(ExpensesViewModel::class)
     abstract fun bindExpensesViewModel(viewModel: ExpensesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ExpensesHistoryViewModel::class)
+    abstract fun bindExpensesHistoryViewModel(viewModel: ExpensesHistoryViewModel): ViewModel
 
     @Binds
     @ExpensesScope

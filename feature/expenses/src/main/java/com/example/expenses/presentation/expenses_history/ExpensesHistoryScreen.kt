@@ -1,5 +1,6 @@
-package com.example.financesapp.presentation.screens.history.history_expenses
+package com.example.expenses.presentation.expenses_history
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,29 +27,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.account.di.DaggerAccountComponent
 import com.example.account.presentation.AccountViewModel
+import com.example.common.util.toCurrencySymbol
+import com.example.expenses.di.DaggerExpensesComponent
+import com.example.network.di.DaggerNetworkComponent
+import com.example.ui.FinancesDatePickerDialog
+import com.example.ui.FinancesDateRangeSelector
 import com.example.ui.FinancesTopBarConfig
-import com.example.financesapp.presentation.screens.history.DatePickerDialogWrapper
-import com.example.financesapp.presentation.screens.history.DateRangeSelector
-import com.example.financesapp.utils.toCurrencySymbol
 import com.example.ui.ListItem
+import com.example.ui.R
 import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-import com.example.ui.R
 
 @Composable
-fun ExpensesHistoryScreen(
-    viewModelFactory: ViewModelProvider.Factory,
-    accountViewModel: AccountViewModel = viewModel(factory = viewModelFactory),
-    expensesHistoryViewModel: ExpensesHistoryViewModel = viewModel(factory = viewModelFactory),
+internal fun ExpensesHistoryScreen(
     navigateBack: () -> Unit,
     navigateToAnalysis: () -> Unit,
 ) {
+
+    val networkComponent = DaggerNetworkComponent.create()
+    val expensesComponent = DaggerExpensesComponent.factory().create(networkApi = networkComponent)
+    val accountComponent = DaggerAccountComponent.factory().create(networkApi = networkComponent)
+    val accountViewModel: AccountViewModel =
+        viewModel(factory = accountComponent.viewModelFactory())
+    val expensesHistoryViewModel: ExpensesHistoryViewModel =
+        viewModel(factory = expensesComponent.viewModelFactory())
+    Log.d("testLog", "$expensesComponent")
 
     FinancesTopBarConfig(
         title = { Text("История расходов") },
@@ -87,7 +96,7 @@ fun ExpensesHistoryScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        DateRangeSelector(
+        FinancesDateRangeSelector(
             startDate = startDate,
             endDate = endDate,
             dateFormatter = dateFormatter,
@@ -104,7 +113,7 @@ fun ExpensesHistoryScreen(
         ExpensesHistoryContent(state = state, currency = currency)
 
         if (showDialog) {
-            DatePickerDialogWrapper(
+            FinancesDatePickerDialog(
                 pickerTarget = pickerTarget,
                 startDate = startDate,
                 endDate = endDate,

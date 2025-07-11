@@ -1,9 +1,8 @@
-package com.example.financesapp.presentation.screens.history.history_expenses
+package com.example.expenses.presentation.expenses_history
 
 import com.example.common.model.expense.Expense
 
-
-sealed class ExpensesHistoryState {
+internal sealed class ExpensesHistoryState {
 
     data object Loading : ExpensesHistoryState()
     data class Content(

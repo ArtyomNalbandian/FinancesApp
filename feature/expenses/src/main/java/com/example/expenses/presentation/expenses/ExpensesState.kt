@@ -1,4 +1,4 @@
-package com.example.expenses.presentation
+package com.example.expenses.presentation.expenses
 
 import com.example.common.model.expense.Expense
 

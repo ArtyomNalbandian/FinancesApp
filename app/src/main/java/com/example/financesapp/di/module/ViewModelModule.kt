@@ -3,7 +3,6 @@ package com.example.financesapp.di.module
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.account.presentation.AccountViewModel
-import com.example.financesapp.presentation.screens.history.history_expenses.ExpensesHistoryViewModel
 import com.example.financesapp.presentation.screens.history.history_income.IncomeHistoryViewModel
 import com.example.financesapp.presentation.screens.income.IncomeViewModel
 import dagger.Binds
@@ -21,25 +20,10 @@ interface ViewModelModule {
     @ViewModelKey(AccountViewModel::class)
     fun bindAccountViewModel(accountViewModel: AccountViewModel): ViewModel
 
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(EditAccountViewModel::class)
-//    fun bindEditAccountViewModel(editAccountViewModel: EditAccountViewModel): ViewModel
-
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(ExpensesViewModel::class)
-//    fun bindExpensesViewModel(expensesViewModel: ExpensesViewModel): ViewModel
-
     @Binds
     @IntoMap
     @ViewModelKey(IncomeViewModel::class)
     fun bindIncomeViewModel(incomeViewModel: IncomeViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(ExpensesHistoryViewModel::class)
-    fun bindExpensesHistoryViewModel(expensesHistoryViewModel: ExpensesHistoryViewModel): ViewModel
 
     @Binds
     @IntoMap
