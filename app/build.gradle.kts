@@ -93,4 +93,6 @@ dependencies {
     implementation(project(":feature:settings"))
     // feature:categories module
     implementation(project(":feature:categories"))
+    // feature:account module
+    implementation(project(":feature:account"))
 }

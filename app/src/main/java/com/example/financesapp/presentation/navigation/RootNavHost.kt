@@ -8,9 +8,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.account.presentation.AccountScreenRoute
+import com.example.account.presentation.accountScreen
 import com.example.categories.presentation.CategoriesScreenRoute
 import com.example.categories.presentation.categoriesScreen
-import com.example.financesapp.presentation.screens.account.AccountScreen
 import com.example.financesapp.presentation.screens.edit_account.EditAccountScreen
 import com.example.financesapp.presentation.screens.expenses.ExpensesScreen
 import com.example.financesapp.presentation.screens.history.history_expenses.ExpensesHistoryScreen
@@ -98,38 +99,20 @@ private fun NavGraphBuilder.addIncomeGraph(
 }
 
 @Serializable
-data object AccountScreen
-
-@Serializable
-data class EditAccountScreenRoute(
-    val id: Int,
-    val name: String,
-    val sum: String,
-    val currency: String,
-)
+data object EditAccountScreenRoute
 
 private fun NavGraphBuilder.addAccountGraph(
     viewModelFactory: ViewModelProvider.Factory,
     navController: NavHostController,
 ) {
     navigation<ScreenRoute.AccountGraph>(
-        startDestination = AccountScreen,
+        startDestination = AccountScreenRoute,
     ) {
-        composable<AccountScreen> {
-            AccountScreen(
-                viewModelFactory = viewModelFactory,
-                navigateToEditAccount = { account ->
-                    navController.navigate(
-                        EditAccountScreenRoute(
-                            account.id,
-                            account.name,
-                            account.balance,
-                            account.currency
-                        )
-                    )
-                }
-            )
-        }
+        accountScreen(
+            navigateToEditAccount = {
+                navController.navigate(EditAccountScreenRoute)
+            }
+        )
         composable<EditAccountScreenRoute> {
             EditAccountScreen(
                 navigateBack = { navController.popBackStack() },

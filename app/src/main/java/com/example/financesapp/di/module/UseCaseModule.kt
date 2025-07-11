@@ -1,11 +1,9 @@
 package com.example.financesapp.di.module
 
-import com.example.financesapp.domain.usecases.impl.GetAccountByIdUseCaseImpl
-import com.example.financesapp.domain.usecases.impl.GetAccountsUseCaseImpl
+import com.example.account.domain.usecase.impl.GetAccountUseCaseImpl
+import com.example.account.domain.usecase.interfaces.GetAccountUseCase
 import com.example.financesapp.domain.usecases.impl.GetExpensesUseCaseImpl
 import com.example.financesapp.domain.usecases.impl.GetIncomesUseCaseImpl
-import com.example.financesapp.domain.usecases.interfaces.GetAccountByIdUseCase
-import com.example.financesapp.domain.usecases.interfaces.GetAccountsUseCase
 import com.example.financesapp.domain.usecases.interfaces.GetExpensesUseCase
 import com.example.financesapp.domain.usecases.interfaces.GetIncomesUseCase
 import dagger.Binds
@@ -18,8 +16,8 @@ abstract class UseCaseModule {
     @Binds
     @Singleton
     abstract fun bindGetAccountsUseCase(
-        useCase: GetAccountsUseCaseImpl
-    ): GetAccountsUseCase
+        useCase: GetAccountUseCaseImpl
+    ): GetAccountUseCase
 
     @Binds
     @Singleton
@@ -39,9 +37,9 @@ abstract class UseCaseModule {
 //        useCase: UpdateAccountUseCaseImpl
 //    ): UpdateAccountUseCase
 
-    @Binds
-    @Singleton
-    abstract fun bindGetAccountByIdUseCase(
-        useCase: GetAccountByIdUseCaseImpl
-    ): GetAccountByIdUseCase
+//    @Binds
+//    @Singleton
+//    abstract fun bindGetAccountByIdUseCase(
+//        useCase: GetAccountByIdUseCaseImpl
+//    ): GetAccountByIdUseCase
 }

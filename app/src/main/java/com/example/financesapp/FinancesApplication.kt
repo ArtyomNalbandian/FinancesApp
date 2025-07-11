@@ -3,6 +3,8 @@ package com.example.financesapp
 import android.app.Application
 import android.content.Context
 import com.example.financesapp.di.AppComponent
+import com.example.financesapp.di.DaggerAppComponent
+import com.example.network.di.DaggerNetworkComponent
 
 class FinancesApplication : Application() {
     lateinit var appComponent: AppComponent
@@ -11,9 +13,9 @@ class FinancesApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        val networkComponent = com.example.network.di.DaggerNetworkComponent.create()
+        val networkComponent = DaggerNetworkComponent.create()
 
-        appComponent = com.example.financesapp.di.DaggerAppComponent
+        appComponent = DaggerAppComponent
             .factory()
             .create(
                 context = this,

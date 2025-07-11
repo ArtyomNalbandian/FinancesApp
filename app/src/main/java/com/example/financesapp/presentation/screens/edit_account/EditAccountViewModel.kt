@@ -3,8 +3,8 @@ package com.example.financesapp.presentation.screens.edit_account
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.account.domain.repository.AccountRepository
 import com.example.common.model.account.Account
-import com.example.financesapp.domain.repositories.AccountRepository
 import com.example.network.dto.account.AccountRequestDto
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

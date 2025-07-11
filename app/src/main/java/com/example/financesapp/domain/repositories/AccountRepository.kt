@@ -5,16 +5,16 @@ import com.example.network.dto.account.AccountRequestDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
-interface AccountRepository {
-
-    suspend fun getAccount(): Account
-
-    fun observeAccount(): Flow<Account>
-
-    suspend fun updateAccount(accountId: Int, accountRequest: AccountRequestDto): Account
-
-    val currentAccount: StateFlow<Account?>
-    suspend fun refreshAccount()
-
-    suspend fun getAccountById(accountId: String): Account
-}
+//interface AccountRepository {
+//
+//    suspend fun getAccount(): Account
+//
+//    fun observeAccount(): Flow<Account>
+//
+//    suspend fun updateAccount(accountId: Int, accountRequest: AccountRequestDto): Account
+//
+//    val currentAccount: StateFlow<Account?>
+//    suspend fun refreshAccount()
+//
+//    suspend fun getAccountById(accountId: String): Account
+//}

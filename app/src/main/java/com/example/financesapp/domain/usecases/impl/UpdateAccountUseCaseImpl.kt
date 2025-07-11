@@ -1,7 +1,5 @@
 package com.example.financesapp.domain.usecases.impl
 
-import com.example.financesapp.data.mapper.toUpdateRequest
-import com.example.financesapp.domain.repositories.AccountRepository
 import com.example.financesapp.domain.usecases.interfaces.UpdateAccountUseCase
 import javax.inject.Inject
 

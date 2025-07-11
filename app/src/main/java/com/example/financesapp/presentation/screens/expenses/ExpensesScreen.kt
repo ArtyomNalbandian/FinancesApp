@@ -21,9 +21,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.account.presentation.AccountViewModel
 import com.example.financesapp.R
 import com.example.ui.FinancesTopBarConfig
-import com.example.financesapp.presentation.screens.account.AccountViewModel
 import com.example.financesapp.utils.toCurrencySymbol
 import com.example.ui.AddButton
 

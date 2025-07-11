@@ -1,11 +1,11 @@
 package com.example.financesapp.data.remote.repository
 
+import com.example.account.domain.usecase.interfaces.GetAccountUseCase
 import com.example.common.model.expense.Expense
 import com.example.common.model.income.Income
 import com.example.financesapp.data.mapper.toExpense
 import com.example.financesapp.data.mapper.toIncome
 import com.example.financesapp.domain.repositories.TransactionRepository
-import com.example.financesapp.domain.usecases.interfaces.GetAccountsUseCase
 import com.example.financesapp.utils.retryRequest
 import com.example.network.api.TransactionApi
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +30,7 @@ import javax.inject.Inject
  */
 class TransactionRepositoryImpl @Inject constructor(
     private val transactionApi: TransactionApi,
-    private val getAccountsUseCase: GetAccountsUseCase
+    private val getAccountsUseCase: GetAccountUseCase
 ) : TransactionRepository {
     override suspend fun getExpensesByPeriod(startDate: String?, endDate: String?): List<Expense> {
         return retryRequest(

@@ -33,10 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.ui.FinancesTopBarConfig
-import com.example.financesapp.presentation.screens.account.CurrencySelectorBottomSheet
 import com.example.financesapp.utils.toCurrencyFromSymbol
 import com.example.financesapp.utils.toCurrencySymbol
+import com.example.ui.FinancesTopBarConfig
 import com.example.ui.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -176,4 +175,3 @@ fun EditAccountScreen(
         }
     }
 }
-
