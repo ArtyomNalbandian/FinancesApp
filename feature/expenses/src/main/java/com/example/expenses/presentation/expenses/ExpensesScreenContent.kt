@@ -36,8 +36,9 @@ internal fun ExpensesScreenContent(
                     title = expense.title,
                     supportingText = expense.subtitle,
                     leadingIcon = expense.leadingIcon,
-                    trailingIcon = R.drawable.more,
+                    trailingIcon = R.drawable.more_vert,
                     amount = expense.amount,
+                    currency = currency,
                     onClick = { onExpenseClick(expense.id) }
                 )
                 HorizontalDivider()

@@ -1,4 +1,4 @@
-package com.example.expenses.presentation.expenses_add
+package com.example.incomes.presentation.incomes_add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,7 +6,7 @@ import com.example.account.domain.usecase.interfaces.GetAccountUseCase
 import com.example.categories.domain.usecase.interfaces.GetCategoriesUseCase
 import com.example.common.model.account.Account
 import com.example.common.model.category.Category
-import com.example.expenses.domain.usecase.interfaces.CreateExpenseUseCase
+import com.example.incomes.domain.usecase.interfaces.CreateIncomeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,44 +18,44 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-class ExpensesAddViewModel @Inject constructor(
+class IncomesAddViewModel @Inject constructor(
     private val getAccountUseCase: GetAccountUseCase,
     private val getCategoriesUseCase: GetCategoriesUseCase,
-    private val createExpenseUseCase: CreateExpenseUseCase
+    private val createIncomeUseCase: CreateIncomeUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(ExpensesAddState())
-    val state: StateFlow<ExpensesAddState> = _state.asStateFlow()
+    private val _state = MutableStateFlow(IncomesAddState())
+    val state: StateFlow<IncomesAddState> = _state.asStateFlow()
 
     init {
-        handleIntent(ExpensesAddIntent.LoadInitialData)
+        handleIntent(IncomesAddIntent.LoadInitialData)
     }
 
-    fun handleIntent(intent: ExpensesAddIntent) {
+    fun handleIntent(intent: IncomesAddIntent) {
         when (intent) {
-            ExpensesAddIntent.LoadInitialData -> loadInitialData()
+            IncomesAddIntent.LoadInitialData -> loadInitialData()
 
-            ExpensesAddIntent.ToggleAccountDropdown -> toggleAccountDropdown()
-            is ExpensesAddIntent.SelectAccount -> selectAccount(intent.account)
+            IncomesAddIntent.ToggleAccountDropdown -> toggleAccountDropdown()
+            is IncomesAddIntent.SelectAccount -> selectAccount(intent.account)
 
-            ExpensesAddIntent.ToggleCategoryDropdown -> toggleCategoryDropdown()
-            is ExpensesAddIntent.SelectCategory -> selectCategory(intent.category)
+            IncomesAddIntent.ToggleCategoryDropdown -> toggleCategoryDropdown()
+            is IncomesAddIntent.SelectCategory -> selectCategory(intent.category)
 
-            is ExpensesAddIntent.AmountChanged -> updateAmount(intent.amount)
+            is IncomesAddIntent.AmountChanged -> updateAmount(intent.amount)
 
-            ExpensesAddIntent.ShowDatePicker -> showDatePicker()
-            ExpensesAddIntent.HideDatePicker -> hideDatePicker()
-            is ExpensesAddIntent.DateSelected -> updateDate(intent.date)
+            IncomesAddIntent.ShowDatePicker -> showDatePicker()
+            IncomesAddIntent.HideDatePicker -> hideDatePicker()
+            is IncomesAddIntent.DateSelected -> updateDate(intent.date)
 
-            ExpensesAddIntent.ShowTimePicker -> showTimePicker()
-            ExpensesAddIntent.HideTimePicker -> hideTimePicker()
-            is ExpensesAddIntent.TimeSelected -> updateTime(intent.time)
+            IncomesAddIntent.ShowTimePicker -> showTimePicker()
+            IncomesAddIntent.HideTimePicker -> hideTimePicker()
+            is IncomesAddIntent.TimeSelected -> updateTime(intent.time)
 
-            is ExpensesAddIntent.CommentChanged -> updateComment(intent.comment)
+            is IncomesAddIntent.CommentChanged -> updateComment(intent.comment)
 
-            ExpensesAddIntent.CreateExpense -> createTransaction()
+            IncomesAddIntent.CreateIncome -> createTransaction()
 
-            ExpensesAddIntent.ClearError -> clearError()
+            IncomesAddIntent.ClearError -> clearError()
         }
     }
 
@@ -65,7 +65,8 @@ class ExpensesAddViewModel @Inject constructor(
 
             try {
                 val account = getAccountUseCase()
-                val categories: List<Category> = getCategoriesUseCase.invoke().filter { !it.isIncome }
+                val categories: List<Category> =
+                    getCategoriesUseCase.invoke().filter { it.isIncome }
 
                 _state.value = _state.value.copy(
                     isLoading = false,
@@ -198,7 +199,7 @@ class ExpensesAddViewModel @Inject constructor(
             _state.value = _state.value.copy(isCreating = true, error = null)
 
             try {
-                val result = createExpenseUseCase(
+                val result = createIncomeUseCase(
                     accountId = account.id,
                     categoryId = category.id.toInt(),
                     amount = currentState.amount,

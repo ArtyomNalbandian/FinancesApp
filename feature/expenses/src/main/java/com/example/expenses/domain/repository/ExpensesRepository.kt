@@ -24,4 +24,6 @@ interface ExpensesRepository {
         expenseDate: String,
         comment: String?,
     ): Result<Unit>
+
+    suspend fun deleteExpense(expenseId: Int): Result<Unit>
 }

@@ -1,6 +1,5 @@
-package com.example.expenses.presentation.expenses_add
+package com.example.incomes.presentation.incomes_edit
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,7 +47,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.common.util.toCurrencySymbol
-import com.example.expenses.di.DaggerExpensesComponent
+import com.example.incomes.di.DaggerIncomesComponent
 import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesTopBarConfig
 import com.example.ui.ListItem
@@ -59,20 +58,25 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ExpensesAddScreen(
+internal fun IncomesEditScreen(
+    incomeId: Int,
     navigateBack: () -> Unit
 ) {
 
     val networkComponent = DaggerNetworkComponent.create()
-    val expensesComponent = DaggerExpensesComponent.factory().create(networkApi = networkComponent)
-    val expensesAddViewModel: ExpensesAddViewModel =
-        viewModel(factory = expensesComponent.viewModelFactory())
-    Log.d("testLog", "$expensesComponent")
+    val incomesComponent = DaggerIncomesComponent.factory().create(networkApi = networkComponent)
 
-    val expensesAddState by expensesAddViewModel.state.collectAsStateWithLifecycle()
+    val incomesEditViewModel: IncomesEditViewModel =
+        viewModel(factory = incomesComponent.viewModelFactory())
+
+    val incomesEditState by incomesEditViewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        incomesEditViewModel.loadInitialData(incomeId)
+    }
 
     FinancesTopBarConfig(
-        title = { Text("Новый расход") },
+        title = { Text("Редактировать расход") },
         navAction = {
             IconButton(onClick = navigateBack) {
                 Icon(painterResource(R.drawable.ic_cancel), contentDescription = "Отмена")
@@ -81,11 +85,11 @@ internal fun ExpensesAddScreen(
         actions = {
             IconButton(
                 onClick = {
-                    expensesAddViewModel.handleIntent(ExpensesAddIntent.CreateExpense)
+                    incomesEditViewModel.handleIntent(IncomesEditIntent.UpdateIncome)
                 },
-                enabled = expensesAddState.isFormValid && !expensesAddState.isCreating
+                enabled = incomesEditState.isFormValid && !incomesEditState.isUpdating && !incomesEditState.isDeleting
             ) {
-                if (expensesAddState.isCreated) {
+                if (incomesEditState.isUpdating) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
                         strokeWidth = 2.dp
@@ -93,7 +97,7 @@ internal fun ExpensesAddScreen(
                 } else {
                     Icon(
                         painterResource(R.drawable.ic_apply),
-                        contentDescription = "Создать"
+                        contentDescription = "Сохранить"
                     )
                 }
 
@@ -113,8 +117,10 @@ internal fun ExpensesAddScreen(
     val datePickerState = rememberDatePickerState()
     val timePickerState = rememberTimePickerState()
 
-    LaunchedEffect(expensesAddState.isCreated) {
-        if (expensesAddState.isCreated) {
+    LaunchedEffect(incomesEditState.amount) { amountText = incomesEditState.amount }
+    LaunchedEffect(incomesEditState.comment) { commentText = incomesEditState.comment }
+    LaunchedEffect(incomesEditState.isUpdated, incomesEditState.isDeleted) {
+        if (incomesEditState.isUpdated || incomesEditState.isDeleted) {
             navigateBack()
         }
     }
@@ -125,16 +131,16 @@ internal fun ExpensesAddScreen(
             .background(color = MaterialTheme.colorScheme.tertiary)
     ) {
         when {
-            expensesAddState.isLoading -> {
+            incomesEditState.isLoading -> {
                 CircularProgressIndicator()
             }
 
-            expensesAddState.error != null -> {
+            incomesEditState.error != null -> {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = expensesAddState.error!!)
+                    Text(text = incomesEditState.error!!)
                     Spacer(modifier = Modifier.height(8.dp))
                     Button(onClick = {
-                        expensesAddViewModel.handleIntent(ExpensesAddIntent.ClearError)
+                        incomesEditViewModel.handleIntent(IncomesEditIntent.ClearError)
                     }) {
                         Text("Повторить")
                     }
@@ -145,7 +151,7 @@ internal fun ExpensesAddScreen(
                 Column {
                     ListItem(
                         title = "Счет",
-                        amount = expensesAddState.account!!.name
+                        amount = incomesEditState.account?.name ?: ""
                     )
                     HorizontalDivider()
                     ExposedDropdownMenuBox(
@@ -155,7 +161,7 @@ internal fun ExpensesAddScreen(
                         ListItem(
                             modifier = Modifier.menuAnchor(),
                             title = "Статья",
-                            amount = expensesAddState.selectedCategory?.let { "${it.emoji} ${it.name}" }
+                            amount = incomesEditState.selectedCategory?.let { "${it.emoji} ${it.name}" }
                                 ?: "Выберите статью",
                             trailingIcon = R.drawable.more,
                             onClick = { showCategoryMenu = true }
@@ -164,7 +170,7 @@ internal fun ExpensesAddScreen(
                             expanded = showCategoryMenu,
                             onDismissRequest = { showCategoryMenu = false }
                         ) {
-                            expensesAddState.categories.forEach { category ->
+                            incomesEditState.categories.forEach { category ->
                                 DropdownMenuItem(
                                     text = {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -177,8 +183,8 @@ internal fun ExpensesAddScreen(
                                         }
                                     },
                                     onClick = {
-                                        expensesAddViewModel.handleIntent(
-                                            ExpensesAddIntent.SelectCategory(
+                                        incomesEditViewModel.handleIntent(
+                                            IncomesEditIntent.SelectCategory(
                                                 category
                                             )
                                         )
@@ -192,14 +198,14 @@ internal fun ExpensesAddScreen(
                     ListItem(
                         modifier = Modifier,
                         title = "Сумма",
-                        amount = if (expensesAddState.amount.isNotBlank()) {
-                            "${expensesAddState.amount} ${expensesAddState.selectedAccount?.currency?.toCurrencySymbol() ?: ""}"
+                        amount = if (incomesEditState.amount.isNotBlank()) {
+                            "${incomesEditState.amount} ${incomesEditState.selectedAccount?.currency?.toCurrencySymbol() ?: ""}"
                         } else {
                             "Введите сумму"
                         },
                         trailingIcon = R.drawable.more,
                         onClick = {
-                            amountText = expensesAddState.amount
+                            amountText = incomesEditState.amount
                             showAmountDialog = true
                         }
                     )
@@ -214,14 +220,14 @@ internal fun ExpensesAddScreen(
                                     label = { Text("Сумма") },
                                     singleLine = true,
                                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal),
-                                    isError = expensesAddState.amountError != null,
-                                    supportingText = expensesAddState.amountError?.let { { Text(it) } }
+                                    isError = incomesEditState.amountError != null,
+                                    supportingText = incomesEditState.amountError?.let { { Text(it) } }
                                 )
                             },
                             confirmButton = {
                                 Button(onClick = {
-                                    expensesAddViewModel.handleIntent(
-                                        ExpensesAddIntent.AmountChanged(
+                                    incomesEditViewModel.handleIntent(
+                                        IncomesEditIntent.AmountChanged(
                                             amountText
                                         )
                                     )
@@ -237,7 +243,7 @@ internal fun ExpensesAddScreen(
                     ListItem(
                         modifier = Modifier,
                         title = "Дата",
-                        amount = expensesAddState.selectedDateTime.format(
+                        amount = incomesEditState.selectedDateTime.format(
                             DateTimeFormatter.ofPattern(
                                 "dd.MM.yyyy"
                             )
@@ -254,8 +260,8 @@ internal fun ExpensesAddScreen(
                                         val localDate = Instant.ofEpochMilli(ms)
                                             .atZone(ZoneId.systemDefault())
                                             .toLocalDate()
-                                        expensesAddViewModel.handleIntent(
-                                            ExpensesAddIntent.DateSelected(
+                                        incomesEditViewModel.handleIntent(
+                                            IncomesEditIntent.DateSelected(
                                                 localDate
                                             )
                                         )
@@ -276,7 +282,7 @@ internal fun ExpensesAddScreen(
                     ListItem(
                         modifier = Modifier,
                         title = "Время",
-                        amount = expensesAddState.selectedDateTime.format(
+                        amount = incomesEditState.selectedDateTime.format(
                             DateTimeFormatter.ofPattern(
                                 "HH:mm"
                             )
@@ -307,8 +313,8 @@ internal fun ExpensesAddScreen(
                                             val hour = timePickerState.hour
                                             val minute = timePickerState.minute
                                             val time = java.time.LocalTime.of(hour, minute)
-                                            expensesAddViewModel.handleIntent(
-                                                ExpensesAddIntent.TimeSelected(
+                                            incomesEditViewModel.handleIntent(
+                                                IncomesEditIntent.TimeSelected(
                                                     time
                                                 )
                                             )
@@ -325,10 +331,10 @@ internal fun ExpensesAddScreen(
                     ListItem(
                         modifier = Modifier,
                         title = "Комментарий",
-                        amount = expensesAddState.comment.ifBlank { "Комментарий" },
+                        amount = incomesEditState.comment.ifBlank { "Комментарий" },
                         trailingIcon = R.drawable.more,
                         onClick = {
-                            commentText = expensesAddState.comment
+                            commentText = incomesEditState.comment
                             showCommentDialog = true
                         }
                     )
@@ -346,8 +352,8 @@ internal fun ExpensesAddScreen(
                             },
                             confirmButton = {
                                 Button(onClick = {
-                                    expensesAddViewModel.handleIntent(
-                                        ExpensesAddIntent.CommentChanged(
+                                    incomesEditViewModel.handleIntent(
+                                        IncomesEditIntent.CommentChanged(
                                             commentText
                                         )
                                     )

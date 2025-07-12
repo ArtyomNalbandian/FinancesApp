@@ -5,6 +5,7 @@ import com.example.common.model.income.Income
 import com.example.incomes.data.mapper.toIncome
 import com.example.incomes.domain.repository.IncomesRepository
 import com.example.network.api.TransactionApi
+import com.example.network.dto.transaction.TransactionRequestDto
 import com.example.network.util.retryRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -51,6 +52,69 @@ class IncomesRepositoryImpl @Inject constructor(
                 .sortedByDescending { it.transactionDate }
                 .map { it.toIncome() }
 
+        }
+    }
+
+    override suspend fun createIncome(
+        accountId: Int,
+        categoryId: Int,
+        amount: String,
+        incomeDate: String,
+        comment: String?
+    ): Result<Unit> {
+        return try {
+            val request = TransactionRequestDto(
+                accountId = accountId,
+                categoryId = categoryId,
+                amount = amount,
+                transactionDate = incomeDate,
+                comment = comment
+            )
+            transactionApi.createTransaction(request)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getIncomeById(incomeId: Int): Result<Income> {
+        return try {
+            val transaction = transactionApi.getTransactionById(incomeId).toIncome()
+            Result.success(transaction)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun updateIncome(
+        incomeId: Int,
+        accountId: Int,
+        categoryId: Int,
+        amount: String,
+        incomeDate: String,
+        comment: String?
+    ): Result<Unit> {
+        return try {
+            val request = TransactionRequestDto(
+                accountId = accountId,
+                categoryId = categoryId,
+                amount = amount,
+                transactionDate = incomeDate,
+                comment = comment
+            )
+            transactionApi.updateTransaction(incomeId, request)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun deleteIncome(incomeId: Int): Result<Unit> {
+        return try {
+            transactionApi.deleteTransaction(incomeId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

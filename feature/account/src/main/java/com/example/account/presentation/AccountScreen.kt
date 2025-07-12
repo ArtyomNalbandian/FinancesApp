@@ -44,7 +44,7 @@ internal fun AccountScreen(
                 onClick = {
                     if (state is AccountState.Content) {
                         Log.d("testLog", "if scope")
-                        navigateToEditAccount(/*(state as AccountState.Content).account*/)
+                        navigateToEditAccount()
                     } else {
                         Log.d("testLog", "else scope")
                         // TODO() показать snackbar с текстом "Подождите пока загрузится ваш счет"

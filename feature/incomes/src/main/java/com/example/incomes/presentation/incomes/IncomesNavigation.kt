@@ -8,10 +8,16 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object IncomesScreenRoute
 
-fun NavGraphBuilder.incomesScreen(navigateToHistory: () -> Unit) {
+fun NavGraphBuilder.incomesScreen(
+    navigateToHistory: () -> Unit,
+    navigateToAddIncome: () -> Unit,
+    navigateToEditIncome: (Int) -> Unit
+) {
     composable<IncomesScreenRoute> {
         IncomesScreen(
-            navigateToHistory = navigateToHistory
+            navigateToHistory = navigateToHistory,
+            navigateToAddIncome = navigateToAddIncome,
+            navigateToEditIncome = navigateToEditIncome
         )
     }
 }

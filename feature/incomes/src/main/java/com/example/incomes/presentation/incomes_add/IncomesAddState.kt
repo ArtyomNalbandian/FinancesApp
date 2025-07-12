@@ -1,10 +1,10 @@
-package com.example.expenses.presentation.expenses_add
+package com.example.incomes.presentation.incomes_add
 
 import com.example.common.model.account.Account
 import com.example.common.model.category.Category
 import java.time.LocalDateTime
 
-data class ExpensesAddState(
+data class IncomesAddState(
     val isLoading: Boolean = false,
     val error: String? = null,
 

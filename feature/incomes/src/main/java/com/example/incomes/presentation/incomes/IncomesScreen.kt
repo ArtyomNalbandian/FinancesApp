@@ -33,6 +33,8 @@ import com.example.ui.FinancesTopBarConfig
 @Composable
 internal fun IncomesScreen(
     navigateToHistory: () -> Unit,
+    navigateToAddIncome: () -> Unit,
+    navigateToEditIncome: (Int) -> Unit
 ) {
 
     val networkComponent = DaggerNetworkComponent.create()
@@ -90,10 +92,14 @@ internal fun IncomesScreen(
                     income = currentState.income,
                     amount = currentState.total,
                     currency = currency,
-                    onIncomeClick = { }
+                    onIncomeClick = {
+                        navigateToEditIncome(it)
+                    }
                 )
                 AddButton(
-                    onClick = { },
+                    onClick = {
+                        navigateToAddIncome()
+                    },
                     modifier = Modifier.align(Alignment.BottomEnd)
                 )
             }

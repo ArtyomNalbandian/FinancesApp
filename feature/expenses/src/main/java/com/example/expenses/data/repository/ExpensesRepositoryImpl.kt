@@ -107,6 +107,15 @@ class ExpensesRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteExpense(expenseId: Int): Result<Unit> {
+        return try {
+            transactionApi.deleteTransaction(expenseId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     private suspend fun getAccountId(): Int = withContext(Dispatchers.IO) {
         getAccountUseCase.invoke().id
     }

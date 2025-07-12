@@ -4,6 +4,7 @@ import com.example.network.BuildConfig
 import com.example.network.api.AccountsApi
 import com.example.network.api.CategoriesApi
 import com.example.network.api.TransactionApi
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -31,7 +32,11 @@ class NetworkModule {
         return Retrofit.Builder()
             .baseUrl("https://shmr-finance.ru/api/v1/")
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(
+                GsonBuilder()
+                    .serializeNulls()
+                    .create()
+            ))
             .build()
     }
 

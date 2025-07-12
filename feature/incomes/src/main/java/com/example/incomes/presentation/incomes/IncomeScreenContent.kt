@@ -36,8 +36,9 @@ internal fun IncomesScreenContent(
                     title = income.title,
                     supportingText = income.subtitle,
                     leadingIcon = income.leadingIcon,
-                    trailingIcon = R.drawable.more,
+                    trailingIcon = R.drawable.more_vert,
                     amount = income.amount,
+                    currency = currency,
                     onClick = { onIncomeClick(income.id) }
                 )
                 HorizontalDivider()

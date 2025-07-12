@@ -34,6 +34,7 @@ import com.example.ui.FinancesTopBarConfig
 internal fun ExpensesScreen(
     navigateToHistory: () -> Unit,
     navigateToAddExpense: () -> Unit,
+    navigateToEditExpense: (Int) -> Unit
 ) {
 
     val networkComponent = DaggerNetworkComponent.create()
@@ -92,7 +93,7 @@ internal fun ExpensesScreen(
                     expenses = content.expenses,
                     amount = content.total,
                     currency = currency,
-                    onExpenseClick = {})
+                    onExpenseClick = { navigateToEditExpense(it) })
                 AddButton(
                     onClick = navigateToAddExpense,
                     modifier = Modifier.align(Alignment.BottomEnd)

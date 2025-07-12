@@ -174,7 +174,7 @@ private fun IncomesHistoryContent(state: IncomesHistoryState, currency: String) 
                                 ListItem(
                                     title = income.title,
                                     leadingIcon = income.leadingIcon,
-                                    trailingIcon = R.drawable.more,
+                                    trailingIcon = R.drawable.more_vert,
                                     amount = income.amount,
                                     currency = currency,
                                     supportingText = income.subtitle,

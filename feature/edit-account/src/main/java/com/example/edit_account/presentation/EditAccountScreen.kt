@@ -147,7 +147,7 @@ internal fun EditAccountScreen(
                         title = "Валюта",
                         amount = currentState.account.currency.toCurrencySymbol(),
                         backgroundColor = MaterialTheme.colorScheme.secondary,
-                        trailingIcon = com.example.ui.R.drawable.more,
+                        trailingIcon = R.drawable.more_vert,
                         modifier = Modifier.height(56.dp),
                         onClick = {
                             editAccountViewModel.handleIntent(

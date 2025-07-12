@@ -16,10 +16,14 @@ import com.example.expenses.presentation.expenses.ExpensesScreenRoute
 import com.example.expenses.presentation.expenses.expensesScreen
 import com.example.expenses.presentation.expenses_add.ExpensesAddScreenRoute
 import com.example.expenses.presentation.expenses_add.expensesAddScreen
+import com.example.expenses.presentation.expenses_edit.expensesEditScreen
 import com.example.expenses.presentation.expenses_history.ExpensesHistoryScreenRoute
 import com.example.expenses.presentation.expenses_history.expensesHistoryScreen
 import com.example.incomes.presentation.incomes.IncomesScreenRoute
 import com.example.incomes.presentation.incomes.incomesScreen
+import com.example.incomes.presentation.incomes_add.IncomesAddScreenRoute
+import com.example.incomes.presentation.incomes_add.incomesAddScreen
+import com.example.incomes.presentation.incomes_edit.incomesEditScreen
 import com.example.incomes.presentation.incomes_history.IncomesHistoryScreenRoute
 import com.example.incomes.presentation.incomes_history.incomesHistoryScreen
 import com.example.settings.navigation.SettingsScreenRoute
@@ -51,7 +55,8 @@ private fun NavGraphBuilder.addExpensesGraph(
     ) {
         expensesScreen(
             navigateToHistory = { navController.navigate(ExpensesHistoryScreenRoute) },
-            navigateToAddExpense = { navController.navigate(ExpensesAddScreenRoute) }
+            navigateToAddExpense = { navController.navigate(ExpensesAddScreenRoute) },
+            navigateToEditExpense = { navController.navigate("expenses_edit/$it") }
         )
         expensesHistoryScreen(
             navigateBack = { navController.popBackStack() },
@@ -59,6 +64,9 @@ private fun NavGraphBuilder.addExpensesGraph(
         )
         expensesAddScreen(
             navigateBack = { navController.popBackStack() },
+        )
+        expensesEditScreen(
+            onNavigateBack = { navController.popBackStack() }
         )
     }
 }
@@ -70,11 +78,19 @@ private fun NavGraphBuilder.addIncomeGraph(
         startDestination = IncomesScreenRoute,
     ) {
         incomesScreen(
-            navigateToHistory = { navController.navigate(IncomesHistoryScreenRoute) }
+            navigateToHistory = { navController.navigate(IncomesHistoryScreenRoute) },
+            navigateToAddIncome = { navController.navigate(IncomesAddScreenRoute) },
+            navigateToEditIncome = { navController.navigate("incomes_edit/$it") }
         )
         incomesHistoryScreen(
             navigateBack = { navController.popBackStack() },
             navigateToAnalysis = { }
+        )
+        incomesAddScreen(
+            navigateBack = { navController.popBackStack() },
+        )
+        incomesEditScreen(
+            onNavigateBack = { navController.popBackStack() }
         )
     }
 }

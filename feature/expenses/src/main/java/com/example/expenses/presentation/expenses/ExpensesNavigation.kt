@@ -11,11 +11,13 @@ data object ExpensesScreenRoute
 fun NavGraphBuilder.expensesScreen(
     navigateToHistory: () -> Unit,
     navigateToAddExpense: () -> Unit,
+    navigateToEditExpense: (Int) -> Unit
 ) {
     composable<ExpensesScreenRoute> {
         ExpensesScreen(
             navigateToHistory = navigateToHistory,
-            navigateToAddExpense = navigateToAddExpense
+            navigateToAddExpense = navigateToAddExpense,
+            navigateToEditExpense = navigateToEditExpense
         )
     }
 }
