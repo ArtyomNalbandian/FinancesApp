@@ -13,29 +13,35 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.financesapp.R
+import com.example.financesapp.presentation.navigation.ScreenRoute.AccountGraph
+import com.example.financesapp.presentation.navigation.ScreenRoute.CategoriesGraph
+import com.example.financesapp.presentation.navigation.ScreenRoute.ExpensesGraph
+import com.example.financesapp.presentation.navigation.ScreenRoute.IncomeGraph
+import com.example.financesapp.presentation.navigation.ScreenRoute.SettingsGraph
 
 @Composable
-fun BottomNavigationBar(
+internal fun BottomNavigationBar(
     navController: NavController,
     currentDestination: NavDestination?
 ) {
     NavigationBar {
-        navigationItems.forEach { item ->
+        topLevelRoutes.forEach { item ->
             NavigationBarItem(
                 icon = {
                     Icon(
-                        painter = painterResource(item.iconRes),
-                        contentDescription = item.label,
+                        painter = painterResource(item.icon),
+                        contentDescription = item.name,
                         modifier = Modifier.size(24.dp)
                     )
                 },
-                label = { Text(item.label) },
-                selected = currentDestination?.hierarchy?.any { it.route == item.route.route } == true,
+                label = { Text(item.name) },
+                selected = currentDestination?.hierarchy?.any { it.hasRoute(item.route::class) } == true,
                 onClick = {
-                    navController.navigate(item.route.route) {
+                    navController.navigate(item.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -52,16 +58,12 @@ fun BottomNavigationBar(
     }
 }
 
-private val navigationItems = listOf(
-    NavigationItem(ScreenRoute.ExpensesGraph, R.drawable.expenses, "Расходы"),
-    NavigationItem(ScreenRoute.IncomeGraph, R.drawable.income, "Доходы"),
-    NavigationItem(ScreenRoute.AccountGraph, R.drawable.account, "Счет"),
-    NavigationItem(ScreenRoute.ArticlesGraph, R.drawable.articles, "Статьи"),
-    NavigationItem(ScreenRoute.SettingsGraph, R.drawable.settings, "Настройки")
+private val topLevelRoutes = listOf(
+    TopLevelRoute("Расходы", ExpensesGraph, R.drawable.expenses),
+    TopLevelRoute("Доходы", IncomeGraph, R.drawable.income),
+    TopLevelRoute("Счета", AccountGraph, R.drawable.account),
+    TopLevelRoute("Статьи", CategoriesGraph, R.drawable.articles),
+    TopLevelRoute("Настройки", SettingsGraph, R.drawable.settings),
 )
 
-data class NavigationItem(
-    val route: ScreenRoute,
-    val iconRes: Int,
-    val label: String
-)
+private data class TopLevelRoute<T : Any>(val name: String, val route: T, val icon: Int)
