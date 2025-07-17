@@ -17,14 +17,8 @@ android {
         buildConfig = true
     }
 
-
-//    val properties = Properties()
-//    properties.load(project.rootProject.file("local.properties").reader())
-
     defaultConfig {
         minSdk = 28
-
-//        buildConfigField("String", "API_TOKEN", "\"${properties.getProperty("token")}\"")
 
         val properties = Properties().apply {
             load(rootProject.file("local.properties").inputStream())
