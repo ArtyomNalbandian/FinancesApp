@@ -48,7 +48,12 @@ internal fun IncomesScreen(
             networkApi = networkComponent,
             databaseApi = databaseComponent
         )
-    val accountComponent = DaggerAccountComponent.factory().create(networkApi = networkComponent)
+    val accountComponent = DaggerAccountComponent
+        .factory()
+        .create(
+            networkApi = networkComponent,
+            databaseApi = databaseComponent
+        )
     val accountViewModel: AccountViewModel =
         viewModel(factory = accountComponent.viewModelFactory())
     val incomesViewModel: IncomesViewModel =

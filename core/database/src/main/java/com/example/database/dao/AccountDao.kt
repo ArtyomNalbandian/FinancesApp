@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AccountDao {
 
-    @Query("SELECT * FROM accounts")
-    fun getAll(): Flow<List<AccountEntity>>
+    @Query("SELECT * FROM accounts LIMIT 1")
+    fun getAccount(): Flow<AccountEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(categories: List<AccountEntity>)
+    suspend fun insert(account: AccountEntity)
 
     @Query("SELECT * FROM accounts WHERE isDirty = 1")
-    suspend fun getDirty(): List<AccountEntity>
+    suspend fun getDirtyAccounts(): List<AccountEntity>
 
     @Update
     suspend fun update(account: AccountEntity)

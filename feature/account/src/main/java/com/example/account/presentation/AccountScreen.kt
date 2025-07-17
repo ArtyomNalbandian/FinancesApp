@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.account.R
 import com.example.account.di.DaggerAccountComponent
+import com.example.database.di.DaggerDatabaseComponent
 import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesTopBarConfig
 
@@ -28,7 +29,15 @@ internal fun AccountScreen(
 ) {
 
     val networkComponent = DaggerNetworkComponent.create()
-    val accountComponent = DaggerAccountComponent.factory().create(networkApi = networkComponent)
+    val databaseComponent = DaggerDatabaseComponent.builder()
+        .context(LocalContext.current.applicationContext)
+        .build()
+    val accountComponent = DaggerAccountComponent
+        .factory()
+        .create(
+            networkApi = networkComponent,
+            databaseApi = databaseComponent
+        )
     val accountViewModel: AccountViewModel =
         viewModel(factory = accountComponent.viewModelFactory())
     Log.d("testLog", "$accountComponent")
