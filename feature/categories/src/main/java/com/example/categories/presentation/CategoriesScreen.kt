@@ -14,10 +14,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.categories.di.DaggerCategoriesComponent
+import com.example.database.di.DaggerDatabaseComponent
 import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesTopBarConfig
 
@@ -25,7 +27,15 @@ import com.example.ui.FinancesTopBarConfig
 internal fun CategoriesScreen() {
 
     val networkComponent = DaggerNetworkComponent.create()
-    val categoriesComponent = DaggerCategoriesComponent.factory().create(networkApi = networkComponent)
+    val databaseComponent = DaggerDatabaseComponent.builder()
+        .context(LocalContext.current.applicationContext)
+        .build()
+    val categoriesComponent = DaggerCategoriesComponent
+        .factory()
+        .create(
+            networkApi = networkComponent,
+            databaseApi = databaseComponent
+        )
     val categoriesViewModel: CategoriesViewModel = viewModel(factory = categoriesComponent.viewModelFactory())
     Log.d("testLog", "$categoriesComponent")
     val state by categoriesViewModel.state.collectAsStateWithLifecycle()

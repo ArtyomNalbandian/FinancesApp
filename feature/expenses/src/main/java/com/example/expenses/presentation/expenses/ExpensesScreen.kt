@@ -24,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.account.di.DaggerAccountComponent
 import com.example.account.presentation.AccountViewModel
 import com.example.common.util.toCurrencySymbol
+import com.example.database.di.DaggerDatabaseComponent
 import com.example.expenses.R
 import com.example.expenses.di.DaggerExpensesComponent
 import com.example.network.di.DaggerNetworkComponent
@@ -38,7 +39,15 @@ internal fun ExpensesScreen(
 ) {
 
     val networkComponent = DaggerNetworkComponent.create()
-    val expensesComponent = DaggerExpensesComponent.factory().create(networkApi = networkComponent)
+    val databaseComponent = DaggerDatabaseComponent.builder()
+        .context(LocalContext.current.applicationContext)
+        .build()
+    val expensesComponent = DaggerExpensesComponent
+        .factory()
+        .create(
+            networkApi = networkComponent,
+            databaseApi = databaseComponent
+        )
     val accountComponent = DaggerAccountComponent.factory().create(networkApi = networkComponent)
     val accountViewModel: AccountViewModel =
         viewModel(factory = accountComponent.viewModelFactory())

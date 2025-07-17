@@ -40,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -49,6 +50,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.common.util.toCurrencySymbol
+import com.example.database.di.DaggerDatabaseComponent
 import com.example.expenses.di.DaggerExpensesComponent
 import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesTopBarConfig
@@ -66,8 +68,15 @@ internal fun ExpensesEditScreen(
 ) {
 
     val networkComponent = DaggerNetworkComponent.create()
-    val expensesComponent = DaggerExpensesComponent.factory().create(networkApi = networkComponent)
-
+    val databaseComponent = DaggerDatabaseComponent.builder()
+        .context(LocalContext.current.applicationContext)
+        .build()
+    val expensesComponent = DaggerExpensesComponent
+        .factory()
+        .create(
+            networkApi = networkComponent,
+            databaseApi = databaseComponent
+        )
     val expensesEditViewModel: ExpensesEditViewModel =
         viewModel(factory = expensesComponent.viewModelFactory())
 
