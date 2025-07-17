@@ -67,6 +67,23 @@ class AccountRepositoryImpl @Inject constructor(
             }
         }
     }
+    override suspend fun syncAccountIfNeeded() {
+        val dirtyAccount = accountDao.getDirtyAccount()
+        if (dirtyAccount != null) {
+            try {
+                val request = AccountRequestDto(
+                    name = dirtyAccount.name,
+                    balance = dirtyAccount.balance,
+                    currency = dirtyAccount.currency
+                )
+                val updated = accountApi.updateAccount(dirtyAccount.id, request)
+                val synced = updated.toAccountEntity().copy(isDirty = false)
+                accountDao.insert(synced)
+            } catch (e: Exception) {
+                // не удалось синхронизировать — просто замолчи, подождем следующего раза
+            }
+        }
+    }
 }
 //class AccountRepositoryImpl @Inject constructor(
 //    private val accountApi: AccountsApi

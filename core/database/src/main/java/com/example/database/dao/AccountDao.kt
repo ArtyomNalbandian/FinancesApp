@@ -17,8 +17,8 @@ interface AccountDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(account: AccountEntity)
 
-    @Query("SELECT * FROM accounts WHERE isDirty = 1")
-    suspend fun getDirtyAccounts(): List<AccountEntity>
+    @Query("SELECT * FROM accounts WHERE isDirty = 1 LIMIT 1")
+    suspend fun getDirtyAccount(): AccountEntity?
 
     @Update
     suspend fun update(account: AccountEntity)

@@ -30,6 +30,7 @@ internal class EditAccountViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             try {
+                accountRepository.syncAccountIfNeeded()
                 val account = accountRepository.getAccount()
                 Log.d("testLog", "state changed to Content --- $account")
                 _state.value = EditAccountState.Content(account)
