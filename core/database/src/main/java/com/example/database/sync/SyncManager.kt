@@ -2,14 +2,13 @@ package com.example.database.sync
 
 import android.content.Context
 import com.example.database.dao.AccountDao
-import com.example.database.dao.CategoryDao
 import com.example.database.dao.TransactionDao
 import com.example.database.entity.AccountEntity
 import com.example.database.entity.TransactionEntity
 import com.example.network.api.AccountsApi
-import com.example.network.api.CategoriesApi
 import com.example.network.api.TransactionApi
 import com.example.network.dto.account.AccountRequestDto
+import com.example.network.dto.transaction.TransactionDto
 import com.example.network.dto.transaction.TransactionRequestDto
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,10 +18,8 @@ object SyncManager {
     fun syncAll(
         context: Context,
         accountDao: AccountDao,
-        categoryDao: CategoryDao,
         transactionDao: TransactionDao,
         accountsApi: AccountsApi,
-        categoriesApi: CategoriesApi,
         transactionApi: TransactionApi,
     ) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -32,28 +29,49 @@ object SyncManager {
                 try {
                     accountsApi.updateAccount(it.id, it.toAccountRequestDto())
                     accountDao.update(it.copy(isDirty = false))
-                } catch (_: Exception) {}
+                } catch (_: Exception) {
+                }
             }
-            // Синхронизация категорий
-            // Тут синхронизация не нужна
-//            val dirtyCategories = categoryDao.getDirty()
-//            dirtyCategories.forEach { category ->
-//                try {
-//                    categoriesApi.updateCategory(category.id, /* CategoryRequestDto */)
-//                    categoryDao.update(category.copy(isDirty = false))
-//                } catch (_: Exception) {}
-//            }
             // Синхронизация транзакций
             val dirtyTransactions = transactionDao.getDirty()
             dirtyTransactions.forEach { transaction ->
                 try {
-                    transactionApi.updateTransaction(transaction.id, transaction.toTransactionRequestDto())
-                    transactionDao.update(transaction.copy(isDirty = false))
-                } catch (_: Exception) {}
+                    if (transaction.id == 0) {
+                        val response =
+                            transactionApi.createTransaction(transaction.toTransactionRequestDto())
+                        transactionDao.deleteById(transaction.id) // удалить временную запись
+                        transactionDao.insertAll(
+                            listOf(
+                                response.toTransactionEntity().copy(isDirty = false)
+                            )
+                        )
+                    } else {
+                        transactionApi.updateTransaction(
+                            transaction.id,
+                            transaction.toTransactionRequestDto()
+                        )
+                        transactionDao.update(transaction.copy(isDirty = false))
+                    }
+                } catch (_: Exception) {
+                }
             }
         }
-
     }
+}
+
+// Стыдно за костыли но мне пришлось:(
+fun TransactionDto.toTransactionEntity(): TransactionEntity {
+    return TransactionEntity(
+        id = id,
+        accountId = accountId,
+        categoryId = categoryId,
+        amount = amount,
+        transactionDate = transactionDate,
+        comment = comment,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+        isDirty = false
+    )
 }
 
 fun AccountEntity.toAccountRequestDto(): AccountRequestDto {

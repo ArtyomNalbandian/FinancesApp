@@ -28,4 +28,7 @@ interface TransactionDao {
     @Transaction
     @Query("SELECT * FROM transactions")
     fun getAllWithCategory(): Flow<List<TransactionWithCategory>>
+
+    @Query("DELETE FROM transactions WHERE id = :id")
+    suspend fun deleteById(id: Int)
 }
