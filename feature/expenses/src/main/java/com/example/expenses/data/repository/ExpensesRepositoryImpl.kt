@@ -46,12 +46,10 @@ class ExpensesRepositoryImpl @Inject constructor(
                 startDate = startDate,
                 endDate = endDate
             )
-            // Сохраняем в Room
             val entities = transactions
                 .filter { !it.categoryDto.isIncome }
                 .map { it.toTransactionEntity() }
             transactionDao.insertAll(entities)
-            // Получаем категории для маппинга
             val categories = categoryDao.getAll().first().associateBy { it.id }
             entities.mapNotNull { entity ->
                 categories[entity.categoryId]?.let { category ->
@@ -59,38 +57,28 @@ class ExpensesRepositoryImpl @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            // fallback на локальную БД
             val categories = categoryDao.getAll().first().associateBy { it.id }
-            transactionDao.getAll().first()
-                .filter { categories[it.categoryId]?.isIncome == false }
-                .mapNotNull { entity ->
-                    categories[entity.categoryId]?.let { category ->
-                        entity.toExpense(category, getAccountUseCase.invoke().currency)
+            return if (startDate != null && endDate != null && startDate == endDate) {
+                transactionDao.getByDate(startDate)
+                    .filter { categories[it.categoryId]?.isIncome == false }
+                    .mapNotNull { entity ->
+                        categories[entity.categoryId]?.let { category ->
+                            entity.toExpense(category, getAccountUseCase.invoke().currency)
+                        }
                     }
-                }
+            } else if (startDate != null && endDate != null) {
+                transactionDao.getByDateRange(startDate, endDate)
+                    .filter { categories[it.categoryId]?.isIncome == false }
+                    .mapNotNull { entity ->
+                        categories[entity.categoryId]?.let { category ->
+                            entity.toExpense(category, getAccountUseCase.invoke().currency)
+                        }
+                    }
+            } else {
+                emptyList()
+            }
         }
     }
-//    override suspend fun getExpensesByPeriod(startDate: String?, endDate: String?): List<Expense> {
-//        return retryRequest(
-//            shouldRetry = { throwable ->
-//                when (throwable) {
-//                    is UnknownHostException -> false
-//                    is IOException -> true
-//                    is HttpException -> throwable.code() in 500..599
-//                    else -> false
-//                }
-//            }
-//        ) {
-//            transactionApi.getTransactionsByPeriod(
-//                accountId = getAccountId(),
-//                startDate = startDate,
-//                endDate = endDate
-//            )
-//                .filter { !it.categoryDto.isIncome }
-//                .sortedByDescending { it.transactionDate }
-//                .map { it.toExpense() }
-//        }
-//    }
 
     override suspend fun createExpense(
         accountId: Int,
@@ -110,9 +98,8 @@ class ExpensesRepositoryImpl @Inject constructor(
             transactionApi.createTransaction(request)
             Result.success(Unit)
         } catch (e: Exception) {
-            // fallback: сохраняем локально с isDirty
             val entity = TransactionEntity(
-                id = 0, // Room сгенерирует id
+                id = 0,
                 accountId = accountId,
                 categoryId = categoryId,
                 amount = amount,
@@ -126,27 +113,6 @@ class ExpensesRepositoryImpl @Inject constructor(
             Result.success(Unit)
         }
     }
-//    override suspend fun createExpense(
-//        accountId: Int,
-//        categoryId: Int,
-//        amount: String,
-//        expenseDate: String,
-//        comment: String?
-//    ): Result<Unit> {
-//        return try {
-//            val request = TransactionRequestDto(
-//                accountId = accountId,
-//                categoryId = categoryId,
-//                amount = amount,
-//                transactionDate = expenseDate,
-//                comment = comment
-//            )
-//            transactionApi.createTransaction(request)
-//            Result.success(Unit)
-//        } catch (e: Exception) {
-//            Result.failure(e)
-//        }
-//    }
 
     override suspend fun getExpenseById(expenseId: Int): Result<Expense> {
         return try {

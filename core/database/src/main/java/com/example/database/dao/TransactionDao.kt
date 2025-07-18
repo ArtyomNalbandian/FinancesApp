@@ -31,4 +31,10 @@ interface TransactionDao {
 
     @Query("DELETE FROM transactions WHERE id = :id")
     suspend fun deleteById(id: Int)
+
+    @Query("SELECT * FROM transactions WHERE transactionDate LIKE :date || '%'")
+    suspend fun getByDate(date: String): List<TransactionEntity>
+
+    @Query("SELECT * FROM transactions WHERE transactionDate BETWEEN :startDate AND :endDate")
+    suspend fun getByDateRange(startDate: String, endDate: String): List<TransactionEntity>
 }

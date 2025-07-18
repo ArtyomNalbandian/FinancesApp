@@ -26,10 +26,8 @@ class SyncObserver(
                     SyncManager.syncAll(
                         context = application,
                         accountDao = databaseComponent.accountDao(),
-                        categoryDao = databaseComponent.categoryDao(),
                         transactionDao = databaseComponent.transactionDao(),
                         accountsApi = networkComponent.accountsApi(),
-                        categoriesApi = networkComponent.categoriesApi(),
                         transactionApi = networkComponent.transactionApi()
                     )
                 }
