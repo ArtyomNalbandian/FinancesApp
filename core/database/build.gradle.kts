@@ -62,4 +62,7 @@ dependencies {
     // Dagger2
     implementation(libs.google.dagger.dagger)
     ksp(libs.google.dagger.compiler)
+
+    // Мне стыдно за этот костыль
+    implementation(project(":core:network"))
 }

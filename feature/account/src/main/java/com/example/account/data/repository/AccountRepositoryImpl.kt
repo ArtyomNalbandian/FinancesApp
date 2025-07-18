@@ -66,6 +66,28 @@ class AccountRepositoryImpl @Inject constructor(
                 throw e
             }
         }
+
+//        return try {
+//            val updated = accountApi.updateAccount(accountId, accountRequest)
+//            val entity = updated.toAccountEntity().copy(isDirty = false)
+//            accountDao.insert(entity)
+//            updated.toAccount()
+//        } catch (e: Exception) {
+//            // fallback: mark entity as dirty
+//            val local = accountDao.getAccount().first()
+//            if (local != null) {
+//                val dirty = local.copy(
+//                    name = accountRequest.name,
+//                    balance = accountRequest.balance,
+//                    currency = accountRequest.currency,
+//                    isDirty = true
+//                )
+//                accountDao.update(dirty)
+//                dirty.toAccount()
+//            } else {
+//                throw e
+//            }
+//        }
     }
     override suspend fun syncAccountIfNeeded() {
         val dirtyAccount = accountDao.getDirtyAccount()
