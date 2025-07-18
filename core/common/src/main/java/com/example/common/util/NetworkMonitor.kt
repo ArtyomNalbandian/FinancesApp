@@ -26,7 +26,6 @@ object NetworkMonitor {
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .build()
         connectivityManager.registerNetworkCallback(request, callback)
-        // Текущее состояние
         val activeNetwork = connectivityManager.activeNetworkInfo
         trySend(activeNetwork?.isConnected == true)
         awaitClose { connectivityManager.unregisterNetworkCallback(callback) }

@@ -10,13 +10,7 @@ import com.example.expenses.data.mapper.toTransactionEntity
 import com.example.expenses.domain.repository.ExpensesRepository
 import com.example.network.api.TransactionApi
 import com.example.network.dto.transaction.TransactionRequestDto
-import com.example.network.util.retryRequest
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import java.io.IOException
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 /**
@@ -50,12 +44,9 @@ class ExpensesRepositoryImpl @Inject constructor(
                 .filter { !it.categoryDto.isIncome }
                 .map { it.toTransactionEntity() }
             transactionDao.insertAll(entities)
-            val categories = categoryDao.getAll().first().associateBy { it.id }
-            entities.mapNotNull { entity ->
-                categories[entity.categoryId]?.let { category ->
-                    entity.toExpense(category, getAccountUseCase.invoke().currency)
-                }
-            }
+            transactions
+                .filter { !it.categoryDto.isIncome }
+                .map { it.toExpense() }
         } catch (e: Exception) {
             val categories = categoryDao.getAll().first().associateBy { it.id }
             return if (startDate != null && endDate != null && startDate == endDate) {
@@ -119,14 +110,18 @@ class ExpensesRepositoryImpl @Inject constructor(
             val transaction = transactionApi.getTransactionById(expenseId)
             val category = categoryDao.getAll().first().find { it.id == transaction.categoryDto.id }
             if (category != null && !category.isIncome) {
-                Result.success(transaction.toTransactionEntity().toExpense(category, getAccountUseCase.invoke().currency))
+                Result.success(
+                    transaction.toTransactionEntity()
+                        .toExpense(category, getAccountUseCase.invoke().currency)
+                )
             } else {
                 Result.failure(Exception("Not found"))
             }
         } catch (e: Exception) {
             // fallback на локальную БД
             val entity = transactionDao.getAll().first().find { it.id == expenseId }
-            val category = entity?.let { categoryDao.getAll().first().find { cat -> cat.id == it.categoryId } }
+            val category =
+                entity?.let { categoryDao.getAll().first().find { cat -> cat.id == it.categoryId } }
             if (entity != null && category != null && !category.isIncome) {
                 Result.success(entity.toExpense(category, getAccountUseCase.invoke().currency))
             } else {
@@ -134,15 +129,6 @@ class ExpensesRepositoryImpl @Inject constructor(
             }
         }
     }
-
-//    override suspend fun getExpenseById(expenseId: Int): Result<Expense> {
-//        return try {
-//            val transaction = transactionApi.getTransactionById(expenseId).toExpense()
-//            Result.success(transaction)
-//        } catch (e: Exception) {
-//            Result.failure(e)
-//        }
-//    }
 
     override suspend fun updateExpense(
         expenseId: Int,
@@ -163,7 +149,6 @@ class ExpensesRepositoryImpl @Inject constructor(
             transactionApi.updateTransaction(expenseId, request)
             Result.success(Unit)
         } catch (e: Exception) {
-            // fallback: помечаем локально как dirty
             val entity = transactionDao.getAll().first().find { it.id == expenseId }
             if (entity != null) {
                 val updated = entity.copy(
@@ -183,51 +168,12 @@ class ExpensesRepositoryImpl @Inject constructor(
         }
     }
 
-//    override suspend fun updateExpense(
-//        expenseId: Int,
-//        accountId: Int,
-//        categoryId: Int,
-//        amount: String,
-//        expenseDate: String,
-//        comment: String?
-//    ): Result<Unit> {
-//        return try {
-//            val request = TransactionRequestDto(
-//                accountId = accountId,
-//                categoryId = categoryId,
-//                amount = amount,
-//                transactionDate = expenseDate,
-//                comment = comment
-//            )
-//            transactionApi.updateTransaction(expenseId, request)
-//            Result.success(Unit)
-//        } catch (e: Exception) {
-//            Result.failure(e)
-//        }
-//    }
-
     override suspend fun deleteExpense(expenseId: Int): Result<Unit> {
         return try {
             transactionApi.deleteTransaction(expenseId)
-            // Можно удалить из локальной БД, если хотите
             Result.success(Unit)
         } catch (e: Exception) {
-            // fallback: помечаем как dirty (например, можно добавить отдельное поле isDeleted)
-            // или просто не удалять, а синхронизировать позже
             Result.failure(e)
         }
     }
-
-//    override suspend fun deleteExpense(expenseId: Int): Result<Unit> {
-//        return try {
-//            transactionApi.deleteTransaction(expenseId)
-//            Result.success(Unit)
-//        } catch (e: Exception) {
-//            Result.failure(e)
-//        }
-//    }
-
-//    private suspend fun getAccountId(): Int = withContext(Dispatchers.IO) {
-//        getAccountUseCase.invoke().id
-//    }
 }

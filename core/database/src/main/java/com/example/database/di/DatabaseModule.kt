@@ -8,8 +8,6 @@ import com.example.database.dao.CategoryDao
 import com.example.database.dao.TransactionDao
 import dagger.Module
 import dagger.Provides
-import javax.inject.Qualifier
-import javax.inject.Singleton
 
 @Module
 class DatabaseModule {

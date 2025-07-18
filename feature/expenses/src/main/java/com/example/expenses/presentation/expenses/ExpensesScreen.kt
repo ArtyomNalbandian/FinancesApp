@@ -72,7 +72,7 @@ internal fun ExpensesScreen(
     val account by accountViewModel.selectedAccount.collectAsStateWithLifecycle()
     val currency = account?.currency?.toCurrencySymbol().orEmpty()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(account) {
         accountViewModel.loadAccount()
         expensesViewModel.loadExpenses()
         expensesViewModel.event.collect { event ->
