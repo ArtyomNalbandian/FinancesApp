@@ -23,8 +23,10 @@ class DatabaseModule {
 
     @Provides
     fun provideCategoryDao(db: AppDatabase): CategoryDao = db.categoryDao()
+
     @Provides
     fun provideAccountDao(db: AppDatabase): AccountDao = db.accountDao()
+
     @Provides
     fun provideTransactionDao(db: AppDatabase): TransactionDao = db.transactionDao()
 }

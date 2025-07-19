@@ -49,7 +49,7 @@ fun ListItem(
             .background(backgroundColor)
             .conditionalClickable(onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .heightIn(min = 64.dp), // Вместо жёсткой высоты — более гибкий layout
+            .heightIn(min = 64.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

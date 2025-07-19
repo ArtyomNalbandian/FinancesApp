@@ -33,6 +33,7 @@ import dagger.multibindings.IntoMap
 
 @Module
 internal abstract class ExpensesModule {
+
     @Binds
     @ExpensesScope
     abstract fun bindExpensesRepository(impl: ExpensesRepositoryImpl): ExpensesRepository

@@ -1,6 +1,5 @@
 package com.example.categories.presentation
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -36,8 +35,8 @@ internal fun CategoriesScreen() {
             networkApi = networkComponent,
             databaseApi = databaseComponent
         )
-    val categoriesViewModel: CategoriesViewModel = viewModel(factory = categoriesComponent.viewModelFactory())
-    Log.d("testLog", "$categoriesComponent")
+    val categoriesViewModel: CategoriesViewModel =
+        viewModel(factory = categoriesComponent.viewModelFactory())
     val state by categoriesViewModel.state.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
 

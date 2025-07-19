@@ -3,8 +3,6 @@ package com.example.expenses.data.mapper
 import com.example.common.model.expense.Expense
 import com.example.database.entity.CategoryEntity
 import com.example.database.entity.TransactionEntity
-import com.example.database.entity.TransactionWithCategory
-import com.example.network.dto.transaction.TransactionRequestDto
 import com.example.network.dto.transaction.TransactionResponseDto
 
 fun TransactionResponseDto.toExpense() = Expense(

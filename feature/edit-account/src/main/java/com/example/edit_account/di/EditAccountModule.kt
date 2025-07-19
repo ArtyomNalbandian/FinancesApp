@@ -15,6 +15,7 @@ import dagger.multibindings.IntoMap
 
 @Module
 internal abstract class EditAccountModule {
+
     @Binds
     @EditAccountScope
     abstract fun bindAccountRepository(impl: AccountRepositoryImpl): AccountRepository

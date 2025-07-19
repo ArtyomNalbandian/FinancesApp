@@ -1,6 +1,5 @@
 package com.example.expenses.presentation.expenses
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -56,7 +55,6 @@ internal fun ExpensesScreen(
         viewModel(factory = accountComponent.viewModelFactory())
     val expensesViewModel: ExpensesViewModel =
         viewModel(factory = expensesComponent.viewModelFactory())
-    Log.d("testLog", "$expensesComponent")
 
     FinancesTopBarConfig(
         title = { Text("Расходы сегодня") },

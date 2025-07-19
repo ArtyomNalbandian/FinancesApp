@@ -77,7 +77,6 @@ internal fun IncomesAddScreen(
         )
     val incomesAddViewModel: IncomesAddViewModel =
         viewModel(factory = incomesComponent.viewModelFactory())
-    Log.d("testLog", "$incomesComponent")
 
     val incomesAddState by incomesAddViewModel.state.collectAsStateWithLifecycle()
 

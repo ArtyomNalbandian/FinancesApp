@@ -40,11 +40,9 @@ internal fun AccountScreen(
         )
     val accountViewModel: AccountViewModel =
         viewModel(factory = accountComponent.viewModelFactory())
-    Log.d("testLog", "$accountComponent")
     val state by accountViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val currentAccount by accountViewModel.selectedAccount.collectAsStateWithLifecycle()
-    Log.d("testLog", "currAcc --- $currentAccount")
 
     FinancesTopBarConfig(
         title = { Text("Мой счет") },

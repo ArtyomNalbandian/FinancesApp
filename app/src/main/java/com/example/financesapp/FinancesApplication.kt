@@ -11,7 +11,7 @@ class FinancesApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         ProcessLifecycleOwner.get().lifecycle.addObserver(SyncObserver(this))
-        val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(15, TimeUnit.MINUTES)
+        val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(8, TimeUnit.HOURS)
             .build()
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "sync_work",

@@ -1,6 +1,5 @@
 package com.example.expenses.presentation.expenses_add
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -77,7 +76,6 @@ internal fun ExpensesAddScreen(
         )
     val expensesAddViewModel: ExpensesAddViewModel =
         viewModel(factory = expensesComponent.viewModelFactory())
-    Log.d("testLog", "$expensesComponent")
 
     val expensesAddState by expensesAddViewModel.state.collectAsStateWithLifecycle()
 

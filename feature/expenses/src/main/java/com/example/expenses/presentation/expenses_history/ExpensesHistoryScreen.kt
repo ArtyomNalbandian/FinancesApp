@@ -1,6 +1,5 @@
 package com.example.expenses.presentation.expenses_history
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -72,7 +71,6 @@ internal fun ExpensesHistoryScreen(
         viewModel(factory = accountComponent.viewModelFactory())
     val expensesHistoryViewModel: ExpensesHistoryViewModel =
         viewModel(factory = expensesComponent.viewModelFactory())
-    Log.d("testLog", "$expensesComponent")
 
     FinancesTopBarConfig(
         title = { Text("История расходов") },

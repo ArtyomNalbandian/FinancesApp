@@ -29,14 +29,7 @@ class CategoriesRepositoryImpl @Inject constructor(
             categoryDao.insertAll(entities)
             entities.map { it.toCategory() }
         } catch (e: Exception) {
-            // fallback на локальную БД
             categoryDao.getAll().first().map { it.toCategory() }
         }
     }
-
-//    override suspend fun getCategories(): List<Category> {
-//        return categoriesApi.getCategories().map { categoryDto ->
-//            categoryDto.toCategory()
-//        }
-//    }
 }

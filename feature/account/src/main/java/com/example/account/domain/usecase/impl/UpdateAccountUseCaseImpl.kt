@@ -13,12 +13,7 @@ class UpdateAccountUseCaseImpl @Inject constructor(
     override suspend fun invoke(
         accountId: Int,
         request: AccountRequestDto
-//        name: String,
-//        balance: String,
-//        currency: String
     ): Account {
-
         return accountRepository.updateAccount(accountId, request)
-
     }
 }

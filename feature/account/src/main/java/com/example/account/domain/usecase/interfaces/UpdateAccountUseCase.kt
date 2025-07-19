@@ -8,8 +8,5 @@ interface UpdateAccountUseCase {
     suspend operator fun invoke(
         accountId: Int,
         request: AccountRequestDto
-//        name: String,
-//        balance: String,
-//        currency: String
     ): Account
 }

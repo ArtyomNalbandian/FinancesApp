@@ -1,6 +1,5 @@
 package com.example.incomes.presentation.incomes_analysis
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -71,7 +70,6 @@ internal fun IncomesAnalysisScreen(
         viewModel(factory = accountComponent.viewModelFactory())
     val incomesAnalysisViewModel: IncomesAnalysisViewModel =
         viewModel(factory = incomesComponent.viewModelFactory())
-    Log.d("testLog", "$incomesComponent")
 
     FinancesTopBarConfig(
         title = { Text("Анализ доходов") },
@@ -180,7 +178,8 @@ private fun IncomesAnalysisContent(state: IncomesAnalysisState, currency: String
                     } else {
                         state.items.sortedBy { Instant.parse(it.transactionDate) }
                             .forEach { income ->
-                                val percent = income.amount.toDouble() / state.total.toDouble() * 100
+                                val percent =
+                                    income.amount.toDouble() / state.total.toDouble() * 100
                                 val percentStr = when {
                                     percent < 0.01 -> "<0.01%"
                                     else -> String.format(Locale.getDefault(), "%.2f%%", percent)
