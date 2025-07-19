@@ -65,7 +65,7 @@ internal fun AccountScreen(
         }
     )
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(currentAccount) {
         accountViewModel.loadAccount()
         accountViewModel.event.collect { event ->
             when (event) {

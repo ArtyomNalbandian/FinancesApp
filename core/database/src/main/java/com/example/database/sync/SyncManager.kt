@@ -3,13 +3,11 @@ package com.example.database.sync
 import android.content.Context
 import com.example.database.dao.AccountDao
 import com.example.database.dao.TransactionDao
-import com.example.database.entity.AccountEntity
-import com.example.database.entity.TransactionEntity
+import com.example.database.mapper.toAccountRequestDto
+import com.example.database.mapper.toTransactionEntity
+import com.example.database.mapper.toTransactionRequestDto
 import com.example.network.api.AccountsApi
 import com.example.network.api.TransactionApi
-import com.example.network.dto.account.AccountRequestDto
-import com.example.network.dto.transaction.TransactionDto
-import com.example.network.dto.transaction.TransactionRequestDto
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,37 +55,4 @@ object SyncManager {
             }
         }
     }
-}
-
-// Стыдно за костыли но мне пришлось:(
-fun TransactionDto.toTransactionEntity(): TransactionEntity {
-    return TransactionEntity(
-        id = id,
-        accountId = accountId,
-        categoryId = categoryId,
-        amount = amount,
-        transactionDate = transactionDate,
-        comment = comment,
-        createdAt = createdAt,
-        updatedAt = updatedAt,
-        isDirty = false
-    )
-}
-
-fun AccountEntity.toAccountRequestDto(): AccountRequestDto {
-    return AccountRequestDto(
-        name = name,
-        balance = balance,
-        currency = currency
-    )
-}
-
-fun TransactionEntity.toTransactionRequestDto(): TransactionRequestDto {
-    return TransactionRequestDto(
-        accountId = accountId,
-        categoryId = categoryId,
-        amount = amount,
-        transactionDate = transactionDate,
-        comment = comment
-    )
 }

@@ -9,5 +9,4 @@ interface AccountRepository {
 
     suspend fun getAccount(): Account
     suspend fun updateAccount(accountId: Int, accountRequest: AccountRequestDto): Account
-    suspend fun syncAccountIfNeeded()
 }
