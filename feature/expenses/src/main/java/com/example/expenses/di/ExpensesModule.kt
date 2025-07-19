@@ -24,6 +24,7 @@ import com.example.expenses.domain.usecase.interfaces.GetExpensesUseCase
 import com.example.expenses.domain.usecase.interfaces.UpdateExpenseUseCase
 import com.example.expenses.presentation.expenses.ExpensesViewModel
 import com.example.expenses.presentation.expenses_add.ExpensesAddViewModel
+import com.example.expenses.presentation.expenses_analysis.ExpensesAnalysisViewModel
 import com.example.expenses.presentation.expenses_edit.ExpensesEditViewModel
 import com.example.expenses.presentation.expenses_history.ExpensesHistoryViewModel
 import dagger.Binds
@@ -81,6 +82,11 @@ internal abstract class ExpensesModule {
     @IntoMap
     @ViewModelKey(ExpensesHistoryViewModel::class)
     abstract fun bindExpensesHistoryViewModel(viewModel: ExpensesHistoryViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ExpensesAnalysisViewModel::class)
+    abstract fun bindExpensesAnalysisViewModel(viewModel: ExpensesAnalysisViewModel): ViewModel
 
     @Binds
     @IntoMap

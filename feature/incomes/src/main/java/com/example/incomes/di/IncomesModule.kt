@@ -24,6 +24,7 @@ import com.example.incomes.domain.usecase.interfaces.GetIncomesUseCase
 import com.example.incomes.domain.usecase.interfaces.UpdateIncomeUseCase
 import com.example.incomes.presentation.incomes.IncomesViewModel
 import com.example.incomes.presentation.incomes_add.IncomesAddViewModel
+import com.example.incomes.presentation.incomes_analysis.IncomesAnalysisViewModel
 import com.example.incomes.presentation.incomes_edit.IncomesEditViewModel
 import com.example.incomes.presentation.incomes_history.IncomesHistoryViewModel
 import dagger.Binds
@@ -81,6 +82,11 @@ internal abstract class IncomesModule {
     @IntoMap
     @ViewModelKey(IncomesHistoryViewModel::class)
     abstract fun bindIncomeHistoryViewModel(viewModel: IncomesHistoryViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(IncomesAnalysisViewModel::class)
+    abstract fun bindIncomesAnalysisViewModel(viewModel: IncomesAnalysisViewModel): ViewModel
 
     @Binds
     @IntoMap

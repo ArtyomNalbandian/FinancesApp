@@ -34,6 +34,7 @@ fun ListItem(
     title: String,
     modifier: Modifier = Modifier,
     supportingText: String? = null,
+    supportingTrailingText: String? = null,
     amount: String? = null,
     leadingIcon: String? = null,
     trailingIcon: Int? = null,
@@ -59,6 +60,7 @@ fun ListItem(
         )
         TrailingContent(
             amount = amount,
+            supportingTrailingText = supportingTrailingText,
             currency = currency,
             trailingIcon = trailingIcon,
             trailingComposable = trailingComposable
@@ -112,16 +114,26 @@ private fun LeadingContent(
 @Composable
 private fun TrailingContent(
     amount: String?,
+    supportingTrailingText: String?,
     currency: String?,
     trailingIcon: Int?,
     trailingComposable: @Composable (() -> Unit)?
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        amount?.let {
-            Text(
-                text = if (!currency.isNullOrBlank()) "$it $currency" else it,
-                style = MaterialTheme.typography.bodyLarge,
-            )
+        Column {
+            amount?.let {
+                Text(
+                    text = if (!currency.isNullOrBlank()) "$it $currency" else it,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+            supportingTrailingText?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
 
         trailingIcon?.let { iconResId ->
