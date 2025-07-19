@@ -121,7 +121,7 @@ class IncomesRepositoryImpl @Inject constructor(
             val entity = transactionDao.getAll().first().find { it.id == incomeId }
             val category =
                 entity?.let { categoryDao.getAll().first().find { cat -> cat.id == it.categoryId } }
-            if (entity != null && category != null && !category.isIncome) {
+            if (entity != null && category != null && category.isIncome) {
                 Result.success(entity.toIncome(category, getAccountUseCase.invoke().currency))
             } else {
                 Result.failure(e)

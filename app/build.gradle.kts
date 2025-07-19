@@ -81,6 +81,9 @@ dependencies {
     // Shimmer
     implementation(libs.accompanist.placeholder.material)
 
+    // WorkManager
+    implementation(libs.androidx.work.runtime)
+
     // core:ui module
     implementation(project(":core:ui"))
     // core:network module
