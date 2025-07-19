@@ -63,6 +63,8 @@ dependencies {
     implementation(project(":core:ui"))
     // core:common module
     implementation(project(":core:common"))
+    // core:database module
+    implementation(project(":core:database"))
     // core:network module
     implementation(project(":core:network"))
 }

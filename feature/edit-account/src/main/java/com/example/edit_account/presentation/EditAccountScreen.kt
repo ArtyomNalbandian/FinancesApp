@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.common.util.toCurrencyFromSymbol
 import com.example.common.util.toCurrencySymbol
+import com.example.database.di.DaggerDatabaseComponent
 import com.example.network.di.DaggerNetworkComponent
 import com.example.edit_account.di.DaggerEditAccountComponent
 import com.example.ui.FinancesTopBarConfig
@@ -46,7 +47,15 @@ internal fun EditAccountScreen(
 ) {
 
     val networkComponent = DaggerNetworkComponent.create()
-    val editAccountComponent = DaggerEditAccountComponent.factory().create(networkApi = networkComponent)
+    val databaseComponent = DaggerDatabaseComponent.builder()
+        .context(LocalContext.current.applicationContext)
+        .build()
+    val editAccountComponent = DaggerEditAccountComponent
+        .factory()
+        .create(
+            networkApi = networkComponent,
+            databaseApi = databaseComponent
+        )
     val editAccountViewModel: EditAccountViewModel = viewModel(factory = editAccountComponent.viewModelFactory())
     Log.d("testLog", "$editAccountComponent")
 

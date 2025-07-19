@@ -1,6 +1,5 @@
 package com.example.expenses.presentation.expenses
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expenses.domain.usecase.interfaces.GetExpensesUseCase
@@ -41,7 +40,6 @@ internal class ExpensesViewModel @Inject constructor(
                 val expenses = getExpensesUseCase(today, today)
                 val total = expenses.sumOf { it.amount.toDouble() }.toString()
                 val currency = expenses.firstOrNull()?.currency ?: "RUB"
-                Log.d("testLog", "currency --- ${expenses.firstOrNull()?.currency}")
                 _state.value = ExpensesState.Content(expenses, total, currency)
             } catch (e: Exception) {
                 val message = e.message ?: "Ошибка загрузки"

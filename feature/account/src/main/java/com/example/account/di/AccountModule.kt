@@ -13,6 +13,7 @@ import dagger.multibindings.IntoMap
 
 @Module
 internal abstract class AccountModule {
+
     @Binds
     @AccountScope
     abstract fun bindAccountRepository(impl: AccountRepositoryImpl): AccountRepository

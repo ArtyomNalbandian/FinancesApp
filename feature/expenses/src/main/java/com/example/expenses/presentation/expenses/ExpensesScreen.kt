@@ -1,6 +1,5 @@
 package com.example.expenses.presentation.expenses
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -24,6 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.account.di.DaggerAccountComponent
 import com.example.account.presentation.AccountViewModel
 import com.example.common.util.toCurrencySymbol
+import com.example.database.di.DaggerDatabaseComponent
 import com.example.expenses.R
 import com.example.expenses.di.DaggerExpensesComponent
 import com.example.network.di.DaggerNetworkComponent
@@ -38,13 +38,23 @@ internal fun ExpensesScreen(
 ) {
 
     val networkComponent = DaggerNetworkComponent.create()
-    val expensesComponent = DaggerExpensesComponent.factory().create(networkApi = networkComponent)
-    val accountComponent = DaggerAccountComponent.factory().create(networkApi = networkComponent)
+    val databaseComponent = DaggerDatabaseComponent.builder()
+        .context(LocalContext.current.applicationContext)
+        .build()
+    val expensesComponent = DaggerExpensesComponent
+        .factory()
+        .create(
+            networkApi = networkComponent,
+            databaseApi = databaseComponent
+        )
+    val accountComponent = DaggerAccountComponent.factory().create(
+        networkApi = networkComponent,
+        databaseApi = databaseComponent
+    )
     val accountViewModel: AccountViewModel =
         viewModel(factory = accountComponent.viewModelFactory())
     val expensesViewModel: ExpensesViewModel =
         viewModel(factory = expensesComponent.viewModelFactory())
-    Log.d("testLog", "$expensesComponent")
 
     FinancesTopBarConfig(
         title = { Text("Расходы сегодня") },
@@ -60,7 +70,7 @@ internal fun ExpensesScreen(
     val account by accountViewModel.selectedAccount.collectAsStateWithLifecycle()
     val currency = account?.currency?.toCurrencySymbol().orEmpty()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(account) {
         accountViewModel.loadAccount()
         expensesViewModel.loadExpenses()
         expensesViewModel.event.collect { event ->

@@ -13,6 +13,7 @@ import dagger.multibindings.IntoMap
 
 @Module
 internal abstract class CategoriesModule {
+
     @Binds
     @CategoriesScope
     abstract fun bindCategoriesRepository(impl: CategoriesRepositoryImpl): CategoriesRepository

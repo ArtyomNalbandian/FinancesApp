@@ -2,16 +2,15 @@ package com.example.expenses.data.repository
 
 import com.example.account.domain.usecase.interfaces.GetAccountUseCase
 import com.example.common.model.expense.Expense
+import com.example.database.dao.CategoryDao
+import com.example.database.dao.TransactionDao
+import com.example.database.entity.TransactionEntity
 import com.example.expenses.data.mapper.toExpense
+import com.example.expenses.data.mapper.toTransactionEntity
 import com.example.expenses.domain.repository.ExpensesRepository
 import com.example.network.api.TransactionApi
 import com.example.network.dto.transaction.TransactionRequestDto
-import com.example.network.util.retryRequest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import java.io.IOException
-import java.net.UnknownHostException
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 /**
@@ -29,27 +28,46 @@ import javax.inject.Inject
  */
 class ExpensesRepositoryImpl @Inject constructor(
     private val transactionApi: TransactionApi,
-    private val getAccountUseCase: GetAccountUseCase
+    private val getAccountUseCase: GetAccountUseCase,
+    private val transactionDao: TransactionDao,
+    private val categoryDao: CategoryDao
 ) : ExpensesRepository {
     override suspend fun getExpensesByPeriod(startDate: String?, endDate: String?): List<Expense> {
-        return retryRequest(
-            shouldRetry = { throwable ->
-                when (throwable) {
-                    is UnknownHostException -> false
-                    is IOException -> true
-                    is HttpException -> throwable.code() in 500..599
-                    else -> false
-                }
-            }
-        ) {
-            transactionApi.getTransactionsByPeriod(
-                accountId = getAccountId(),
+        return try {
+            val accountId = getAccountUseCase.invoke().id
+            val transactions = transactionApi.getTransactionsByPeriod(
+                accountId = accountId,
                 startDate = startDate,
                 endDate = endDate
             )
+            val entities = transactions
                 .filter { !it.categoryDto.isIncome }
-                .sortedByDescending { it.transactionDate }
+                .map { it.toTransactionEntity() }
+            transactionDao.insertAll(entities)
+            transactions
+                .filter { !it.categoryDto.isIncome }
                 .map { it.toExpense() }
+        } catch (e: Exception) {
+            val categories = categoryDao.getAll().first().associateBy { it.id }
+            return if (startDate != null && endDate != null && startDate == endDate) {
+                transactionDao.getByDate(startDate)
+                    .filter { categories[it.categoryId]?.isIncome == false }
+                    .mapNotNull { entity ->
+                        categories[entity.categoryId]?.let { category ->
+                            entity.toExpense(category, getAccountUseCase.invoke().currency)
+                        }
+                    }
+            } else if (startDate != null && endDate != null) {
+                transactionDao.getByDateRange(startDate, endDate)
+                    .filter { categories[it.categoryId]?.isIncome == false }
+                    .mapNotNull { entity ->
+                        categories[entity.categoryId]?.let { category ->
+                            entity.toExpense(category, getAccountUseCase.invoke().currency)
+                        }
+                    }
+            } else {
+                emptyList()
+            }
         }
     }
 
@@ -71,16 +89,43 @@ class ExpensesRepositoryImpl @Inject constructor(
             transactionApi.createTransaction(request)
             Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(e)
+            val entity = TransactionEntity(
+                id = 0,
+                accountId = accountId,
+                categoryId = categoryId,
+                amount = amount,
+                transactionDate = expenseDate,
+                comment = comment,
+                createdAt = expenseDate,
+                updatedAt = expenseDate,
+                isDirty = true
+            )
+            transactionDao.insertAll(listOf(entity))
+            Result.success(Unit)
         }
     }
 
     override suspend fun getExpenseById(expenseId: Int): Result<Expense> {
         return try {
-            val transaction = transactionApi.getTransactionById(expenseId).toExpense()
-            Result.success(transaction)
+            val transaction = transactionApi.getTransactionById(expenseId)
+            val category = categoryDao.getAll().first().find { it.id == transaction.categoryDto.id }
+            if (category != null && !category.isIncome) {
+                Result.success(
+                    transaction.toTransactionEntity()
+                        .toExpense(category, getAccountUseCase.invoke().currency)
+                )
+            } else {
+                Result.failure(Exception("Not found"))
+            }
         } catch (e: Exception) {
-            Result.failure(e)
+            val entity = transactionDao.getAll().first().find { it.id == expenseId }
+            val category =
+                entity?.let { categoryDao.getAll().first().find { cat -> cat.id == it.categoryId } }
+            if (entity != null && category != null && !category.isIncome) {
+                Result.success(entity.toExpense(category, getAccountUseCase.invoke().currency))
+            } else {
+                Result.failure(e)
+            }
         }
     }
 
@@ -103,7 +148,22 @@ class ExpensesRepositoryImpl @Inject constructor(
             transactionApi.updateTransaction(expenseId, request)
             Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(e)
+            val entity = transactionDao.getAll().first().find { it.id == expenseId }
+            if (entity != null) {
+                val updated = entity.copy(
+                    accountId = accountId,
+                    categoryId = categoryId,
+                    amount = amount,
+                    transactionDate = expenseDate,
+                    comment = comment,
+                    updatedAt = expenseDate,
+                    isDirty = true
+                )
+                transactionDao.update(updated)
+                Result.success(Unit)
+            } else {
+                Result.failure(e)
+            }
         }
     }
 
@@ -114,9 +174,5 @@ class ExpensesRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
-
-    private suspend fun getAccountId(): Int = withContext(Dispatchers.IO) {
-        getAccountUseCase.invoke().id
     }
 }

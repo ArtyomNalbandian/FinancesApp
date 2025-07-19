@@ -1,10 +1,7 @@
 package com.example.expenses.di
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.createSavedStateHandle
-import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.account.data.repository.AccountRepositoryImpl
 import com.example.account.domain.repository.AccountRepository
 import com.example.account.domain.usecase.impl.GetAccountUseCaseImpl
@@ -27,16 +24,16 @@ import com.example.expenses.domain.usecase.interfaces.GetExpensesUseCase
 import com.example.expenses.domain.usecase.interfaces.UpdateExpenseUseCase
 import com.example.expenses.presentation.expenses.ExpensesViewModel
 import com.example.expenses.presentation.expenses_add.ExpensesAddViewModel
+import com.example.expenses.presentation.expenses_analysis.ExpensesAnalysisViewModel
 import com.example.expenses.presentation.expenses_edit.ExpensesEditViewModel
 import com.example.expenses.presentation.expenses_history.ExpensesHistoryViewModel
 import dagger.Binds
 import dagger.Module
-import dagger.assisted.AssistedFactory
 import dagger.multibindings.IntoMap
-import javax.inject.Inject
 
 @Module
 internal abstract class ExpensesModule {
+
     @Binds
     @ExpensesScope
     abstract fun bindExpensesRepository(impl: ExpensesRepositoryImpl): ExpensesRepository
@@ -86,6 +83,11 @@ internal abstract class ExpensesModule {
     @IntoMap
     @ViewModelKey(ExpensesHistoryViewModel::class)
     abstract fun bindExpensesHistoryViewModel(viewModel: ExpensesHistoryViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ExpensesAnalysisViewModel::class)
+    abstract fun bindExpensesAnalysisViewModel(viewModel: ExpensesAnalysisViewModel): ViewModel
 
     @Binds
     @IntoMap

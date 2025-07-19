@@ -3,7 +3,8 @@ package com.example.edit_account.presentation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.account.domain.repository.AccountRepository
+import com.example.account.domain.usecase.interfaces.GetAccountUseCase
+import com.example.account.domain.usecase.interfaces.UpdateAccountUseCase
 import com.example.common.model.account.Account
 import com.example.network.dto.account.AccountRequestDto
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 internal class EditAccountViewModel @Inject constructor(
-    private val accountRepository: AccountRepository
+    private val getAccountUseCase: GetAccountUseCase,
+    private val updateAccountUseCase: UpdateAccountUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<EditAccountState>(EditAccountState.Loading)
@@ -30,7 +32,7 @@ internal class EditAccountViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             try {
-                val account = accountRepository.getAccount()
+                val account = getAccountUseCase.invoke()
                 Log.d("testLog", "state changed to Content --- $account")
                 _state.value = EditAccountState.Content(account)
                 _editAccountState.value = account
@@ -49,7 +51,7 @@ internal class EditAccountViewModel @Inject constructor(
                     balance = newBalance,
                     currency = newCurrency
                 )
-                val updatedAccount = accountRepository.updateAccount(current.id, request)
+                val updatedAccount = updateAccountUseCase.invoke(current.id, request)
                 _editAccountState.value = updatedAccount
                 _event.emit(EditAccountEvent.ShowSuccess("Счет обновлен"))
                 Log.d("testLog", "submit in ViewModel --- ${_state.value}")
@@ -80,7 +82,6 @@ internal class EditAccountViewModel @Inject constructor(
             if (current is EditAccountState.Content) {
                 try {
                     val newAccount = current.account.copy(currency = newCurrency)
-//                    _editAccountState.value = newAccount
                     _state.value = current.copy(
                         account = newAccount,
                         isCurrencySelectorVisible = false

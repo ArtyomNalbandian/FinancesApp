@@ -1,19 +1,13 @@
 package com.example.account.data.repository
 
 import com.example.account.data.mapper.toAccount
+import com.example.account.data.mapper.toAccountEntity
 import com.example.account.domain.repository.AccountRepository
 import com.example.common.model.account.Account
+import com.example.database.dao.AccountDao
 import com.example.network.api.AccountsApi
 import com.example.network.dto.account.AccountRequestDto
-import com.example.network.util.retryRequest
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filterNotNull
-import retrofit2.HttpException
-import java.io.IOException
-import java.net.UnknownHostException
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 /**
@@ -24,45 +18,39 @@ import javax.inject.Inject
  * @param accountApi Реализация сетевого API для работы со счетами
  */
 class AccountRepositoryImpl @Inject constructor(
-    private val accountApi: AccountsApi
+    private val accountApi: AccountsApi,
+    private val accountDao: AccountDao
 ) : AccountRepository {
 
     override suspend fun getAccount(): Account {
-        return retryRequest(
-            shouldRetry = { throwable ->
-                when (throwable) {
-                    is UnknownHostException -> false
-                    is IOException -> true
-                    is HttpException -> throwable.code() in 500..599
-                    else -> false
-                }
-            }
-        ) {
-            accountApi.getAccounts().first().toAccount()
+        return try {
+            val dto = accountApi.getAccounts().first()
+            val entity = dto.toAccountEntity()
+            accountDao.insert(entity)
+            dto.toAccount()
+        } catch (e: Exception) {
+            accountDao.getAccount().first().toAccount()
         }
     }
 
     override suspend fun updateAccount(accountId: Int, accountRequest: AccountRequestDto): Account {
-        val updatedAccountDto = accountApi.updateAccount(
-            id = accountId,
-            accountRequest = accountRequest,
-        )
-//        val updatedAccount = updatedAccountDto.toAccount()
-//        _currentAccount.value = updatedAccount
-        return retryRequest(
-            shouldRetry = { throwable ->
-                when (throwable) {
-                    is UnknownHostException -> false
-                    is IOException -> true
-                    is HttpException -> throwable.code() in 500..599
-                    else -> false
-                }
+        return try {
+            val updated = accountApi.updateAccount(accountId, accountRequest)
+            val entity = updated.toAccountEntity().copy(isDirty = false)
+            accountDao.insert(entity)
+            updated.toAccount()
+        } catch (e: Exception) {
+            val local = accountDao.getAccount().first()
+            run {
+                val dirty = local.copy(
+                    name = accountRequest.name,
+                    balance = accountRequest.balance,
+                    currency = accountRequest.currency,
+                    isDirty = true
+                )
+                accountDao.update(dirty)
+                dirty.toAccount()
             }
-        ) {
-            accountApi.updateAccount(
-                id = accountId,
-                accountRequest = accountRequest
-            ).toAccount()
         }
     }
 }

@@ -22,10 +22,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-//        val properties = Properties().apply {
-//            load(rootProject.file("local.properties").inputStream())
-//        }
-//        buildConfigField("String", "API_TOKEN", "\"${properties.getProperty("api.token")}\"")
     }
 
     buildTypes {
@@ -46,11 +42,13 @@ android {
     }
     buildFeatures {
         compose = true
-//        buildConfig = true
     }
 }
 
 dependencies {
+
+    //
+    implementation(libs.androidx.lifecycle.process)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -83,10 +81,15 @@ dependencies {
     // Shimmer
     implementation(libs.accompanist.placeholder.material)
 
+    // WorkManager
+    implementation(libs.androidx.work.runtime)
+
     // core:ui module
     implementation(project(":core:ui"))
     // core:network module
     implementation(project(":core:network"))
+    // core:database module
+    implementation(project(":core:database"))
     // core:common module
     implementation(project(":core:common"))
     // feature:settings module

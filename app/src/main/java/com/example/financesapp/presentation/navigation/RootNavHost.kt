@@ -16,6 +16,8 @@ import com.example.expenses.presentation.expenses.ExpensesScreenRoute
 import com.example.expenses.presentation.expenses.expensesScreen
 import com.example.expenses.presentation.expenses_add.ExpensesAddScreenRoute
 import com.example.expenses.presentation.expenses_add.expensesAddScreen
+import com.example.expenses.presentation.expenses_analysis.ExpensesAnalysisScreenRoute
+import com.example.expenses.presentation.expenses_analysis.expensesAnalysisScreen
 import com.example.expenses.presentation.expenses_edit.expensesEditScreen
 import com.example.expenses.presentation.expenses_history.ExpensesHistoryScreenRoute
 import com.example.expenses.presentation.expenses_history.expensesHistoryScreen
@@ -23,6 +25,8 @@ import com.example.incomes.presentation.incomes.IncomesScreenRoute
 import com.example.incomes.presentation.incomes.incomesScreen
 import com.example.incomes.presentation.incomes_add.IncomesAddScreenRoute
 import com.example.incomes.presentation.incomes_add.incomesAddScreen
+import com.example.incomes.presentation.incomes_analysis.IncomesAnalysisScreenRoute
+import com.example.incomes.presentation.incomes_analysis.incomesAnalysisScreen
 import com.example.incomes.presentation.incomes_edit.incomesEditScreen
 import com.example.incomes.presentation.incomes_history.IncomesHistoryScreenRoute
 import com.example.incomes.presentation.incomes_history.incomesHistoryScreen
@@ -60,7 +64,10 @@ private fun NavGraphBuilder.addExpensesGraph(
         )
         expensesHistoryScreen(
             navigateBack = { navController.popBackStack() },
-            navigateToAnalysis = { }
+            navigateToAnalysis = { navController.navigate(ExpensesAnalysisScreenRoute) }
+        )
+        expensesAnalysisScreen(
+            navigateBack = { navController.popBackStack() }
         )
         expensesAddScreen(
             navigateBack = { navController.popBackStack() },
@@ -84,7 +91,10 @@ private fun NavGraphBuilder.addIncomeGraph(
         )
         incomesHistoryScreen(
             navigateBack = { navController.popBackStack() },
-            navigateToAnalysis = { }
+            navigateToAnalysis = { navController.navigate(IncomesAnalysisScreenRoute) }
+        )
+        incomesAnalysisScreen(
+            navigateBack = { navController.popBackStack() }
         )
         incomesAddScreen(
             navigateBack = { navController.popBackStack() },
