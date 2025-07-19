@@ -118,7 +118,6 @@ class ExpensesRepositoryImpl @Inject constructor(
                 Result.failure(Exception("Not found"))
             }
         } catch (e: Exception) {
-            // fallback на локальную БД
             val entity = transactionDao.getAll().first().find { it.id == expenseId }
             val category =
                 entity?.let { categoryDao.getAll().first().find { cat -> cat.id == it.categoryId } }
