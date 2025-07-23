@@ -18,15 +18,24 @@ import androidx.compose.ui.unit.dp
 import com.example.ui.FinancesTopBarConfig
 import com.example.ui.ListItem
 import com.example.ui.R
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-internal fun SettingsScreen() {
+internal fun SettingsScreen(
+    navigateToColorPicker: () -> Unit,
+    navigateToHaptics: () -> Unit,
+    navigateToPinCode: () -> Unit,
+    navigateToSyncFrequency: () -> Unit,
+    navigateToLanguageSwitch: () -> Unit,
+    navigateToAppInfo: () -> Unit
+) {
+    val viewModel: SettingsViewModel = viewModel()
+    val isDarkTheme by viewModel.isDarkTheme.collectAsStateWithLifecycle()
 
     FinancesTopBarConfig(
         title = { Text("Настройки") },
     )
-
-    var isDarkTheme by remember { mutableStateOf(false) }
 
     LazyColumn {
         item {
@@ -35,7 +44,7 @@ internal fun SettingsScreen() {
                 trailingComposable = {
                     Switch(
                         checked = isDarkTheme,
-                        onCheckedChange = { isDarkTheme = it },
+                        onCheckedChange = { viewModel.setDarkTheme(it) },
                         colors = SwitchDefaults.colors(
                             checkedThumbColor = MaterialTheme.colorScheme.secondary,
                             checkedTrackColor = MaterialTheme.colorScheme.primary,
@@ -46,24 +55,59 @@ internal fun SettingsScreen() {
             )
             HorizontalDivider()
         }
-        itemsIndexed(settingsItems) { _, icon ->
+        item {
             ListItem(
-                title = icon.first,
-                trailingIcon = icon.second,
-                onClick = { },
+                title = "Основной цвет",
+                trailingIcon = R.drawable.more_settings,
+                onClick = navigateToColorPicker,
+                modifier = Modifier.height(56.dp)
+            )
+            HorizontalDivider()
+        }
+        item {
+            ListItem(
+                title = "Хаптики",
+                trailingIcon = R.drawable.more_settings,
+                onClick = navigateToHaptics,
+                modifier = Modifier.height(56.dp)
+            )
+            HorizontalDivider()
+        }
+        item {
+            ListItem(
+                title = "Код пароль",
+                trailingIcon = R.drawable.more_settings,
+                onClick = navigateToPinCode,
+                modifier = Modifier.height(56.dp)
+            )
+            HorizontalDivider()
+        }
+        item {
+            ListItem(
+                title = "Синхронизация",
+                trailingIcon = R.drawable.more_settings,
+                onClick = navigateToSyncFrequency,
+                modifier = Modifier.height(56.dp)
+            )
+            HorizontalDivider()
+        }
+        item {
+            ListItem(
+                title = "Язык",
+                trailingIcon = R.drawable.more_settings,
+                onClick = navigateToLanguageSwitch,
+                modifier = Modifier.height(56.dp)
+            )
+            HorizontalDivider()
+        }
+        item {
+            ListItem(
+                title = "О программе",
+                trailingIcon = R.drawable.more_settings,
+                onClick = navigateToAppInfo,
                 modifier = Modifier.height(56.dp)
             )
             HorizontalDivider()
         }
     }
 }
-
-private val settingsItems = listOf(
-    "Основной цвет" to R.drawable.more_settings,
-    "Звуки" to R.drawable.more_settings,
-    "Хаптики" to R.drawable.more_settings,
-    "Код пароль" to R.drawable.more_settings,
-    "Синхронизация" to R.drawable.more_settings,
-    "Язык" to R.drawable.more_settings,
-    "О программе" to R.drawable.more_settings
-)

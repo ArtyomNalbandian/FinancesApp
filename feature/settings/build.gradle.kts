@@ -57,4 +57,7 @@ dependencies {
 
     // core:ui module
     implementation(project(":core:ui"))
+
+    // core:common module
+    implementation(project(":core:common"))
 }
