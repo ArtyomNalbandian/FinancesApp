@@ -18,9 +18,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val settingsViewModel: SettingsViewModel = viewModel()
+            val settingsViewModel: com.example.settings.SettingsViewModel = viewModel()
             val isDarkTheme by settingsViewModel.isDarkTheme.collectAsStateWithLifecycle()
-            FinancesAppTheme(darkTheme = isDarkTheme) {
+            val paletteId by settingsViewModel.paletteId.collectAsStateWithLifecycle()
+            val palettes = settingsViewModel.colorPalettes
+            val palette = palettes.getOrNull(paletteId) ?: palettes.first()
+            FinancesAppTheme(
+                darkTheme = isDarkTheme,
+                primaryColor = androidx.compose.ui.graphics.Color(palette.primary),
+                secondaryColor = androidx.compose.ui.graphics.Color(palette.secondary),
+                tertiaryColor = androidx.compose.ui.graphics.Color(palette.tertiary)
+            ) {
                 MainAppScreen()
             }
         }
