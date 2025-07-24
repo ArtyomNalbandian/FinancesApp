@@ -6,10 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.util.ThemePreferencesDataStore
 import com.example.common.util.ColorPreferencesDataStore
 import com.example.common.util.HapticsPreferencesDataStore
+import com.example.common.util.SyncPreferencesDataStore
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
@@ -30,6 +30,10 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     val hapticsEffect: StateFlow<Int> =
         HapticsPreferencesDataStore.hapticsEffectFlow(context)
             .stateIn(viewModelScope, SharingStarted.Lazily, 0)
+
+    val syncFrequency: StateFlow<Int> =
+        SyncPreferencesDataStore.syncFrequencyFlow(context)
+            .stateIn(viewModelScope, SharingStarted.Lazily, 8)
 
     fun setDarkTheme(isDark: Boolean) {
         viewModelScope.launch {
@@ -52,6 +56,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     fun setHapticsEffect(effect: Int) {
         viewModelScope.launch {
             HapticsPreferencesDataStore.setHapticsEffect(context, effect)
+        }
+    }
+
+    fun setSyncFrequency(hours: Int) {
+        viewModelScope.launch {
+            SyncPreferencesDataStore.setSyncFrequency(context, hours)
         }
     }
 
