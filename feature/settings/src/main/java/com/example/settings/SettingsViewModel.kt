@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.util.ThemePreferencesDataStore
 import com.example.common.util.ColorPreferencesDataStore
+import com.example.common.util.HapticsPreferencesDataStore
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -22,6 +23,14 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         ColorPreferencesDataStore.paletteIdFlow(context)
             .stateIn(viewModelScope, SharingStarted.Lazily, 0)
 
+    val hapticsEnabled: StateFlow<Boolean> =
+        HapticsPreferencesDataStore.hapticsEnabledFlow(context)
+            .stateIn(viewModelScope, SharingStarted.Lazily, true)
+
+    val hapticsEffect: StateFlow<Int> =
+        HapticsPreferencesDataStore.hapticsEffectFlow(context)
+            .stateIn(viewModelScope, SharingStarted.Lazily, 0)
+
     fun setDarkTheme(isDark: Boolean) {
         viewModelScope.launch {
             ThemePreferencesDataStore.setDarkTheme(context, isDark)
@@ -31,6 +40,18 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     fun setPaletteId(paletteId: Int) {
         viewModelScope.launch {
             ColorPreferencesDataStore.setPaletteId(context, paletteId)
+        }
+    }
+
+    fun setHapticsEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            HapticsPreferencesDataStore.setHapticsEnabled(context, enabled)
+        }
+    }
+
+    fun setHapticsEffect(effect: Int) {
+        viewModelScope.launch {
+            HapticsPreferencesDataStore.setHapticsEffect(context, effect)
         }
     }
 
@@ -54,6 +75,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             tertiary = 0xFFFF5722.toInt(),
             name = "Оранжевая"
         )
+    )
+
+    val hapticsEffects = listOf(
+        "Короткая вибрация",
+        "Длинная вибрация",
+        "Двойная вибрация"
     )
 }
 

@@ -54,6 +54,7 @@ import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesTopBarConfig
 import com.example.ui.ListItem
 import com.example.ui.R
+import com.example.ui.HapticsUtil
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -128,8 +129,10 @@ internal fun IncomesEditScreen(
 
     LaunchedEffect(incomesEditState.amount) { amountText = incomesEditState.amount }
     LaunchedEffect(incomesEditState.comment) { commentText = incomesEditState.comment }
+    val context = LocalContext.current
     LaunchedEffect(incomesEditState.isUpdated, incomesEditState.isDeleted) {
         if (incomesEditState.isUpdated || incomesEditState.isDeleted) {
+            HapticsUtil.performHaptic(context)
             navigateBack()
         }
     }

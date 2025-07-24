@@ -39,6 +39,7 @@ import com.example.network.di.DaggerNetworkComponent
 import com.example.edit_account.di.DaggerEditAccountComponent
 import com.example.ui.FinancesTopBarConfig
 import com.example.ui.R
+import com.example.ui.HapticsUtil
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,6 +77,7 @@ internal fun EditAccountScreen(
                 }
 
                 is EditAccountEvent.ShowSuccess -> {
+                    HapticsUtil.performHaptic(context)
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }

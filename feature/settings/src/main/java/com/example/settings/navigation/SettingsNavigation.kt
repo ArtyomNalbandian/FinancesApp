@@ -10,6 +10,8 @@ import com.example.settings.SyncFrequencyScreen
 import com.example.settings.LanguageSwitchScreen
 import com.example.settings.AppInfoScreen
 import kotlinx.serialization.Serializable
+import com.example.settings.PinCodeViewModel
+import com.example.settings.PinCodeMode
 
 
 // route to Settings screen
@@ -68,7 +70,11 @@ fun NavGraphBuilder.hapticsSettingsScreen() {
 
 fun NavGraphBuilder.pinCodeScreen() {
     composable<PinCodeScreenRoute> {
-        PinCodeScreen()
+        PinCodeScreen(
+            mode = PinCodeMode.Set,
+            onSuccess = {},
+            onSetMode = { /* no-op, т.к. всегда установка */ }
+        )
     }
 }
 

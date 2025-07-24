@@ -55,6 +55,7 @@ import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesTopBarConfig
 import com.example.ui.ListItem
 import com.example.ui.R
+import com.example.ui.HapticsUtil
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -122,8 +123,11 @@ internal fun IncomesAddScreen(
     val datePickerState = rememberDatePickerState()
     val timePickerState = rememberTimePickerState()
 
+    val context = LocalContext.current
+
     LaunchedEffect(incomesAddState.isCreated) {
         if (incomesAddState.isCreated) {
+            HapticsUtil.performHaptic(context)
             navigateBack()
         }
     }
