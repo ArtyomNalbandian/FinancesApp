@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -11,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -18,12 +21,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ui.FinancesTopBarConfig
 
 @Composable
-internal fun SyncFrequencyScreen() {
+internal fun SyncFrequencyScreen(
+    navigateBack: () -> Unit
+) {
     val viewModel: SettingsViewModel = viewModel()
     val frequency by viewModel.syncFrequency.collectAsStateWithLifecycle()
 
     FinancesTopBarConfig(
-        title = { Text(stringResource(R.string.sync_frequency)) }
+        title = { Text(stringResource(R.string.sync_frequency)) },
+        navAction = {
+            IconButton(onClick = navigateBack) {
+                Icon(painterResource(com.example.ui.R.drawable.ic_back), contentDescription = stringResource(R.string.back))
+            }
+        }
     )
 
     Column(

@@ -154,11 +154,23 @@ private fun NavGraphBuilder.addSettingsGraph(navController: NavHostController) {
             navigateToLanguageSwitch = { navController.navigate(LanguageSwitchScreenRoute) },
             navigateToAppInfo = { navController.navigate(AppInfoScreenRoute) }
         )
-        colorPickerScreen()
-        hapticsSettingsScreen()
-        pinCodeScreen()
-        syncFrequencyScreen()
-        languageSwitchScreen()
-        appInfoScreen()
+        colorPickerScreen(
+            navigateBack = { navController.popBackStack() }
+        )
+        hapticsSettingsScreen(
+            navigateBack = { navController.popBackStack() }
+        )
+        pinCodeScreen(
+            navigateBack = { navController.popBackStack() }
+        )
+        syncFrequencyScreen(
+            navigateBack = { navController.popBackStack() }
+        )
+        languageSwitchScreen(
+            navigateBack = { navController.popBackStack() }
+        )
+        appInfoScreen(
+            navigateBack = { navController.popBackStack() }
+        )
     }
 }

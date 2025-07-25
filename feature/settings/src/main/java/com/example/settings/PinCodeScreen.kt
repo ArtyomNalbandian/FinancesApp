@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,9 +22,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,6 +34,7 @@ fun PinCodeScreen(
     mode: PinCodeMode = PinCodeMode.Check,
     onSuccess: () -> Unit = {},
     onSetMode: ((PinCodeMode) -> Unit)? = null,
+    navigateBack: () -> Unit = {}
 ) {
     val viewModel: PinCodeViewModel = viewModel()
     val pin by viewModel.pin.collectAsStateWithLifecycle()
@@ -42,7 +44,12 @@ fun PinCodeScreen(
     val changeStep = viewModel.getChangeStep()
 
     FinancesTopBarConfig(
-        title = { Text(stringResource(R.string.pin_code)) }
+        title = { Text(stringResource(R.string.pin_code)) },
+        navAction = {
+            IconButton(onClick = navigateBack) {
+                Icon(painterResource(com.example.ui.R.drawable.ic_back), contentDescription = stringResource(R.string.back))
+            }
+        }
     )
 
     val title = when (currentMode) {

@@ -56,42 +56,55 @@ data object LanguageSwitchScreenRoute
 @Serializable
 data object AppInfoScreenRoute
 
-fun NavGraphBuilder.colorPickerScreen() {
+fun NavGraphBuilder.colorPickerScreen(
+    navigateBack: () -> Unit
+) {
     composable<ColorPickerScreenRoute> {
-        ColorPickerScreen()
+        ColorPickerScreen(navigateBack = navigateBack)
     }
 }
 
-fun NavGraphBuilder.hapticsSettingsScreen() {
+fun NavGraphBuilder.hapticsSettingsScreen(
+    navigateBack: () -> Unit
+) {
     composable<HapticsSettingsScreenRoute> {
-        HapticsSettingsScreen()
+        HapticsSettingsScreen(navigateBack = navigateBack)
     }
 }
 
-fun NavGraphBuilder.pinCodeScreen() {
+fun NavGraphBuilder.pinCodeScreen(
+    navigateBack: () -> Unit
+) {
     composable<PinCodeScreenRoute> {
         PinCodeScreen(
             mode = PinCodeMode.Set,
             onSuccess = {},
-            onSetMode = { /* no-op, т.к. всегда установка */ }
+            onSetMode = { /* no-op, т.к. всегда установка */ },
+            navigateBack = navigateBack
         )
     }
 }
 
-fun NavGraphBuilder.syncFrequencyScreen() {
+fun NavGraphBuilder.syncFrequencyScreen(
+    navigateBack: () -> Unit
+) {
     composable<SyncFrequencyScreenRoute> {
-        SyncFrequencyScreen()
+        SyncFrequencyScreen(navigateBack = navigateBack)
     }
 }
 
-fun NavGraphBuilder.languageSwitchScreen() {
+fun NavGraphBuilder.languageSwitchScreen(
+    navigateBack: () -> Unit
+) {
     composable<LanguageSwitchScreenRoute> {
-        LanguageSwitchScreen()
+        LanguageSwitchScreen(navigateBack = navigateBack)
     }
 }
 
-fun NavGraphBuilder.appInfoScreen() {
+fun NavGraphBuilder.appInfoScreen(
+    navigateBack: () -> Unit
+) {
     composable<AppInfoScreenRoute> {
-        AppInfoScreen()
+        AppInfoScreen(navigateBack = navigateBack)
     }
 }

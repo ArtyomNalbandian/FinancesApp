@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -13,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -20,14 +23,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ui.FinancesTopBarConfig
 
 @Composable
-internal fun LanguageSwitchScreen() {
+internal fun LanguageSwitchScreen(
+    navigateBack: () -> Unit
+) {
     val viewModel: SettingsViewModel = viewModel()
     val locale by viewModel.locale.collectAsStateWithLifecycle()
     val languages = listOf("ru" to stringResource(R.string.russian), "en" to stringResource(R.string.english))
     val activity = LocalContext.current as? Activity
 
     FinancesTopBarConfig(
-        title = { Text(stringResource(R.string.language)) }
+        title = { Text(stringResource(R.string.language)) },
+        navAction = {
+            IconButton(onClick = navigateBack) {
+                Icon(painterResource(com.example.ui.R.drawable.ic_back), contentDescription = stringResource(R.string.back))
+            }
+        }
     )
 
     Column(
