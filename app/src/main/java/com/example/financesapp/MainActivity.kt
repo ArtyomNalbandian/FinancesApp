@@ -35,19 +35,26 @@ class MainActivity : ComponentActivity() {
             val pinViewModel: PinCodeViewModel = viewModel()
             var pinChecked by rememberSaveable { mutableStateOf(false) }
             var pinRequired by rememberSaveable { mutableStateOf(false) }
+            var splashShown by rememberSaveable { mutableStateOf(false) }
+            
             LaunchedEffect(Unit) {
                 pinViewModel.isPinSet {
                     pinRequired = it
                     pinChecked = !it
                 }
             }
+            
             FinancesAppTheme(
                 darkTheme = isDarkTheme,
                 primaryColor = androidx.compose.ui.graphics.Color(palette.primary),
                 secondaryColor = androidx.compose.ui.graphics.Color(palette.secondary),
                 tertiaryColor = androidx.compose.ui.graphics.Color(palette.tertiary)
             ) {
-                if (pinRequired && !pinChecked) {
+                if (!splashShown) {
+                    SplashScreen(
+                        onSplashComplete = { splashShown = true }
+                    )
+                } else if (pinRequired && !pinChecked) {
                     PinCodeScreen(
                         mode = PinCodeMode.Check,
                         onSuccess = { pinChecked = true },
