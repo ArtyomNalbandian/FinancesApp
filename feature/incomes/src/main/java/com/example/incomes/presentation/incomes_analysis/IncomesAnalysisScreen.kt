@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -40,6 +41,7 @@ import com.example.ui.FinancesDateRangeSelector
 import com.example.ui.FinancesTopBarConfig
 import com.example.ui.ListItem
 import com.example.ui.R
+import com.example.incomes.R.string
 import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -72,10 +74,10 @@ internal fun IncomesAnalysisScreen(
         viewModel(factory = incomesComponent.viewModelFactory())
 
     FinancesTopBarConfig(
-        title = { Text("Анализ доходов") },
+        title = { Text(stringResource(string.incomes_analysis_title)) },
         navAction = {
             IconButton(onClick = navigateBack) {
-                Icon(painterResource(R.drawable.ic_back), contentDescription = "Назад")
+                Icon(painterResource(R.drawable.ic_back), contentDescription = stringResource(string.back))
             }
         }
     )
@@ -162,7 +164,7 @@ private fun IncomesAnalysisContent(state: IncomesAnalysisState, currency: String
             is IncomesAnalysisState.Content -> {
                 Column {
                     ListItem(
-                        title = "Сумма",
+                        title = stringResource(string.amount),
                         amount = state.total,
                         currency = currency,
                         modifier = Modifier.height(56.dp),
@@ -171,7 +173,7 @@ private fun IncomesAnalysisContent(state: IncomesAnalysisState, currency: String
 
                     if (state.items.isEmpty()) {
                         Text(
-                            "Нет операций",
+                            stringResource(string.no_operations),
                             modifier = Modifier.padding(16.dp),
                             color = Color.Gray
                         )

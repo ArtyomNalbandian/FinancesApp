@@ -1,0 +1,9 @@
+<resources>
+    <string name="my_account">My account</string>
+    <string name="edit_account">Edit account</string>
+    <string name="account_name">Account name</string>
+    <string name="balance">Balance</string>
+    <string name="currency">Currency</string>
+    <string name="error">Error</string>
+    <string name="wait_for_account_load">Please wait while your account loads</string>
+</resources> 

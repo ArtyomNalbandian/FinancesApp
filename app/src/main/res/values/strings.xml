@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FinancesApp</string>
+    <string name="bottom_nav_expenses">Расходы</string>
+    <string name="bottom_nav_incomes">Доходы</string>
+    <string name="bottom_nav_accounts">Счета</string>
+    <string name="bottom_nav_categories">Статьи</string>
+    <string name="bottom_nav_settings">Настройки</string>
 </resources>

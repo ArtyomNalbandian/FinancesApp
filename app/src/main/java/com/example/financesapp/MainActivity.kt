@@ -1,5 +1,7 @@
 package com.example.financesapp
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +18,7 @@ import com.example.financesapp.ui.theme.FinancesAppTheme
 import com.example.settings.PinCodeMode
 import com.example.settings.PinCodeScreen
 import com.example.settings.PinCodeViewModel
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
 
@@ -55,5 +58,14 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        val prefs = newBase.getSharedPreferences("locale_prefs", Context.MODE_PRIVATE)
+        val locale = prefs.getString("locale", "ru") ?: "ru"
+        val config = Configuration(newBase.resources.configuration)
+        config.setLocale(Locale(locale))
+        val context = newBase.createConfigurationContext(config)
+        super.attachBaseContext(context)
     }
 }

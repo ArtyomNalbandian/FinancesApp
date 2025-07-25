@@ -1,0 +1,8 @@
+<resources>
+    <string name="ui_ok">Ок</string>
+    <string name="ui_cancel">Отмена</string>
+    <string name="ui_search">Поиск</string>
+    <string name="ui_add">Добавить</string>
+    <string name="ui_start">Начало</string>
+    <string name="ui_end">Конец</string>
+</resources> 

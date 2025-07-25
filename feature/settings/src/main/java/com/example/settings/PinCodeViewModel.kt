@@ -32,8 +32,8 @@ class PinCodeViewModel(application: Application) : AndroidViewModel(application)
     val error: StateFlow<String?> = _error.asStateFlow()
 
     private var firstPin: String? = null
-    private var oldPin: String? = null // для смены
-    private var changeStep: Int = 0 // 0 - ввод старого, 1 - новый, 2 - подтверждение
+    private var oldPin: String? = null
+    private var changeStep: Int = 0
 
     fun setMode(newMode: PinCodeMode) {
         _mode.value = newMode

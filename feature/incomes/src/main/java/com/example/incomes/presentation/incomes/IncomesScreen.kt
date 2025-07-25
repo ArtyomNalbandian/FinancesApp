@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.account.di.DaggerAccountComponent
@@ -29,6 +30,7 @@ import com.example.incomes.di.DaggerIncomesComponent
 import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.AddButton
 import com.example.ui.FinancesTopBarConfig
+import com.example.incomes.R.string
 
 @Composable
 internal fun IncomesScreen(
@@ -59,10 +61,10 @@ internal fun IncomesScreen(
         viewModel(factory = incomesComponent.viewModelFactory())
 
     FinancesTopBarConfig(
-        title = { Text("Доходы сегодня") },
+        title = { Text(stringResource(string.incomes_today_title)) },
         actions = {
             IconButton(onClick = navigateToHistory) {
-                Icon(painterResource(R.drawable.ic_history), contentDescription = "История")
+                Icon(painterResource(R.drawable.ic_history), contentDescription = stringResource(string.history))
             }
         }
     )
@@ -96,7 +98,7 @@ internal fun IncomesScreen(
 
             is IncomesState.Error -> {
                 val error = currentState.message
-                Text("Ошибка: $error", color = Color.Red)
+                Text("${stringResource(string.error)}: $error", color = Color.Red)
             }
 
             is IncomesState.Content -> {

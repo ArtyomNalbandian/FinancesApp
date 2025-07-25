@@ -23,6 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.res.stringResource
+import com.example.ui.FinancesTopBarConfig
 
 @Composable
 internal fun ColorPickerScreen() {
@@ -30,11 +32,15 @@ internal fun ColorPickerScreen() {
     val selectedPaletteId by viewModel.paletteId.collectAsStateWithLifecycle()
     val palettes = viewModel.colorPalettes
 
+    FinancesTopBarConfig(
+        title = { Text(stringResource(R.string.main_color)) }
+    )
+
     Column(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        Text("Выберите цветовую схему:", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.choose_color_scheme), style = MaterialTheme.typography.titleMedium)
         palettes.forEachIndexed { idx, palette ->
             Card(
                 modifier = Modifier
@@ -42,7 +48,6 @@ internal fun ColorPickerScreen() {
                     .clickable { viewModel.setPaletteId(idx) },
                 shape = RoundedCornerShape(12.dp),
                 elevation = CardDefaults.cardElevation(if (selectedPaletteId == idx) 8.dp else 2.dp)
-//                elevation = if (selectedPaletteId == idx) 8.dp else 2.dp
             ) {
                 Row(
                     modifier = Modifier
@@ -56,7 +61,7 @@ internal fun ColorPickerScreen() {
                         BoxColor(palette.tertiary)
                     }
                     Spacer(modifier = Modifier.size(16.dp))
-                    Text(palette.name, style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(palette.nameRes), style = MaterialTheme.typography.bodyLarge)
                 }
             }
         }

@@ -21,10 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ui.FinancesTopBarConfig
 
 @Composable
 fun PinCodeScreen(
@@ -38,22 +40,20 @@ fun PinCodeScreen(
     val error by viewModel.error.collectAsStateWithLifecycle()
     val currentMode by viewModel.mode.collectAsStateWithLifecycle()
     val changeStep = viewModel.getChangeStep()
-    val focusManager = LocalFocusManager.current
 
-    // УБРАНО: автоматический вызов setMode(mode) при каждом recomposition
-    // if (currentMode != mode) {
-    //     viewModel.setMode(mode)
-    // }
+    FinancesTopBarConfig(
+        title = { Text(stringResource(R.string.pin_code)) }
+    )
 
     val title = when (currentMode) {
-        is PinCodeMode.Set -> "Придумайте пин-код"
-        is PinCodeMode.Confirm -> "Повторите пин-код"
-        is PinCodeMode.Check -> "Введите пин-код"
+        is PinCodeMode.Set -> stringResource(R.string.pin_create)
+        is PinCodeMode.Confirm -> stringResource(R.string.pin_repeat)
+        is PinCodeMode.Check -> stringResource(R.string.pin_enter)
         is PinCodeMode.Change -> when (changeStep) {
-            0 -> "Введите старый пин-код"
-            1 -> "Введите новый пин-код"
-            2 -> "Подтвердите новый пин-код"
-            else -> "Смена пин-кода"
+            0 -> stringResource(R.string.pin_old)
+            1 -> stringResource(R.string.pin_new)
+            2 -> stringResource(R.string.pin_repeat_new)
+            else -> stringResource(R.string.pin_change)
         }
     }
 
@@ -78,7 +78,14 @@ fun PinCodeScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         if (error != null) {
-            Text(error!!, color = Color.Red, style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(
+                when (error) {
+                    "Пин-коды не совпадают" -> R.string.pin_error_mismatch
+                    "Неверный пин-код" -> R.string.pin_error_wrong
+                    "Неверный старый пин-код" -> R.string.pin_error_wrong_old
+                    else -> R.string.error
+                }
+            ), color = Color.Red, style = MaterialTheme.typography.bodyMedium)
             Spacer(modifier = Modifier.height(8.dp))
         }
         PinPad(
@@ -90,17 +97,17 @@ fun PinCodeScreen(
         Spacer(modifier = Modifier.height(16.dp))
         if (currentMode == PinCodeMode.Check && onSetMode != null) {
             Button(onClick = { viewModel.setMode(PinCodeMode.Set); onSetMode(PinCodeMode.Set) }) {
-                Text("Установить новый пин-код")
+                Text(stringResource(R.string.pin_set_new))
             }
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = { viewModel.setMode(PinCodeMode.Change); onSetMode(PinCodeMode.Change) }) {
-                Text("Сменить пин-код")
+                Text(stringResource(R.string.pin_change))
             }
         }
         if (currentMode == PinCodeMode.Set || currentMode == PinCodeMode.Confirm || currentMode == PinCodeMode.Change) {
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = { viewModel.onSubmit(onSuccess) }, enabled = code.length == 4) {
-                Text("Ок")
+                Text(stringResource(R.string.ok))
             }
         }
     }

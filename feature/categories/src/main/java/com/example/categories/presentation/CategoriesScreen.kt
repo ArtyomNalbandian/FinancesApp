@@ -15,12 +15,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.categories.di.DaggerCategoriesComponent
 import com.example.database.di.DaggerDatabaseComponent
 import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesTopBarConfig
+import com.example.categories.R.string
 
 @Composable
 internal fun CategoriesScreen() {
@@ -41,7 +43,7 @@ internal fun CategoriesScreen() {
     val focusManager = LocalFocusManager.current
 
     FinancesTopBarConfig(
-        title = { Text("Мои статьи") }
+        title = { Text(stringResource(string.my_categories)) }
     )
 
     Box(
@@ -61,7 +63,7 @@ internal fun CategoriesScreen() {
 
             is CategoriesState.Error -> { // TODO: change to snackbar
                 val error = currentState.message
-                Text("Ошибка: $error", color = Color.Red)
+                Text("${stringResource(string.error)}: $error", color = Color.Red)
             }
 
             is CategoriesState.Content -> {

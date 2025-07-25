@@ -9,11 +9,13 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.common.model.income.Income
 import com.example.common.util.toCurrencySymbol
 import com.example.ui.ListItem
 import com.example.ui.R
+import com.example.incomes.R.string
 
 @Composable
 internal fun IncomesScreenContent(
@@ -24,7 +26,7 @@ internal fun IncomesScreenContent(
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         ListItem(
-            title = "Всего",
+            title = stringResource(string.total),
             amount = "$amount ${currency.toCurrencySymbol()}",
             backgroundColor = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.height(56.dp)

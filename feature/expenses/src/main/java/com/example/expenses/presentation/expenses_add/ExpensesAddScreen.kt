@@ -42,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -55,6 +56,7 @@ import com.example.ui.FinancesTopBarConfig
 import com.example.ui.ListItem
 import com.example.ui.R
 import com.example.ui.HapticsUtil
+import com.example.expenses.R.string
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -81,10 +83,10 @@ internal fun ExpensesAddScreen(
     val expensesAddState by expensesAddViewModel.state.collectAsStateWithLifecycle()
 
     FinancesTopBarConfig(
-        title = { Text("Новый расход") },
+        title = { Text(stringResource(string.expenses_add_title)) },
         navAction = {
             IconButton(onClick = navigateBack) {
-                Icon(painterResource(R.drawable.ic_cancel), contentDescription = "Отмена")
+                Icon(painterResource(R.drawable.ic_cancel), contentDescription = stringResource(string.cancel))
             }
         },
         actions = {
@@ -102,7 +104,7 @@ internal fun ExpensesAddScreen(
                 } else {
                     Icon(
                         painterResource(R.drawable.ic_apply),
-                        contentDescription = "Создать"
+                        contentDescription = stringResource(string.create)
                     )
                 }
 
@@ -148,7 +150,7 @@ internal fun ExpensesAddScreen(
                     Button(onClick = {
                         expensesAddViewModel.handleIntent(ExpensesAddIntent.ClearError)
                     }) {
-                        Text("Повторить")
+                        Text(stringResource(string.repeat))
                     }
                 }
             }
@@ -156,7 +158,7 @@ internal fun ExpensesAddScreen(
             else -> {
                 Column {
                     ListItem(
-                        title = "Счет",
+                        title = stringResource(string.account),
                         amount = expensesAddState.account!!.name
                     )
                     HorizontalDivider()
@@ -166,9 +168,9 @@ internal fun ExpensesAddScreen(
                     ) {
                         ListItem(
                             modifier = Modifier.menuAnchor(),
-                            title = "Статья",
+                            title = stringResource(string.category),
                             amount = expensesAddState.selectedCategory?.let { "${it.emoji} ${it.name}" }
-                                ?: "Выберите статью",
+                                ?: stringResource(string.choose_category),
                             trailingIcon = R.drawable.more,
                             onClick = { showCategoryMenu = true }
                         )
@@ -203,11 +205,11 @@ internal fun ExpensesAddScreen(
                     HorizontalDivider()
                     ListItem(
                         modifier = Modifier,
-                        title = "Сумма",
+                        title = stringResource(string.amount),
                         amount = if (expensesAddState.amount.isNotBlank()) {
                             "${expensesAddState.amount} ${expensesAddState.selectedAccount?.currency?.toCurrencySymbol() ?: ""}"
                         } else {
-                            "Введите сумму"
+                            stringResource(string.enter_amount)
                         },
                         trailingIcon = R.drawable.more,
                         onClick = {
@@ -218,12 +220,12 @@ internal fun ExpensesAddScreen(
                     if (showAmountDialog) {
                         AlertDialog(
                             onDismissRequest = { showAmountDialog = false },
-                            title = { Text("Введите сумму") },
+                            title = { Text(stringResource(string.enter_amount)) },
                             text = {
                                 TextField(
                                     value = amountText,
                                     onValueChange = { amountText = it },
-                                    label = { Text("Сумма") },
+                                    label = { Text(stringResource(string.amount)) },
                                     singleLine = true,
                                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal),
                                     isError = expensesAddState.amountError != null,
@@ -238,17 +240,17 @@ internal fun ExpensesAddScreen(
                                         )
                                     )
                                     showAmountDialog = false
-                                }) { Text("Ок") }
+                                }) { Text(stringResource(string.ok)) }
                             },
                             dismissButton = {
-                                Button(onClick = { showAmountDialog = false }) { Text("Отмена") }
+                                Button(onClick = { showAmountDialog = false }) { Text(stringResource(string.cancel)) }
                             }
                         )
                     }
                     HorizontalDivider()
                     ListItem(
                         modifier = Modifier,
-                        title = "Дата",
+                        title = stringResource(string.date),
                         amount = expensesAddState.selectedDateTime.format(
                             DateTimeFormatter.ofPattern(
                                 "dd.MM.yyyy"
@@ -273,10 +275,10 @@ internal fun ExpensesAddScreen(
                                         )
                                     }
                                     showDatePicker = false
-                                }) { Text("Ок") }
+                                }) { Text(stringResource(string.ok)) }
                             },
                             dismissButton = {
-                                Button(onClick = { showDatePicker = false }) { Text("Отмена") }
+                                Button(onClick = { showDatePicker = false }) { Text(stringResource(string.cancel)) }
                             }
                         ) {
                             DatePicker(state = datePickerState)
@@ -287,7 +289,7 @@ internal fun ExpensesAddScreen(
 
                     ListItem(
                         modifier = Modifier,
-                        title = "Время",
+                        title = stringResource(string.time),
                         amount = expensesAddState.selectedDateTime.format(
                             DateTimeFormatter.ofPattern(
                                 "HH:mm"
@@ -303,7 +305,7 @@ internal fun ExpensesAddScreen(
                                 color = MaterialTheme.colorScheme.background
                             ) {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text("Выбрать время")
+                                    Text(stringResource(string.choose_time))
                                     Spacer(modifier = Modifier.height(12.dp))
                                     TimePicker(state = timePickerState)
                                     Spacer(modifier = Modifier.height(12.dp))
@@ -312,7 +314,7 @@ internal fun ExpensesAddScreen(
                                         horizontalArrangement = Arrangement.End
                                     ) {
                                         TextButton(onClick = { showTimePicker = false }) {
-                                            Text("Отмена")
+                                            Text(stringResource(string.cancel))
                                         }
                                         Spacer(modifier = Modifier.width(8.dp))
                                         TextButton(onClick = {
@@ -326,7 +328,7 @@ internal fun ExpensesAddScreen(
                                             )
                                             showTimePicker = false
                                         }) {
-                                            Text("Ок")
+                                            Text(stringResource(string.ok))
                                         }
                                     }
                                 }
@@ -336,8 +338,8 @@ internal fun ExpensesAddScreen(
                     HorizontalDivider()
                     ListItem(
                         modifier = Modifier,
-                        title = "Комментарий",
-                        amount = expensesAddState.comment.ifBlank { "Комментарий" },
+                        title = stringResource(string.comment),
+                        amount = expensesAddState.comment.ifBlank { stringResource(string.comment) },
                         trailingIcon = R.drawable.more,
                         onClick = {
                             commentText = expensesAddState.comment
@@ -348,12 +350,12 @@ internal fun ExpensesAddScreen(
                     if (showCommentDialog) {
                         AlertDialog(
                             onDismissRequest = { showCommentDialog = false },
-                            title = { Text("Комментарий") },
+                            title = { Text(stringResource(string.comment)) },
                             text = {
                                 TextField(
                                     value = commentText,
                                     onValueChange = { commentText = it },
-                                    label = { Text("Комментарий") }
+                                    label = { Text(stringResource(string.comment)) }
                                 )
                             },
                             confirmButton = {
@@ -364,10 +366,10 @@ internal fun ExpensesAddScreen(
                                         )
                                     )
                                     showCommentDialog = false
-                                }) { Text("Ок") }
+                                }) { Text(stringResource(string.ok)) }
                             },
                             dismissButton = {
-                                Button(onClick = { showCommentDialog = false }) { Text("Отмена") }
+                                Button(onClick = { showCommentDialog = false }) { Text(stringResource(string.cancel)) }
                             }
                         )
                     }
