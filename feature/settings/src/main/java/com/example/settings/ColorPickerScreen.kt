@@ -33,6 +33,7 @@ internal fun ColorPickerScreen(
 ) {
     val viewModel: SettingsViewModel = viewModel()
     val selectedPaletteId by viewModel.paletteId.collectAsStateWithLifecycle()
+    val isDarkTheme by viewModel.isDarkTheme.collectAsStateWithLifecycle()
     val palettes = viewModel.colorPalettes
 
     FinancesTopBarConfig(
@@ -63,11 +64,11 @@ internal fun ColorPickerScreen(
                         .background(if (selectedPaletteId == idx) Color.LightGray.copy(alpha = 0.2f) else Color.Transparent),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        BoxColor(palette.primary)
-                        BoxColor(palette.secondary)
-                        BoxColor(palette.tertiary)
-                    }
+                                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    BoxColor(palette.getPrimary(isDarkTheme))
+                    BoxColor(palette.getSecondary(isDarkTheme))
+                    BoxColor(palette.getTertiary(isDarkTheme))
+                }
                     Spacer(modifier = Modifier.size(16.dp))
                     Text(stringResource(palette.nameRes), style = MaterialTheme.typography.bodyLarge)
                 }

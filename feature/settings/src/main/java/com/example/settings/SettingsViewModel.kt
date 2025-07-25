@@ -1,18 +1,19 @@
 package com.example.settings
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.common.util.ThemePreferencesDataStore
 import com.example.common.util.ColorPreferencesDataStore
 import com.example.common.util.HapticsPreferencesDataStore
-import com.example.common.util.SyncPreferencesDataStore
 import com.example.common.util.LocalePreferencesDataStore
+import com.example.common.util.SyncPreferencesDataStore
+import com.example.common.util.ThemePreferencesDataStore
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import android.content.Context
+import androidx.core.content.edit
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
     private val context = application.applicationContext
@@ -75,28 +76,36 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             LocalePreferencesDataStore.setLocale(context, locale)
             context.getSharedPreferences("locale_prefs", Context.MODE_PRIVATE)
-                .edit().putString("locale", locale).apply()
+                .edit { putString("locale", locale) }
         }
     }
 
-    // Цветовые палитры // TODO: убрать это убожество и выбрать нормальные цвета
     val colorPalettes = listOf(
         ColorPalette(
-            primary = 0xFF4CAF50.toInt(), // Green
-            secondary = 0xFF8BC34A.toInt(),
-            tertiary = 0xFF7C4DFF.toInt(),
+            lightPrimary = 0xFF2AE881.toInt(),
+            lightSecondary = 0xFFD4FAE6.toInt(),
+            lightTertiary = 0xFFFEF7FF.toInt(),
+            darkPrimary = 0xFF1B5E20.toInt(),
+            darkSecondary = 0xFF2E7D32.toInt(),
+            darkTertiary = 0xFF000000.toInt(),
             nameRes = R.string.palette_green
         ),
         ColorPalette(
-            primary = 0xFF2196F3.toInt(), // Blue
-            secondary = 0xFF03A9F4.toInt(),
-            tertiary = 0xFF00BCD4.toInt(),
+            lightPrimary = 0xFF2196F3.toInt(),
+            lightSecondary = 0xFFBBDEFB.toInt(),
+            lightTertiary = 0xFFFEF7FF.toInt(),
+            darkPrimary = 0xFF0D47A1.toInt(),
+            darkSecondary = 0xFF1565C0.toInt(),
+            darkTertiary = 0xFF000000.toInt(),
             nameRes = R.string.palette_blue
         ),
         ColorPalette(
-            primary = 0xFFFF9800.toInt(), // Orange
-            secondary = 0xFFFFC107.toInt(),
-            tertiary = 0xFFFF5722.toInt(),
+            lightPrimary = 0xFFFF9800.toInt(),
+            lightSecondary = 0xFFFFE0B2.toInt(),
+            lightTertiary = 0xFFFEF7FF.toInt(),
+            darkPrimary = 0xFFE65100.toInt(),
+            darkSecondary = 0xFFF57C00.toInt(),
+            darkTertiary = 0xFF000000.toInt(),
             nameRes = R.string.palette_orange
         )
     )
@@ -108,4 +117,16 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     )
 }
 
-data class ColorPalette(val primary: Int, val secondary: Int, val tertiary: Int, val nameRes: Int)
+data class ColorPalette(
+    val lightPrimary: Int, 
+    val lightSecondary: Int, 
+    val lightTertiary: Int,
+    val darkPrimary: Int, 
+    val darkSecondary: Int, 
+    val darkTertiary: Int,
+    val nameRes: Int
+) {
+    fun getPrimary(isDarkTheme: Boolean): Int = if (isDarkTheme) darkPrimary else lightPrimary
+    fun getSecondary(isDarkTheme: Boolean): Int = if (isDarkTheme) darkSecondary else lightSecondary
+    fun getTertiary(isDarkTheme: Boolean): Int = if (isDarkTheme) darkTertiary else lightTertiary
+}

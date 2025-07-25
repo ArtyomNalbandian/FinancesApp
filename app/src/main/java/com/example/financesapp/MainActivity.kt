@@ -46,9 +46,9 @@ class MainActivity : ComponentActivity() {
             
             FinancesAppTheme(
                 darkTheme = isDarkTheme,
-                primaryColor = androidx.compose.ui.graphics.Color(palette.primary),
-                secondaryColor = androidx.compose.ui.graphics.Color(palette.secondary),
-                tertiaryColor = androidx.compose.ui.graphics.Color(palette.tertiary)
+                primaryColor = androidx.compose.ui.graphics.Color(palette.getPrimary(isDarkTheme)),
+                secondaryColor = androidx.compose.ui.graphics.Color(palette.getSecondary(isDarkTheme)),
+                tertiaryColor = androidx.compose.ui.graphics.Color(palette.getTertiary(isDarkTheme))
             ) {
                 if (!splashShown) {
                     SplashScreen(
