@@ -32,6 +32,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.account.di.DaggerAccountComponent
 import com.example.account.presentation.AccountViewModel
+import com.example.charts.PieChart
+import com.example.charts.model.ChartConfig
+import com.example.charts.util.ChartDataMapper
+import com.example.charts.util.TransactionData
 import com.example.common.util.toCurrencySymbol
 import com.example.database.di.DaggerDatabaseComponent
 import com.example.incomes.di.DaggerIncomesComponent
@@ -170,6 +174,37 @@ private fun IncomesAnalysisContent(state: IncomesAnalysisState, currency: String
                         modifier = Modifier.height(56.dp),
                         backgroundColor = MaterialTheme.colorScheme.secondary,
                     )
+
+                    // Круговой график
+                    if (state.items.isNotEmpty()) {
+                        val chartData = state.items.map { income ->
+                            TransactionData(
+                                categoryName = income.categoryName ?: income.title,
+                                amount = income.amount,
+                                icon = income.leadingIcon
+                            )
+                        }
+                        
+                        val pieChartData = ChartDataMapper.mapToPieChartData(chartData)
+                        
+                        if (pieChartData.isNotEmpty()) {
+                            PieChart(
+                                data = pieChartData,
+                                config = ChartConfig(
+                                    title = "Доходы по категориям",
+                                    showLegend = true,
+                                    showValues = true,
+                                    animationDuration = 1500L
+                                ),
+                                modifier = Modifier.padding(16.dp),
+                                onSegmentClick = { segment ->
+                                    // Можно добавить логику при клике на сегмент
+                                }
+                            )
+                            
+                            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                        }
+                    }
 
                     if (state.items.isEmpty()) {
                         Text(

@@ -23,6 +23,7 @@ rootProject.name = "FinancesApp"
 include(":app")
 include(":core")
 include(":core:ui")
+include(":core:charts")
 include(":feature")
 include(":feature:settings")
 include(":feature:categories")
