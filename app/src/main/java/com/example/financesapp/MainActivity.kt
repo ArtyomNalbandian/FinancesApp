@@ -13,11 +13,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.common.util.LocalePreferencesDataStore
 import com.example.financesapp.presentation.MainAppScreen
 import com.example.financesapp.ui.theme.FinancesAppTheme
 import com.example.settings.PinCodeMode
 import com.example.settings.PinCodeScreen
 import com.example.settings.PinCodeViewModel
+import kotlinx.coroutines.runBlocking
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
@@ -36,14 +38,14 @@ class MainActivity : ComponentActivity() {
             var pinChecked by rememberSaveable { mutableStateOf(false) }
             var pinRequired by rememberSaveable { mutableStateOf(false) }
             var splashShown by rememberSaveable { mutableStateOf(false) }
-            
+
             LaunchedEffect(Unit) {
                 pinViewModel.isPinSet { isPinSet ->
                     pinRequired = isPinSet
-                    pinChecked = !isPinSet // Если пин не установлен, считаем что проверка пройдена
+                    pinChecked = !isPinSet
                 }
             }
-            
+
             FinancesAppTheme(
                 darkTheme = isDarkTheme,
                 primaryColor = androidx.compose.ui.graphics.Color(palette.getPrimary(isDarkTheme)),
@@ -58,7 +60,7 @@ class MainActivity : ComponentActivity() {
                     PinCodeScreen(
                         mode = PinCodeMode.Check,
                         onSuccess = { pinChecked = true },
-                        onSetMode = null // Не показываем кнопки изменения при входе в приложение
+                        onSetMode = null
                     )
                 } else {
                     MainAppScreen()
@@ -68,8 +70,9 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun attachBaseContext(newBase: Context) {
-        val prefs = newBase.getSharedPreferences("locale_prefs", Context.MODE_PRIVATE)
-        val locale = prefs.getString("locale", "ru") ?: "ru"
+        val locale = runBlocking {
+            LocalePreferencesDataStore.getLocale(newBase)
+        }
         val config = Configuration(newBase.resources.configuration)
         config.setLocale(Locale(locale))
         val context = newBase.createConfigurationContext(config)

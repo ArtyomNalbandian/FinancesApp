@@ -11,7 +11,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ui.FinancesTopBarConfig
+import kotlinx.coroutines.delay
 
 @Composable
 internal fun LanguageSwitchScreen(
@@ -28,14 +33,27 @@ internal fun LanguageSwitchScreen(
 ) {
     val viewModel: SettingsViewModel = viewModel()
     val locale by viewModel.locale.collectAsStateWithLifecycle()
-    val languages = listOf("ru" to stringResource(R.string.russian), "en" to stringResource(R.string.english))
+    val languages =
+        listOf("ru" to stringResource(R.string.russian), "en" to stringResource(R.string.english))
     val activity = LocalContext.current as? Activity
+    var shouldRecreate by remember { mutableStateOf(false) }
+
+    LaunchedEffect(locale) {
+        if (shouldRecreate) {
+            delay(100)
+            activity?.recreate()
+            shouldRecreate = false
+        }
+    }
 
     FinancesTopBarConfig(
         title = { Text(stringResource(R.string.language)) },
         navAction = {
             IconButton(onClick = navigateBack) {
-                Icon(painterResource(com.example.ui.R.drawable.ic_back), contentDescription = stringResource(R.string.back))
+                Icon(
+                    painterResource(com.example.ui.R.drawable.ic_back),
+                    contentDescription = stringResource(R.string.back)
+                )
             }
         }
     )
@@ -50,8 +68,10 @@ internal fun LanguageSwitchScreen(
                 RadioButton(
                     selected = locale == code,
                     onClick = {
-                        viewModel.setLocale(code)
-                        activity?.recreate()
+                        if (locale != code) {
+                            viewModel.setLocale(code)
+                            shouldRecreate = true
+                        }
                     }
                 )
                 Text(label)

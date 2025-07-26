@@ -1,7 +1,6 @@
 package com.example.settings
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.util.ColorPreferencesDataStore
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import androidx.core.content.edit
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
     private val context = application.applicationContext
@@ -40,7 +38,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     val locale: StateFlow<String> =
         LocalePreferencesDataStore.localeFlow(context)
-            .stateIn(viewModelScope, SharingStarted.Lazily, "ru")
+            .stateIn(viewModelScope, SharingStarted.Eagerly, "ru")
 
     fun setDarkTheme(isDark: Boolean) {
         viewModelScope.launch {
@@ -75,8 +73,6 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     fun setLocale(locale: String) {
         viewModelScope.launch {
             LocalePreferencesDataStore.setLocale(context, locale)
-            context.getSharedPreferences("locale_prefs", Context.MODE_PRIVATE)
-                .edit { putString("locale", locale) }
         }
     }
 
@@ -118,11 +114,11 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 }
 
 data class ColorPalette(
-    val lightPrimary: Int, 
-    val lightSecondary: Int, 
+    val lightPrimary: Int,
+    val lightSecondary: Int,
     val lightTertiary: Int,
-    val darkPrimary: Int, 
-    val darkSecondary: Int, 
+    val darkPrimary: Int,
+    val darkSecondary: Int,
     val darkTertiary: Int,
     val nameRes: Int
 ) {
