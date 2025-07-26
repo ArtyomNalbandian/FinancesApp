@@ -13,7 +13,7 @@ sealed class PinCodeMode {
     object Set : PinCodeMode()
     object Confirm : PinCodeMode()
     object Check : PinCodeMode()
-    object Change : PinCodeMode() // новый режим
+    object Change : PinCodeMode()
 }
 
 class PinCodeViewModel(application: Application) : AndroidViewModel(application) {
@@ -21,6 +21,8 @@ class PinCodeViewModel(application: Application) : AndroidViewModel(application)
 
     private val _mode = MutableStateFlow<PinCodeMode>(PinCodeMode.Check)
     val mode: StateFlow<PinCodeMode> = _mode.asStateFlow()
+    
+    private var isSettingsMode = false
 
     private val _pin = MutableStateFlow("")
     val pin: StateFlow<String> = _pin.asStateFlow()
@@ -31,6 +33,9 @@ class PinCodeViewModel(application: Application) : AndroidViewModel(application)
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
+    private val _isPinVerified = MutableStateFlow(false)
+    val isPinVerified: StateFlow<Boolean> = _isPinVerified.asStateFlow()
+
     private var firstPin: String? = null
     private var oldPin: String? = null
     private var changeStep: Int = 0
@@ -40,27 +45,40 @@ class PinCodeViewModel(application: Application) : AndroidViewModel(application)
         _pin.value = ""
         _confirmPin.value = ""
         _error.value = null
+        _isPinVerified.value = false
         firstPin = null
         oldPin = null
         changeStep = 0
     }
+    
+    fun setSettingsMode(isSettings: Boolean) {
+        isSettingsMode = isSettings
+    }
 
     fun onDigit(digit: Char, onSubmit: () -> Unit) {
+        // Очищаем ошибку при новом вводе
+        if (_error.value != null) {
+            _error.value = null
+        }
+        
         when (_mode.value) {
             is PinCodeMode.Set, is PinCodeMode.Check -> if (_pin.value.length < 4) {
                 _pin.value += digit
                 if (_pin.value.length == 4) onSubmit()
             }
+
             is PinCodeMode.Confirm -> if (_confirmPin.value.length < 4) {
                 _confirmPin.value += digit
                 if (_confirmPin.value.length == 4) onSubmit()
             }
+
             is PinCodeMode.Change -> {
                 when (changeStep) {
                     0, 1 -> if (_pin.value.length < 4) {
                         _pin.value += digit
                         if (_pin.value.length == 4) onSubmit()
                     }
+
                     2 -> if (_confirmPin.value.length < 4) {
                         _confirmPin.value += digit
                         if (_confirmPin.value.length == 4) onSubmit()
@@ -72,11 +90,16 @@ class PinCodeViewModel(application: Application) : AndroidViewModel(application)
 
     fun onDelete() {
         when (_mode.value) {
-            is PinCodeMode.Set, is PinCodeMode.Check -> if (_pin.value.isNotEmpty()) _pin.value = _pin.value.dropLast(1)
-            is PinCodeMode.Confirm -> if (_confirmPin.value.isNotEmpty()) _confirmPin.value = _confirmPin.value.dropLast(1)
+            is PinCodeMode.Set, is PinCodeMode.Check -> if (_pin.value.isNotEmpty()) _pin.value =
+                _pin.value.dropLast(1)
+
+            is PinCodeMode.Confirm -> if (_confirmPin.value.isNotEmpty()) _confirmPin.value =
+                _confirmPin.value.dropLast(1)
+
             is PinCodeMode.Change -> when (changeStep) {
                 0, 1 -> if (_pin.value.isNotEmpty()) _pin.value = _pin.value.dropLast(1)
-                2 -> if (_confirmPin.value.isNotEmpty()) _confirmPin.value = _confirmPin.value.dropLast(1)
+                2 -> if (_confirmPin.value.isNotEmpty()) _confirmPin.value =
+                    _confirmPin.value.dropLast(1)
             }
         }
     }
@@ -85,6 +108,7 @@ class PinCodeViewModel(application: Application) : AndroidViewModel(application)
         _pin.value = ""
         _confirmPin.value = ""
         _error.value = null
+        _isPinVerified.value = false
         firstPin = null
         oldPin = null
         changeStep = 0
@@ -99,6 +123,7 @@ class PinCodeViewModel(application: Application) : AndroidViewModel(application)
                     _mode.value = PinCodeMode.Confirm
                 }
             }
+
             is PinCodeMode.Confirm -> {
                 if (_confirmPin.value.length == 4) {
                     if (_confirmPin.value == firstPin) {
@@ -114,20 +139,28 @@ class PinCodeViewModel(application: Application) : AndroidViewModel(application)
                     }
                 }
             }
+
             is PinCodeMode.Check -> {
                 if (_pin.value.length == 4) {
                     viewModelScope.launch {
                         val saved = PinCodeStorage.getPin(context)
                         if (_pin.value == saved) {
-                            reset()
-                            onSuccess()
+                            // Если это настройки, показываем кнопки изменения
+                            // Если это вход в приложение, сразу переходим
+                            if (isSettingsMode) {
+                                _isPinVerified.value = true
+                            } else {
+                                reset()
+                                onSuccess()
+                            }
                         } else {
-                            _error.value = "Неверный пин-код"
-                            _pin.value = ""
+                            _error.value = "Неверный пин-код (введено: ${_pin.value}, сохранено: $saved)"
+                            _pin.value = "" // Очищаем поле при ошибке
                         }
                     }
                 }
             }
+
             is PinCodeMode.Change -> {
                 when (changeStep) {
                     0 -> { // ввод старого
@@ -143,6 +176,7 @@ class PinCodeViewModel(application: Application) : AndroidViewModel(application)
                             }
                         }
                     }
+
                     1 -> { // ввод нового
                         if (_pin.value.length == 4) {
                             firstPin = _pin.value
@@ -150,6 +184,7 @@ class PinCodeViewModel(application: Application) : AndroidViewModel(application)
                             changeStep = 2
                         }
                     }
+
                     2 -> { // подтверждение нового
                         if (_confirmPin.value.length == 4) {
                             if (_confirmPin.value == firstPin) {
@@ -183,6 +218,5 @@ class PinCodeViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    // Для UI: получить текущий шаг смены
     fun getChangeStep(): Int = changeStep
-} 
+}

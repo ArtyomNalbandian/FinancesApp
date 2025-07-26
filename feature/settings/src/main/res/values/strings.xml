@@ -44,4 +44,5 @@
     <string name="app_developer_value">FinancesApp Team</string>
     <string name="app_description">Приложение для управления личными финансами</string>
     <string name="back">Назад</string>
+    <string name="continue_text">Продолжить</string>
 </resources> 

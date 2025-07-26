@@ -38,9 +38,9 @@ class MainActivity : ComponentActivity() {
             var splashShown by rememberSaveable { mutableStateOf(false) }
             
             LaunchedEffect(Unit) {
-                pinViewModel.isPinSet {
-                    pinRequired = it
-                    pinChecked = !it
+                pinViewModel.isPinSet { isPinSet ->
+                    pinRequired = isPinSet
+                    pinChecked = !isPinSet // Если пин не установлен, считаем что проверка пройдена
                 }
             }
             
@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
                     PinCodeScreen(
                         mode = PinCodeMode.Check,
                         onSuccess = { pinChecked = true },
-                        onSetMode = { pinViewModel.setMode(it) }
+                        onSetMode = null // Не показываем кнопки изменения при входе в приложение
                     )
                 } else {
                     MainAppScreen()

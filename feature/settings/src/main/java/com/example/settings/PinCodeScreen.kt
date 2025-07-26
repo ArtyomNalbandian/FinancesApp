@@ -41,6 +41,7 @@ fun PinCodeScreen(
     val confirmPin by viewModel.confirmPin.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
     val currentMode by viewModel.mode.collectAsStateWithLifecycle()
+    val isPinVerified by viewModel.isPinVerified.collectAsStateWithLifecycle()
     val changeStep = viewModel.getChangeStep()
 
     FinancesTopBarConfig(
@@ -67,6 +68,7 @@ fun PinCodeScreen(
     val code = when (currentMode) {
         is PinCodeMode.Confirm -> confirmPin
         is PinCodeMode.Change -> if (changeStep == 2) confirmPin else pin
+        is PinCodeMode.Check -> pin
         else -> pin
     }
 
@@ -102,7 +104,14 @@ fun PinCodeScreen(
             codeLength = code.length
         )
         Spacer(modifier = Modifier.height(16.dp))
-        if (currentMode == PinCodeMode.Check && onSetMode != null) {
+        if (currentMode == PinCodeMode.Check && onSetMode != null && isPinVerified) {
+            Button(onClick = { 
+                viewModel.reset()
+                onSuccess()
+            }) {
+                Text(stringResource(R.string.continue_text))
+            }
+            Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = { viewModel.setMode(PinCodeMode.Set); onSetMode(PinCodeMode.Set) }) {
                 Text(stringResource(R.string.pin_set_new))
             }

@@ -2,6 +2,7 @@ package com.example.settings.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.settings.SettingsScreen
 import com.example.settings.ColorPickerScreen
 import com.example.settings.HapticsSettingsScreen
@@ -76,10 +77,13 @@ fun NavGraphBuilder.pinCodeScreen(
     navigateBack: () -> Unit
 ) {
     composable<PinCodeScreenRoute> {
+        val pinViewModel: PinCodeViewModel = viewModel()
+        // Устанавливаем режим настроек
+        pinViewModel.setSettingsMode(true)
         PinCodeScreen(
-            mode = PinCodeMode.Set,
-            onSuccess = {},
-            onSetMode = { /* no-op, т.к. всегда установка */ },
+            mode = PinCodeMode.Check, // Используем обычный режим проверки
+            onSuccess = { /* Не возвращаемся сразу, показываем кнопки изменения */ },
+            onSetMode = { mode -> pinViewModel.setMode(mode) }, // Позволяем изменять режим
             navigateBack = navigateBack
         )
     }
