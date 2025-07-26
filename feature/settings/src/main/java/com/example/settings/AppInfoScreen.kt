@@ -84,7 +84,7 @@ internal fun AppInfoScreen(
         item {
             Spacer(modifier = Modifier.height(32.dp))
             Text(
-                text = "© 2024 FinancesApp Team",
+                text = "© 2025 FinancesApp Team",
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant

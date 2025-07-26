@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,6 +37,7 @@ import com.example.charts.util.ChartDataMapper
 import com.example.charts.util.TransactionData
 import com.example.common.util.toCurrencySymbol
 import com.example.database.di.DaggerDatabaseComponent
+import com.example.incomes.R.string
 import com.example.incomes.di.DaggerIncomesComponent
 import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesDatePickerDialog
@@ -45,7 +45,6 @@ import com.example.ui.FinancesDateRangeSelector
 import com.example.ui.FinancesTopBarConfig
 import com.example.ui.ListItem
 import com.example.ui.R
-import com.example.incomes.R.string
 import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -161,7 +160,8 @@ private fun IncomesAnalysisContent(state: IncomesAnalysisState, currency: String
             is IncomesAnalysisState.Error -> {
                 Text(
                     state.message,
-                    modifier = Modifier.padding(16.dp, top = 64.dp)
+                    modifier = Modifier.padding(16.dp, top = 64.dp),
+                    color = MaterialTheme.colorScheme.error
                 )
             }
 
@@ -198,7 +198,6 @@ private fun IncomesAnalysisContent(state: IncomesAnalysisState, currency: String
                                 ),
                                 modifier = Modifier.padding(16.dp),
                                 onSegmentClick = { segment ->
-                                    // Можно добавить логику при клике на сегмент
                                 }
                             )
                             
@@ -210,7 +209,7 @@ private fun IncomesAnalysisContent(state: IncomesAnalysisState, currency: String
                         Text(
                             stringResource(string.no_operations),
                             modifier = Modifier.padding(16.dp),
-                            color = Color.Gray
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                         )
                     } else {
                         state.items.sortedBy { Instant.parse(it.transactionDate) }

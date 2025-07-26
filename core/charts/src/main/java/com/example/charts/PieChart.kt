@@ -99,7 +99,7 @@ fun PieChart(
             ) {
                 val center = Offset(size.width / 2, size.height / 2)
                 val radius = minOf(size.width, size.height) / 2 * 0.8f
-                val strokeWidth = radius * 0.1f
+                val strokeWidth = radius * 0.02f // Уменьшаем толщину обводки с 0.1f до 0.02f
 
                 var startAngle = 0f
                 val totalValue = data.sumOf { it.value }
@@ -122,8 +122,9 @@ fun PieChart(
                         size = Size(currentRadius * 2, currentRadius * 2)
                     )
 
+                    // Добавляем тонкую обводку для лучшего разделения сегментов
                     drawArc(
-                        color = Color.White,
+                        color = Color.White.copy(alpha = 0.3f), // Делаем обводку полупрозрачной
                         startAngle = startAngle,
                         sweepAngle = sweepAngle,
                         useCenter = true,
@@ -153,6 +154,8 @@ fun PieChart(
                                     textSize = 12.sp.toPx()
                                     textAlign = android.graphics.Paint.Align.CENTER
                                     isFakeBoldText = true
+                                    // Добавляем тень для лучшей читаемости
+                                    setShadowLayer(2f, 0f, 0f, android.graphics.Color.BLACK)
                                 }
                             )
                         }
@@ -241,6 +244,7 @@ private fun PieChartLegend(
                         Text(
                             text = icon,
                             fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurface, // Добавляем цвет для иконки
                             modifier = Modifier.padding(end = 8.dp)
                         )
                     }
@@ -251,18 +255,20 @@ private fun PieChartLegend(
                         Text(
                             text = segment.label,
                             style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface, // Используем onSurface вместо дефолтного цвета
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                         )
                         Text(
                             text = "${String.format("%.1f", segment.percentage)}%",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f) // Делаем процент полупрозрачным
                         )
                     }
 
                     Text(
                         text = String.format("%.0f", segment.value),
                         style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface, // Используем onSurface для суммы
                         fontWeight = FontWeight.Bold
                     )
                 }

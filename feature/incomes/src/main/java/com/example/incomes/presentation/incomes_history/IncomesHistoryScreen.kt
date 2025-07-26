@@ -164,7 +164,8 @@ private fun IncomesHistoryContent(state: IncomesHistoryState, currency: String) 
             is IncomesHistoryState.Error -> {
                 Text(
                     state.message,
-                    modifier = Modifier.padding(16.dp, top = 64.dp)
+                    modifier = Modifier.padding(16.dp, top = 64.dp),
+                    color = MaterialTheme.colorScheme.error // Используем цвет ошибки из темы
                 )
             }
 
@@ -182,7 +183,7 @@ private fun IncomesHistoryContent(state: IncomesHistoryState, currency: String) 
                         Text(
                             stringResource(string.no_operations),
                             modifier = Modifier.padding(16.dp),
-                            color = Color.Gray
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f) // Используем onSurface с прозрачностью вместо Color.Gray
                         )
                     } else {
                         state.items.sortedBy { Instant.parse(it.transactionDate) }

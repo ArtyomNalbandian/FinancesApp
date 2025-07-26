@@ -63,7 +63,10 @@ internal fun CategoriesScreen() {
 
             is CategoriesState.Error -> { // TODO: change to snackbar
                 val error = currentState.message
-                Text("${stringResource(string.error)}: $error", color = Color.Red)
+                Text(
+                    "${stringResource(string.error)}: $error", 
+                    color = MaterialTheme.colorScheme.error // Используем цвет ошибки из темы
+                )
             }
 
             is CategoriesState.Content -> {
