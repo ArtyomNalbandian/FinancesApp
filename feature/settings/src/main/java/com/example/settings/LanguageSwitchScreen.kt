@@ -19,11 +19,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.common.util.LocaleHelper
 import com.example.ui.FinancesTopBarConfig
 import kotlinx.coroutines.delay
 
@@ -36,13 +38,20 @@ internal fun LanguageSwitchScreen(
     val languages =
         listOf("ru" to stringResource(R.string.russian), "en" to stringResource(R.string.english))
     val activity = LocalContext.current as? Activity
-    var shouldRecreate by remember { mutableStateOf(false) }
+    val view = LocalView.current
+    var shouldUpdateLocale by remember { mutableStateOf(false) }
+    var localeToUpdate by remember { mutableStateOf<String?>(null) }
 
-    LaunchedEffect(locale) {
-        if (shouldRecreate) {
+    LaunchedEffect(shouldUpdateLocale) {
+        if (shouldUpdateLocale && localeToUpdate != null) {
             delay(100)
-            activity?.recreate()
-            shouldRecreate = false
+            activity?.let {
+                LocaleHelper.updateLocale(it, localeToUpdate!!)
+                view.invalidate()
+                view.parent?.requestLayout()
+            }
+            shouldUpdateLocale = false
+            localeToUpdate = null
         }
     }
 
@@ -70,7 +79,8 @@ internal fun LanguageSwitchScreen(
                     onClick = {
                         if (locale != code) {
                             viewModel.setLocale(code)
-                            shouldRecreate = true
+                            localeToUpdate = code
+                            shouldUpdateLocale = true
                         }
                     }
                 )

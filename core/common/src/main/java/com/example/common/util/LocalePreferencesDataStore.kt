@@ -1,7 +1,6 @@
 package com.example.common.util
 
 import android.content.Context
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -29,4 +28,4 @@ object LocalePreferencesDataStore {
 
     suspend fun getLocale(context: Context): String =
         context.localeDataStore.data.map { it[LOCALE_KEY] ?: DEFAULT_LOCALE }.first()
-} 
+}

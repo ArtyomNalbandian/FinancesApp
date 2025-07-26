@@ -6,11 +6,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.common.util.LocalePreferencesDataStore
@@ -25,7 +30,6 @@ import java.util.Locale
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -38,14 +42,14 @@ class MainActivity : ComponentActivity() {
             var pinChecked by rememberSaveable { mutableStateOf(false) }
             var pinRequired by rememberSaveable { mutableStateOf(false) }
             var splashShown by rememberSaveable { mutableStateOf(false) }
-
+            
             LaunchedEffect(Unit) {
                 pinViewModel.isPinSet { isPinSet ->
                     pinRequired = isPinSet
                     pinChecked = !isPinSet
                 }
             }
-
+            
             FinancesAppTheme(
                 darkTheme = isDarkTheme,
                 primaryColor = androidx.compose.ui.graphics.Color(palette.getPrimary(isDarkTheme)),
@@ -57,11 +61,15 @@ class MainActivity : ComponentActivity() {
                         onSplashComplete = { splashShown = true }
                     )
                 } else if (pinRequired && !pinChecked) {
-                    PinCodeScreen(
-                        mode = PinCodeMode.Check,
-                        onSuccess = { pinChecked = true },
-                        onSetMode = null
-                    )
+                    Column {
+                        Spacer(modifier = Modifier.height(80.dp))
+                        PinCodeScreen(
+                            mode = PinCodeMode.Check,
+                            onSuccess = { pinChecked = true },
+                            onSetMode = null
+                        )
+                    }
+
                 } else {
                     MainAppScreen()
                 }
@@ -70,7 +78,7 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun attachBaseContext(newBase: Context) {
-        val locale = runBlocking {
+        val locale = runBlocking { 
             LocalePreferencesDataStore.getLocale(newBase)
         }
         val config = Configuration(newBase.resources.configuration)
