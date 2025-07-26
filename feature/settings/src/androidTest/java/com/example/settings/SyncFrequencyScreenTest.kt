@@ -10,55 +10,53 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class PinCodeScreenTest {
+class SyncFrequencyScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
-    fun testPinCodeScreenTitleDisplayed() {
+    fun testSyncFrequencyTitleDisplayed() {
         composeTestRule.setContent {
-            // Mock PinCodeScreen content
+            // Mock SyncFrequencyScreen content
         }
 
-        composeTestRule.onNodeWithText("Пин-код").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Частота синхронизации").assertIsDisplayed()
     }
 
     @Test
-    fun testPinCreateTextDisplayed() {
+    fun testFrequencyHoursDisplayed() {
         composeTestRule.setContent {
-            // Mock PinCodeScreen content
+            // Mock SyncFrequencyScreen content
         }
 
-        composeTestRule.onNodeWithText("Придумайте пин-код").assertIsDisplayed()
+        composeTestRule.onNodeWithText("8 ч.").assertIsDisplayed()
     }
 
     @Test
-    fun testPinCodeDotsDisplayed() {
+    fun testFrequencyHintDisplayed() {
         composeTestRule.setContent {
-            // Mock PinCodeScreen content
+            // Mock SyncFrequencyScreen content
         }
 
-        composeTestRule.onNodeWithText("●●●●").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Выберите, как часто приложение будет синхронизироваться с сервером.").assertIsDisplayed()
     }
 
     @Test
     fun testBackButtonClickable() {
         composeTestRule.setContent {
-            // Mock PinCodeScreen content
+            // Mock SyncFrequencyScreen content
         }
 
         composeTestRule.onNodeWithText("Назад").performClick()
     }
 
     @Test
-    fun testPinCodeButtonsDisplayed() {
+    fun testSliderDisplayed() {
         composeTestRule.setContent {
-            // Mock PinCodeScreen content
+            // Mock SyncFrequencyScreen content
         }
 
-        composeTestRule.onNodeWithText("1").assertIsDisplayed()
-        composeTestRule.onNodeWithText("2").assertIsDisplayed()
-        composeTestRule.onNodeWithText("3").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Слайдер").assertIsDisplayed()
     }
-}
+} 

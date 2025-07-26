@@ -1,4 +1,4 @@
-package com.example.settings
+package com.example.incomes
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -10,53 +10,53 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ColorPickerScreenTest {
+class IncomesHistoryScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
-    fun testColorPickerTitleDisplayed() {
+    fun testIncomesHistoryTitleDisplayed() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock IncomesHistoryScreen content
         }
 
-        composeTestRule.onNodeWithText("Основной цвет").assertIsDisplayed()
+        composeTestRule.onNodeWithText("История доходов").assertIsDisplayed()
     }
 
     @Test
-    fun testChooseColorSchemeTextDisplayed() {
+    fun testAnalysisButtonClickable() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock IncomesHistoryScreen content
         }
 
-        composeTestRule.onNodeWithText("Выберите цветовую схему:").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Анализ").performClick()
     }
 
     @Test
-    fun testGreenPaletteClickable() {
+    fun testDateRangeSelectorDisplayed() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock IncomesHistoryScreen content
         }
 
-        composeTestRule.onNodeWithText("Зелёная").performClick()
+        composeTestRule.onNodeWithText("Период").assertIsDisplayed()
     }
 
     @Test
-    fun testBluePaletteClickable() {
+    fun testTotalAmountDisplayed() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock IncomesHistoryScreen content
         }
 
-        composeTestRule.onNodeWithText("Синяя").performClick()
+        composeTestRule.onNodeWithText("Сумма").assertIsDisplayed()
     }
 
     @Test
     fun testBackButtonClickable() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock IncomesHistoryScreen content
         }
 
         composeTestRule.onNodeWithText("Назад").performClick()
     }
-}
+} 

@@ -10,53 +10,53 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ColorPickerScreenTest {
+class LanguageSwitchScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
-    fun testColorPickerTitleDisplayed() {
+    fun testLanguageSwitchTitleDisplayed() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock LanguageSwitchScreen content
         }
 
-        composeTestRule.onNodeWithText("Основной цвет").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Язык").assertIsDisplayed()
     }
 
     @Test
-    fun testChooseColorSchemeTextDisplayed() {
+    fun testChooseLanguageTextDisplayed() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock LanguageSwitchScreen content
         }
 
-        composeTestRule.onNodeWithText("Выберите цветовую схему:").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Выберите язык:").assertIsDisplayed()
     }
 
     @Test
-    fun testGreenPaletteClickable() {
+    fun testRussianLanguageOptionClickable() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock LanguageSwitchScreen content
         }
 
-        composeTestRule.onNodeWithText("Зелёная").performClick()
+        composeTestRule.onNodeWithText("Русский").performClick()
     }
 
     @Test
-    fun testBluePaletteClickable() {
+    fun testEnglishLanguageOptionClickable() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock LanguageSwitchScreen content
         }
 
-        composeTestRule.onNodeWithText("Синяя").performClick()
+        composeTestRule.onNodeWithText("English").performClick()
     }
 
     @Test
     fun testBackButtonClickable() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock LanguageSwitchScreen content
         }
 
         composeTestRule.onNodeWithText("Назад").performClick()
     }
-}
+} 

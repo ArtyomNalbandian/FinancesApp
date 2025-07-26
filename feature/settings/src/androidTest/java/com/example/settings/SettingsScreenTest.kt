@@ -59,4 +59,52 @@ class SettingsScreenTest {
         composeTestRule.onNodeWithText("Язык").assertExists()
         composeTestRule.onNodeWithText("О приложении").assertExists()
     }
+
+    @Test
+    fun testColorPickerNavigation() {
+        composeTestRule.setContent {
+            SettingsScreen(
+                navigateToColorPicker = {},
+                navigateToHaptics = {},
+                navigateToPinCode = {},
+                navigateToSyncFrequency = {},
+                navigateToLanguageSwitch = {},
+                navigateToAppInfo = {}
+            )
+        }
+
+        composeTestRule.onNodeWithText("Основной цвет").performClick()
+    }
+
+    @Test
+    fun testHapticsNavigation() {
+        composeTestRule.setContent {
+            SettingsScreen(
+                navigateToColorPicker = {},
+                navigateToHaptics = {},
+                navigateToPinCode = {},
+                navigateToSyncFrequency = {},
+                navigateToLanguageSwitch = {},
+                navigateToAppInfo = {}
+            )
+        }
+
+        composeTestRule.onNodeWithText("Вибрация").performClick()
+    }
+
+    @Test
+    fun testPinCodeNavigation() {
+        composeTestRule.setContent {
+            SettingsScreen(
+                navigateToColorPicker = {},
+                navigateToHaptics = {},
+                navigateToPinCode = {},
+                navigateToSyncFrequency = {},
+                navigateToLanguageSwitch = {},
+                navigateToAppInfo = {}
+            )
+        }
+
+        composeTestRule.onNodeWithText("Пин-код").performClick()
+    }
 }

@@ -6,25 +6,23 @@ import android.content.res.Configuration
 import java.util.Locale
 
 object LocaleHelper {
-    
+
     fun updateLocale(activity: Activity, localeCode: String) {
         val locale = Locale(localeCode)
         Locale.setDefault(locale)
-        
+
         val config = Configuration(activity.resources.configuration)
         config.setLocale(locale)
-        
-        // Обновляем ресурсы активности
+
         activity.resources.updateConfiguration(config, activity.resources.displayMetrics)
-        
-        // Обновляем конфигурацию приложения
+
         activity.applicationContext.resources.updateConfiguration(
-            config, 
+            config,
             activity.applicationContext.resources.displayMetrics
         )
     }
-    
+
     fun getLocale(context: Context): String {
         return context.resources.configuration.locales[0].language
     }
-} 
+}

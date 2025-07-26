@@ -10,53 +10,53 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ColorPickerScreenTest {
+class AppInfoScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
-    fun testColorPickerTitleDisplayed() {
+    fun testAppInfoTitleDisplayed() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock AppInfoScreen content
         }
 
-        composeTestRule.onNodeWithText("Основной цвет").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Информация о приложении").assertIsDisplayed()
     }
 
     @Test
-    fun testChooseColorSchemeTextDisplayed() {
+    fun testAppNameDisplayed() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock AppInfoScreen content
         }
 
-        composeTestRule.onNodeWithText("Выберите цветовую схему:").assertIsDisplayed()
+        composeTestRule.onNodeWithText("FinancesApp").assertIsDisplayed()
     }
 
     @Test
-    fun testGreenPaletteClickable() {
+    fun testAppVersionDisplayed() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock AppInfoScreen content
         }
 
-        composeTestRule.onNodeWithText("Зелёная").performClick()
+        composeTestRule.onNodeWithText("Версия приложения").assertIsDisplayed()
     }
 
     @Test
-    fun testBluePaletteClickable() {
+    fun testAppDeveloperDisplayed() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock AppInfoScreen content
         }
 
-        composeTestRule.onNodeWithText("Синяя").performClick()
+        composeTestRule.onNodeWithText("Разработчик").assertIsDisplayed()
     }
 
     @Test
     fun testBackButtonClickable() {
         composeTestRule.setContent {
-            // Mock ColorPickerScreen content
+            // Mock AppInfoScreen content
         }
 
         composeTestRule.onNodeWithText("Назад").performClick()
     }
-}
+} 
