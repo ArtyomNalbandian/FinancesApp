@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -39,6 +40,8 @@ import com.example.network.di.DaggerNetworkComponent
 import com.example.edit_account.di.DaggerEditAccountComponent
 import com.example.ui.FinancesTopBarConfig
 import com.example.ui.R
+import com.example.ui.HapticsUtil
+import com.example.edit_account.R.string
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,6 +79,7 @@ internal fun EditAccountScreen(
                 }
 
                 is EditAccountEvent.ShowSuccess -> {
+                    HapticsUtil.performHaptic(context)
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -83,7 +87,7 @@ internal fun EditAccountScreen(
     }
 
     FinancesTopBarConfig(
-        title = { Text("Редактирование счета") },
+        title = { Text(stringResource(string.edit_account_title)) },
         actions = {
             IconButton(
                 onClick = {
@@ -95,12 +99,12 @@ internal fun EditAccountScreen(
                         (balance.isNotBlank() && balance != account?.balance) ||
                         (currency.isNotBlank() && currency != account?.currency)
             ) {
-                Icon(painterResource(R.drawable.ic_apply), contentDescription = "Подтвердить")
+                Icon(painterResource(R.drawable.ic_apply), contentDescription = stringResource(string.confirm))
             }
         },
         navAction = {
             IconButton(onClick = navigateBack) {
-                Icon(painterResource(R.drawable.ic_back), contentDescription = "Назад")
+                Icon(painterResource(R.drawable.ic_back), contentDescription = stringResource(string.back))
             }
         }
     )
@@ -117,7 +121,7 @@ internal fun EditAccountScreen(
 
             is EditAccountState.Error -> {
                 val error = (state as EditAccountState.Error).message
-                Text("Ошибка: $error", color = Color.Red)
+                Text("${stringResource(string.error)}: $error", color = Color.Red)
             }
 
             is EditAccountState.Content -> {
@@ -125,7 +129,7 @@ internal fun EditAccountScreen(
                     TextField(
                         value = name,
                         onValueChange = { name = it },
-                        label = { Text("Название счета") },
+                        label = { Text(stringResource(string.account_name)) },
                         singleLine = true,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -140,7 +144,7 @@ internal fun EditAccountScreen(
                     TextField(
                         value = balance,
                         onValueChange = { balance = it },
-                        label = { Text("Баланс") },
+                        label = { Text(stringResource(string.balance)) },
                         singleLine = true,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -153,7 +157,7 @@ internal fun EditAccountScreen(
                     )
                     HorizontalDivider()
                     com.example.ui.ListItem(
-                        title = "Валюта",
+                        title = stringResource(string.currency),
                         amount = currentState.account.currency.toCurrencySymbol(),
                         backgroundColor = MaterialTheme.colorScheme.secondary,
                         trailingIcon = R.drawable.more_vert,

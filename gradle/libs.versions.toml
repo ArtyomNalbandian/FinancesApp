@@ -1,6 +1,7 @@
 [versions]
 agp = "8.10.1"
 converterGson = "2.11.0"
+datastorePreferences = "1.1.7"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -17,6 +18,7 @@ ksp = "2.0.21-1.0.27"
 dagger = "2.51.1"
 detekt = "1.23.8"
 roomRuntime = "2.7.2"
+securityCrypto = "1.1.0-beta01"
 serialization = "2.0.21"
 accompanistPlaceholderMaterial = "0.34.0"
 appcompat = "1.7.1"
@@ -25,9 +27,11 @@ workRuntime = "2.10.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "lifecycleProcess" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntime" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

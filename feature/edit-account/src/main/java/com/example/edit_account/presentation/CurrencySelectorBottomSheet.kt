@@ -22,9 +22,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.common.model.account.CurrencyItem
 import com.example.edit_account.R
+import com.example.edit_account.R.string
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,6 +35,8 @@ internal fun CurrencySelectorBottomSheet(
     onDismissRequest: () -> Unit,
     onCurrencySelected: (String) -> Unit,
 ) {
+    val currencies = getCurrencies()
+    
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
@@ -49,6 +53,15 @@ internal fun CurrencySelectorBottomSheet(
             CancelButton(onClick = onDismissRequest)
         }
     }
+}
+
+@Composable
+private fun getCurrencies(): List<CurrencyItem> {
+    return listOf(
+        CurrencyItem(stringResource(string.russian_ruble), R.drawable.ic_ruble, "₽"),
+        CurrencyItem(stringResource(string.us_dollar), R.drawable.ic_dollar, "$"),
+        CurrencyItem(stringResource(string.euro), R.drawable.ic_euro, "€")
+    )
 }
 
 @Composable
@@ -96,14 +109,8 @@ private fun CancelButton(onClick: () -> Unit) {
         )
         Spacer(Modifier.width(16.dp))
         Text(
-            text = "Отмена",
+            text = stringResource(string.cancel),
             color = Color.White,
         )
     }
 }
-
-private val currencies = listOf(
-    CurrencyItem("Российский рубль", R.drawable.ic_ruble, "₽"),
-    CurrencyItem("Американский доллар", R.drawable.ic_dollar, "$"),
-    CurrencyItem("Евро", R.drawable.ic_euro, "€")
-)

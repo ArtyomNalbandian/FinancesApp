@@ -7,6 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.example.ui.R.string
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDate.now
@@ -39,10 +41,10 @@ fun FinancesDatePickerDialog(
                         .toLocalDate()
                     onDateSelected(picked)
                 }
-            }) { Text("Ок") }
+            }) { Text(stringResource(string.ui_ok)) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Отмена") }
+            TextButton(onClick = onDismiss) { Text(stringResource(string.ui_cancel)) }
         }
     ) {
         DatePicker(state = datePickerState, showModeToggle = false)

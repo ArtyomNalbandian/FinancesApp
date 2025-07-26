@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -39,7 +40,9 @@ import com.example.ui.FinancesDatePickerDialog
 import com.example.ui.FinancesDateRangeSelector
 import com.example.ui.FinancesTopBarConfig
 import com.example.ui.ListItem
-import com.example.ui.R
+import com.example.ui.R.drawable
+import com.example.incomes.R
+import com.example.incomes.R.string
 import java.time.Instant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -73,15 +76,15 @@ fun IncomesHistoryScreen(
         viewModel(factory = incomesComponent.viewModelFactory())
 
     FinancesTopBarConfig(
-        title = { Text("История доходов") },
+        title = { Text(stringResource(string.incomes_history_title)) },
         navAction = {
             IconButton(onClick = navigateBack) {
-                Icon(painterResource(R.drawable.ic_back), contentDescription = "Назад")
+                Icon(painterResource(drawable.ic_back), contentDescription = stringResource(string.back))
             }
         },
         actions = {
             IconButton(onClick = navigateToAnalysis) {
-                Icon(painterResource(R.drawable.ic_analysis), contentDescription = "Анализ доходов")
+                Icon(painterResource(drawable.ic_analysis), contentDescription = stringResource(string.analysis))
             }
         }
     )
@@ -161,14 +164,15 @@ private fun IncomesHistoryContent(state: IncomesHistoryState, currency: String) 
             is IncomesHistoryState.Error -> {
                 Text(
                     state.message,
-                    modifier = Modifier.padding(16.dp, top = 64.dp)
+                    modifier = Modifier.padding(16.dp, top = 64.dp),
+                    color = MaterialTheme.colorScheme.error // Используем цвет ошибки из темы
                 )
             }
 
             is IncomesHistoryState.Content -> {
                 Column {
                     ListItem(
-                        title = "Сумма",
+                        title = stringResource(string.amount),
                         amount = state.total,
                         currency = currency,
                         modifier = Modifier.height(56.dp),
@@ -177,9 +181,9 @@ private fun IncomesHistoryContent(state: IncomesHistoryState, currency: String) 
 
                     if (state.items.isEmpty()) {
                         Text(
-                            "Нет операций",
+                            stringResource(string.no_operations),
                             modifier = Modifier.padding(16.dp),
-                            color = Color.Gray
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f) // Используем onSurface с прозрачностью вместо Color.Gray
                         )
                     } else {
                         state.items.sortedBy { Instant.parse(it.transactionDate) }
@@ -187,7 +191,7 @@ private fun IncomesHistoryContent(state: IncomesHistoryState, currency: String) 
                                 ListItem(
                                     title = income.title,
                                     leadingIcon = income.leadingIcon,
-                                    trailingIcon = R.drawable.more_vert,
+                                    trailingIcon = drawable.more_vert,
                                     amount = income.amount,
                                     currency = currency,
                                     supportingText = income.subtitle,

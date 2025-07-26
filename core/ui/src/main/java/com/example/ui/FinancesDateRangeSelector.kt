@@ -5,7 +5,9 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.ui.R.string
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -18,7 +20,7 @@ fun FinancesDateRangeSelector(
     onEndClick: () -> Unit
 ) {
     ListItem(
-        title = "Начало",
+        title = stringResource(string.ui_start),
         amount = startDate.format(dateFormatter),
         backgroundColor = MaterialTheme.colorScheme.secondary,
         modifier = Modifier.height(56.dp),
@@ -26,7 +28,7 @@ fun FinancesDateRangeSelector(
     )
     HorizontalDivider()
     ListItem(
-        title = "Конец",
+        title = stringResource(string.ui_end),
         amount = endDate.format(dateFormatter),
         backgroundColor = MaterialTheme.colorScheme.secondary,
         modifier = Modifier.height(56.dp),

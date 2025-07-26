@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -34,11 +35,11 @@ internal fun BottomNavigationBar(
                 icon = {
                     Icon(
                         painter = painterResource(item.icon),
-                        contentDescription = item.name,
+                        contentDescription = stringResource(item.nameRes),
                         modifier = Modifier.size(24.dp)
                     )
                 },
-                label = { Text(item.name) },
+                label = { Text(stringResource(item.nameRes)) },
                 selected = currentDestination?.hierarchy?.any { it.hasRoute(item.route::class) } == true,
                 onClick = {
                     navController.navigate(item.route) {
@@ -59,11 +60,11 @@ internal fun BottomNavigationBar(
 }
 
 private val topLevelRoutes = listOf(
-    TopLevelRoute("Расходы", ExpensesGraph, R.drawable.expenses),
-    TopLevelRoute("Доходы", IncomeGraph, R.drawable.income),
-    TopLevelRoute("Счета", AccountGraph, R.drawable.account),
-    TopLevelRoute("Статьи", CategoriesGraph, R.drawable.articles),
-    TopLevelRoute("Настройки", SettingsGraph, R.drawable.settings),
+    TopLevelRoute(R.string.bottom_nav_expenses, ExpensesGraph, R.drawable.expenses),
+    TopLevelRoute(R.string.bottom_nav_incomes, IncomeGraph, R.drawable.income),
+    TopLevelRoute(R.string.bottom_nav_accounts, AccountGraph, R.drawable.account),
+    TopLevelRoute(R.string.bottom_nav_categories, CategoriesGraph, R.drawable.articles),
+    TopLevelRoute(R.string.bottom_nav_settings, SettingsGraph, R.drawable.settings),
 )
 
-private data class TopLevelRoute<T : Any>(val name: String, val route: T, val icon: Int)
+private data class TopLevelRoute<T : Any>(val nameRes: Int, val route: T, val icon: Int)

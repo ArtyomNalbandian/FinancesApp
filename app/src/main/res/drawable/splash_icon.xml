@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Круглый фон -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M60,60 m-50,0 a50,50 0 1,0 100,0 a50,50 0 1,0 -100,0" />
+    
+    <!-- Иконка кошелька -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M40,40 L80,40 L80,80 L40,80 Z" />
+    
+    <!-- Детали кошелька -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M45,45 L75,45 L75,75 L45,75 Z" />
+    
+    <!-- Символ доллара -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M55,50 L55,70 L65,70 L65,50 Z" />
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M58,48 L58,52 L62,52 L62,48 Z" />
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M58,68 L58,72 L62,72 L62,68 Z" />
+    
+</vector> 

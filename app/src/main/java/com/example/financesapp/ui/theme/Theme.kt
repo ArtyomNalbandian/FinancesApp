@@ -37,6 +37,9 @@ private val LightColorScheme = lightColorScheme(
 fun FinancesAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
+    primaryColor: Color? = null,
+    secondaryColor: Color? = null,
+    tertiaryColor: Color? = null,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -44,9 +47,16 @@ fun FinancesAppTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> DarkColorScheme.copy(
+            primary = primaryColor ?: DarkGreen,
+            secondary = secondaryColor ?: DarkGreenLight,
+            tertiary = tertiaryColor ?: DarkPurpleLight
+        )
+        else -> LightColorScheme.copy(
+            primary = primaryColor ?: LightGreen,
+            secondary = secondaryColor ?: LightGreenLight,
+            tertiary = tertiaryColor ?: LightPurpleLight
+        )
     }
 
     MaterialTheme(

@@ -1,0 +1,27 @@
+<resources>
+    <string name="expenses_add_title">New expense</string>
+    <string name="expenses_edit_title">Edit expense</string>
+    <string name="expenses_history_title">Expense history</string>
+    <string name="expenses_analysis_title">Expense analysis</string>
+    <string name="expenses_today_title">Today\'s expenses</string>
+    <string name="repeat">Repeat</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="account">Account</string>
+    <string name="category">Category</string>
+    <string name="choose_category">Choose category</string>
+    <string name="amount">Amount</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="choose_time">Choose time</string>
+    <string name="comment">Comment</string>
+    <string name="no_operations">No operations</string>
+    <string name="history">History</string>
+    <string name="create">Create</string>
+    <string name="save">Save</string>
+    <string name="back">Back</string>
+    <string name="analysis">Expense analysis</string>
+    <string name="total">Total</string>
+    <string name="error">Error</string>
+</resources> 

@@ -9,7 +9,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.ui.R.string
 
 @Composable
 fun AddButton(
@@ -23,6 +25,6 @@ fun AddButton(
         shape = CircleShape,
         modifier = modifier.padding(end = 16.dp, bottom = 14.dp)
     ) {
-        Icon(imageVector = Icons.Default.Add, contentDescription = "Добавить")
+        Icon(imageVector = Icons.Default.Add, contentDescription = stringResource(string.ui_add))
     }
 }

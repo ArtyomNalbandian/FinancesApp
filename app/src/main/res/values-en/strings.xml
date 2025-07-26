@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FinancesApp</string>
+    <string name="bottom_nav_expenses">Expenses</string>
+    <string name="bottom_nav_incomes">Incomes</string>
+    <string name="bottom_nav_accounts">Accounts</string>
+    <string name="bottom_nav_categories">Categories</string>
+    <string name="bottom_nav_settings">Settings</string>
+</resources> 

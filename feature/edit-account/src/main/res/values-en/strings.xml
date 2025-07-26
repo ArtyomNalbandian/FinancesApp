@@ -1,0 +1,13 @@
+<resources>
+    <string name="edit_account_title">Edit account</string>
+    <string name="confirm">Confirm</string>
+    <string name="back">Back</string>
+    <string name="account_name">Account name</string>
+    <string name="balance">Balance</string>
+    <string name="currency">Currency</string>
+    <string name="cancel">Cancel</string>
+    <string name="russian_ruble">Russian ruble</string>
+    <string name="us_dollar">US dollar</string>
+    <string name="euro">Euro</string>
+    <string name="error">Error</string>
+</resources> 

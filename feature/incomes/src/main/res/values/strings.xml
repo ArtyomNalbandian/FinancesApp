@@ -1,0 +1,27 @@
+<resources>
+    <string name="incomes_add_title">Новый доход</string>
+    <string name="incomes_edit_title">Редактировать доход</string>
+    <string name="incomes_history_title">История доходов</string>
+    <string name="incomes_analysis_title">Анализ доходов</string>
+    <string name="incomes_today_title">Доходы сегодня</string>
+    <string name="repeat">Повторить</string>
+    <string name="ok">Ок</string>
+    <string name="cancel">Отмена</string>
+    <string name="account">Счет</string>
+    <string name="category">Статья</string>
+    <string name="choose_category">Выберите статью</string>
+    <string name="amount">Сумма</string>
+    <string name="enter_amount">Введите сумму</string>
+    <string name="date">Дата</string>
+    <string name="time">Время</string>
+    <string name="choose_time">Выбрать время</string>
+    <string name="comment">Комментарий</string>
+    <string name="no_operations">Нет операций</string>
+    <string name="history">История</string>
+    <string name="create">Создать</string>
+    <string name="save">Сохранить</string>
+    <string name="back">Назад</string>
+    <string name="analysis">Анализ доходов</string>
+    <string name="total">Всего</string>
+    <string name="error">Ошибка</string>
+</resources> 

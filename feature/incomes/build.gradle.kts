@@ -71,6 +71,8 @@ dependencies {
     implementation(project(":core:network"))
     // core:database module
     implementation(project(":core:database"))
+    // core:charts module
+    implementation(project(":core:charts"))
     // feature:account module
     implementation(project(":feature:account"))
     // feature:categories module

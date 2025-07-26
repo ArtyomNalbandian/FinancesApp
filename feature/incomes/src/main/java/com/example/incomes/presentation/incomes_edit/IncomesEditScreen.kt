@@ -54,9 +54,12 @@ import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesTopBarConfig
 import com.example.ui.ListItem
 import com.example.ui.R
+import com.example.incomes.R.string
+import com.example.ui.HapticsUtil
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import androidx.compose.ui.res.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,10 +88,10 @@ internal fun IncomesEditScreen(
     }
 
     FinancesTopBarConfig(
-        title = { Text("Редактировать расход") },
+        title = { Text(stringResource(string.incomes_edit_title)) },
         navAction = {
             IconButton(onClick = navigateBack) {
-                Icon(painterResource(R.drawable.ic_cancel), contentDescription = "Отмена")
+                Icon(painterResource(R.drawable.ic_cancel), contentDescription = stringResource(string.cancel))
             }
         },
         actions = {
@@ -106,7 +109,7 @@ internal fun IncomesEditScreen(
                 } else {
                     Icon(
                         painterResource(R.drawable.ic_apply),
-                        contentDescription = "Сохранить"
+                        contentDescription = stringResource(string.save)
                     )
                 }
 
@@ -128,8 +131,10 @@ internal fun IncomesEditScreen(
 
     LaunchedEffect(incomesEditState.amount) { amountText = incomesEditState.amount }
     LaunchedEffect(incomesEditState.comment) { commentText = incomesEditState.comment }
+    val context = LocalContext.current
     LaunchedEffect(incomesEditState.isUpdated, incomesEditState.isDeleted) {
         if (incomesEditState.isUpdated || incomesEditState.isDeleted) {
+            HapticsUtil.performHaptic(context)
             navigateBack()
         }
     }
@@ -151,7 +156,7 @@ internal fun IncomesEditScreen(
                     Button(onClick = {
                         incomesEditViewModel.handleIntent(IncomesEditIntent.ClearError)
                     }) {
-                        Text("Повторить")
+                        Text(stringResource(string.repeat))
                     }
                 }
             }
@@ -159,7 +164,7 @@ internal fun IncomesEditScreen(
             else -> {
                 Column {
                     ListItem(
-                        title = "Счет",
+                        title = stringResource(string.account),
                         amount = incomesEditState.account?.name ?: ""
                     )
                     HorizontalDivider()
@@ -169,9 +174,9 @@ internal fun IncomesEditScreen(
                     ) {
                         ListItem(
                             modifier = Modifier.menuAnchor(),
-                            title = "Статья",
+                            title = stringResource(string.category),
                             amount = incomesEditState.selectedCategory?.let { "${it.emoji} ${it.name}" }
-                                ?: "Выберите статью",
+                                ?: stringResource(string.choose_category),
                             trailingIcon = R.drawable.more,
                             onClick = { showCategoryMenu = true }
                         )
@@ -206,11 +211,11 @@ internal fun IncomesEditScreen(
                     HorizontalDivider()
                     ListItem(
                         modifier = Modifier,
-                        title = "Сумма",
+                        title = stringResource(string.amount),
                         amount = if (incomesEditState.amount.isNotBlank()) {
                             "${incomesEditState.amount} ${incomesEditState.selectedAccount?.currency?.toCurrencySymbol() ?: ""}"
                         } else {
-                            "Введите сумму"
+                            stringResource(string.enter_amount)
                         },
                         trailingIcon = R.drawable.more,
                         onClick = {
@@ -221,12 +226,12 @@ internal fun IncomesEditScreen(
                     if (showAmountDialog) {
                         AlertDialog(
                             onDismissRequest = { showAmountDialog = false },
-                            title = { Text("Введите сумму") },
+                            title = { Text(stringResource(string.enter_amount)) },
                             text = {
                                 TextField(
                                     value = amountText,
                                     onValueChange = { amountText = it },
-                                    label = { Text("Сумма") },
+                                    label = { Text(stringResource(string.amount)) },
                                     singleLine = true,
                                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal),
                                     isError = incomesEditState.amountError != null,
@@ -241,17 +246,17 @@ internal fun IncomesEditScreen(
                                         )
                                     )
                                     showAmountDialog = false
-                                }) { Text("Ок") }
+                                }) { Text(stringResource(string.ok)) }
                             },
                             dismissButton = {
-                                Button(onClick = { showAmountDialog = false }) { Text("Отмена") }
+                                Button(onClick = { showAmountDialog = false }) { Text(stringResource(string.cancel)) }
                             }
                         )
                     }
                     HorizontalDivider()
                     ListItem(
                         modifier = Modifier,
-                        title = "Дата",
+                        title = stringResource(string.date),
                         amount = incomesEditState.selectedDateTime.format(
                             DateTimeFormatter.ofPattern(
                                 "dd.MM.yyyy"
@@ -276,10 +281,10 @@ internal fun IncomesEditScreen(
                                         )
                                     }
                                     showDatePicker = false
-                                }) { Text("Ок") }
+                                }) { Text(stringResource(string.ok)) }
                             },
                             dismissButton = {
-                                Button(onClick = { showDatePicker = false }) { Text("Отмена") }
+                                Button(onClick = { showDatePicker = false }) { Text(stringResource(string.cancel)) }
                             }
                         ) {
                             DatePicker(state = datePickerState)
@@ -290,7 +295,7 @@ internal fun IncomesEditScreen(
 
                     ListItem(
                         modifier = Modifier,
-                        title = "Время",
+                        title = stringResource(string.time),
                         amount = incomesEditState.selectedDateTime.format(
                             DateTimeFormatter.ofPattern(
                                 "HH:mm"
@@ -306,7 +311,7 @@ internal fun IncomesEditScreen(
                                 color = MaterialTheme.colorScheme.background
                             ) {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text("Выбрать время")
+                                    Text(stringResource(string.choose_time))
                                     Spacer(modifier = Modifier.height(12.dp))
                                     TimePicker(state = timePickerState)
                                     Spacer(modifier = Modifier.height(12.dp))
@@ -315,7 +320,7 @@ internal fun IncomesEditScreen(
                                         horizontalArrangement = Arrangement.End
                                     ) {
                                         TextButton(onClick = { showTimePicker = false }) {
-                                            Text("Отмена")
+                                            Text(stringResource(string.cancel))
                                         }
                                         Spacer(modifier = Modifier.width(8.dp))
                                         TextButton(onClick = {
@@ -329,7 +334,7 @@ internal fun IncomesEditScreen(
                                             )
                                             showTimePicker = false
                                         }) {
-                                            Text("Ок")
+                                            Text(stringResource(string.ok))
                                         }
                                     }
                                 }
@@ -339,8 +344,8 @@ internal fun IncomesEditScreen(
                     HorizontalDivider()
                     ListItem(
                         modifier = Modifier,
-                        title = "Комментарий",
-                        amount = incomesEditState.comment.ifBlank { "Комментарий" },
+                        title = stringResource(string.comment),
+                        amount = incomesEditState.comment.ifBlank { stringResource(string.comment) },
                         trailingIcon = R.drawable.more,
                         onClick = {
                             commentText = incomesEditState.comment
@@ -351,12 +356,12 @@ internal fun IncomesEditScreen(
                     if (showCommentDialog) {
                         AlertDialog(
                             onDismissRequest = { showCommentDialog = false },
-                            title = { Text("Комментарий") },
+                            title = { Text(stringResource(string.comment)) },
                             text = {
                                 TextField(
                                     value = commentText,
                                     onValueChange = { commentText = it },
-                                    label = { Text("Комментарий") }
+                                    label = { Text(stringResource(string.comment)) }
                                 )
                             },
                             confirmButton = {
@@ -367,10 +372,10 @@ internal fun IncomesEditScreen(
                                         )
                                     )
                                     showCommentDialog = false
-                                }) { Text("Ок") }
+                                }) { Text(stringResource(string.ok)) }
                             },
                             dismissButton = {
-                                Button(onClick = { showCommentDialog = false }) { Text("Отмена") }
+                                Button(onClick = { showCommentDialog = false }) { Text(stringResource(string.cancel)) }
                             }
                         )
                     }

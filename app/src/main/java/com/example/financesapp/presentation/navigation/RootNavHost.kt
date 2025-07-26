@@ -32,6 +32,18 @@ import com.example.incomes.presentation.incomes_history.IncomesHistoryScreenRout
 import com.example.incomes.presentation.incomes_history.incomesHistoryScreen
 import com.example.settings.navigation.SettingsScreenRoute
 import com.example.settings.navigation.settingsScreen
+import com.example.settings.navigation.ColorPickerScreenRoute
+import com.example.settings.navigation.HapticsSettingsScreenRoute
+import com.example.settings.navigation.PinCodeScreenRoute
+import com.example.settings.navigation.SyncFrequencyScreenRoute
+import com.example.settings.navigation.LanguageSwitchScreenRoute
+import com.example.settings.navigation.AppInfoScreenRoute
+import com.example.settings.navigation.appInfoScreen
+import com.example.settings.navigation.colorPickerScreen
+import com.example.settings.navigation.hapticsSettingsScreen
+import com.example.settings.navigation.languageSwitchScreen
+import com.example.settings.navigation.pinCodeScreen
+import com.example.settings.navigation.syncFrequencyScreen
 
 @Composable
 internal fun RootNavGraph(
@@ -47,7 +59,7 @@ internal fun RootNavGraph(
         addIncomeGraph(navController)
         addAccountGraph(navController)
         addCategoriesGraph()
-        addSettingsGraph()
+        addSettingsGraph(navController)
     }
 }
 
@@ -130,10 +142,35 @@ private fun NavGraphBuilder.addCategoriesGraph() {
     }
 }
 
-private fun NavGraphBuilder.addSettingsGraph() {
+private fun NavGraphBuilder.addSettingsGraph(navController: NavHostController) {
     navigation<ScreenRoute.SettingsGraph>(
         startDestination = SettingsScreenRoute,
     ) {
-        settingsScreen()
+        settingsScreen(
+            navigateToColorPicker = { navController.navigate(ColorPickerScreenRoute) },
+            navigateToHaptics = { navController.navigate(HapticsSettingsScreenRoute) },
+            navigateToPinCode = { navController.navigate(PinCodeScreenRoute) },
+            navigateToSyncFrequency = { navController.navigate(SyncFrequencyScreenRoute) },
+            navigateToLanguageSwitch = { navController.navigate(LanguageSwitchScreenRoute) },
+            navigateToAppInfo = { navController.navigate(AppInfoScreenRoute) }
+        )
+        colorPickerScreen(
+            navigateBack = { navController.popBackStack() }
+        )
+        hapticsSettingsScreen(
+            navigateBack = { navController.popBackStack() }
+        )
+        pinCodeScreen(
+            navigateBack = { navController.popBackStack() }
+        )
+        syncFrequencyScreen(
+            navigateBack = { navController.popBackStack() }
+        )
+        languageSwitchScreen(
+            navigateBack = { navController.popBackStack() }
+        )
+        appInfoScreen(
+            navigateBack = { navController.popBackStack() }
+        )
     }
 }

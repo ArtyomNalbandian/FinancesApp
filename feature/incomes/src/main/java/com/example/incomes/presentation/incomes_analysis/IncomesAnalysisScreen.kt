@@ -23,16 +23,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.account.di.DaggerAccountComponent
 import com.example.account.presentation.AccountViewModel
+import com.example.charts.PieChart
+import com.example.charts.model.ChartConfig
+import com.example.charts.util.ChartDataMapper
+import com.example.charts.util.TransactionData
 import com.example.common.util.toCurrencySymbol
 import com.example.database.di.DaggerDatabaseComponent
+import com.example.incomes.R.string
 import com.example.incomes.di.DaggerIncomesComponent
 import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesDatePickerDialog
@@ -72,10 +77,10 @@ internal fun IncomesAnalysisScreen(
         viewModel(factory = incomesComponent.viewModelFactory())
 
     FinancesTopBarConfig(
-        title = { Text("Анализ доходов") },
+        title = { Text(stringResource(string.incomes_analysis_title)) },
         navAction = {
             IconButton(onClick = navigateBack) {
-                Icon(painterResource(R.drawable.ic_back), contentDescription = "Назад")
+                Icon(painterResource(R.drawable.ic_back), contentDescription = stringResource(string.back))
             }
         }
     )
@@ -155,25 +160,56 @@ private fun IncomesAnalysisContent(state: IncomesAnalysisState, currency: String
             is IncomesAnalysisState.Error -> {
                 Text(
                     state.message,
-                    modifier = Modifier.padding(16.dp, top = 64.dp)
+                    modifier = Modifier.padding(16.dp, top = 64.dp),
+                    color = MaterialTheme.colorScheme.error
                 )
             }
 
             is IncomesAnalysisState.Content -> {
                 Column {
                     ListItem(
-                        title = "Сумма",
+                        title = stringResource(string.amount),
                         amount = state.total,
                         currency = currency,
                         modifier = Modifier.height(56.dp),
                         backgroundColor = MaterialTheme.colorScheme.secondary,
                     )
 
+                    // Круговой график
+                    if (state.items.isNotEmpty()) {
+                        val chartData = state.items.map { income ->
+                            TransactionData(
+                                categoryName = income.categoryName ?: income.title,
+                                amount = income.amount,
+                                icon = income.leadingIcon
+                            )
+                        }
+                        
+                        val pieChartData = ChartDataMapper.mapToPieChartData(chartData)
+                        
+                        if (pieChartData.isNotEmpty()) {
+                            PieChart(
+                                data = pieChartData,
+                                config = ChartConfig(
+                                    title = "Доходы по категориям",
+                                    showLegend = true,
+                                    showValues = true,
+                                    animationDuration = 1500L
+                                ),
+                                modifier = Modifier.padding(16.dp),
+                                onSegmentClick = { segment ->
+                                }
+                            )
+                            
+                            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                        }
+                    }
+
                     if (state.items.isEmpty()) {
                         Text(
-                            "Нет операций",
+                            stringResource(string.no_operations),
                             modifier = Modifier.padding(16.dp),
-                            color = Color.Gray
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                         )
                     } else {
                         state.items.sortedBy { Instant.parse(it.transactionDate) }

@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.account.R
@@ -22,6 +23,7 @@ import com.example.account.di.DaggerAccountComponent
 import com.example.database.di.DaggerDatabaseComponent
 import com.example.network.di.DaggerNetworkComponent
 import com.example.ui.FinancesTopBarConfig
+import com.example.account.R.string
 
 @Composable
 internal fun AccountScreen(
@@ -45,7 +47,7 @@ internal fun AccountScreen(
     val currentAccount by accountViewModel.selectedAccount.collectAsStateWithLifecycle()
 
     FinancesTopBarConfig(
-        title = { Text("Мой счет") },
+        title = { Text(stringResource(string.my_account)) },
         actions = {
             IconButton(
                 onClick = {
@@ -58,7 +60,7 @@ internal fun AccountScreen(
                     }
                 }
             ) {
-                Icon(painterResource(R.drawable.ic_edit), contentDescription = "Редактировать счет")
+                Icon(painterResource(R.drawable.ic_edit), contentDescription = stringResource(string.edit_account))
             }
         }
     )
@@ -83,7 +85,7 @@ internal fun AccountScreen(
 
             is AccountState.Error -> {
                 val error = currentState.message
-                Text("Ошибка: $error", modifier = Modifier.align(Alignment.Center))
+                Text("${stringResource(string.error)}: $error", modifier = Modifier.align(Alignment.Center))
             }
 
             is AccountState.Content -> {

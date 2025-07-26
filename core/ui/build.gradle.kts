@@ -58,4 +58,6 @@ dependencies {
     // Dagger2
     implementation(libs.google.dagger.dagger)
     ksp(libs.google.dagger.compiler)
+
+    implementation(project(":core:common"))
 }

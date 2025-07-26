@@ -1,0 +1,13 @@
+<resources>
+    <string name="edit_account_title">Редактирование счета</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="back">Назад</string>
+    <string name="account_name">Название счета</string>
+    <string name="balance">Баланс</string>
+    <string name="currency">Валюта</string>
+    <string name="cancel">Отмена</string>
+    <string name="russian_ruble">Российский рубль</string>
+    <string name="us_dollar">Американский доллар</string>
+    <string name="euro">Евро</string>
+    <string name="error">Ошибка</string>
+</resources> 

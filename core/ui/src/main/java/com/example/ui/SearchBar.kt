@@ -18,8 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.example.ui.R.string
 
 @Composable
 fun SearchBar(
@@ -39,12 +41,12 @@ fun SearchBar(
             .fillMaxWidth()
             .height(56.dp),
         placeholder = {
-            Text(text = "Найти статью")
+            Text(text = stringResource(string.ui_search))
         },
         trailingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Поиск"
+                contentDescription = stringResource(string.ui_search)
             )
         },
         singleLine = true,

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="80dp"
+    android:viewportWidth="240"
+    android:viewportHeight="80">
+    
+    <!-- Фон (прозрачный) -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M0,0 L240,0 L240,80 L0,80 Z" />
+    
+    <!-- Буква F -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M20,20 L20,60 L60,60 L60,50 L35,50 L35,40 L55,40 L55,30 L35,30 L35,20 Z" />
+    
+    <!-- Буква i -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M70,20 L70,60 L85,60 L85,20 Z" />
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M75,10 L75,15 L80,15 L80,10 Z" />
+    
+    <!-- Буква n -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M95,20 L95,60 L110,60 L110,40 L125,40 L125,60 L140,60 L140,20 L125,20 L125,35 L110,35 L110,20 Z" />
+    
+    <!-- Буква a -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M150,20 L150,60 L165,60 L165,50 L160,50 L160,20 Z" />
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M155,30 L170,30 L170,40 L155,40 Z" />
+    
+    <!-- Буква n -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M180,20 L180,60 L195,60 L195,40 L210,40 L210,60 L225,60 L225,20 L210,20 L210,35 L195,35 L195,20 Z" />
+    
+    <!-- Буква c -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M235,20 L235,60 L220,60 L220,50 L225,50 L225,30 L220,30 L220,20 Z" />
+    
+    <!-- Буква e -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M245,20 L245,60 L260,60 L260,50 L255,50 L255,40 L260,40 L260,30 L255,30 L255,20 Z" />
+    
+    <!-- Буква s -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M270,20 L270,30 L280,30 L280,40 L270,40 L270,50 L280,50 L280,60 L270,60 L270,55 L275,55 L275,45 L270,45 L270,35 L275,35 L275,25 L270,25 Z" />
+    
+    <!-- Буква A -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M290,20 L290,60 L305,60 L305,50 L300,50 L300,20 Z" />
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M295,30 L310,30 L310,40 L295,40 Z" />
+    
+    <!-- Буква p -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M320,20 L320,70 L335,70 L335,50 L350,50 L350,20 L335,20 L335,40 L335,40 L335,30 L335,30 Z" />
+    
+    <!-- Буква p -->
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M360,20 L360,70 L375,70 L375,50 L390,50 L390,20 L375,20 L375,40 L375,40 L375,30 L375,30 Z" />
+    
+</vector> 
